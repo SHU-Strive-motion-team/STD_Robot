@@ -27,7 +27,7 @@ int main(void)
 	chengxu=0;
 
 	delay_init(168);  			//初始化延时函数
-	UART_Init(9600);	 		//串口初始化为9600
+	UART_Init(115200);	 		//串口初始化为9600
 
 	ALL_GPIO_Init();
 	Remote_Init();
@@ -180,6 +180,7 @@ while (1)
 					case 1:
 						//机械臂下降
 						Robot_armDown();
+//					RobotGoTo(0,2,0);
 //						2高电平往下，接红线，正转
 //						__HAL_TIM_SET_COMPARE(&htim9,TIM_CHANNEL_1,300);
 //						__HAL_TIM_SET_COMPARE(&htim9,TIM_CHANNEL_2,4000);
@@ -216,6 +217,31 @@ while (1)
 						FindBall_vision(qiu);
 						LED0 = !LED0;
 						break;
+					case 7:
+						RobotGoTo(0,3,0);
+						RobotRotate(250);
+						RobotRotate(0);
+						delay_ms(500);
+					  RobotGoTo(3,3,0);
+						delay_ms(1000);
+						RobotGoTo(0,0,0);
+//						RobotGoTo(3,3.5,0);
+//						delay_ms(500);
+//						RobotGoTo(6,4,0);
+//						delay_ms(500);
+//						RobotGoTo(4,6,110);
+//						delay_ms(500);
+//						RobotGoTo(0,2,250);
+//						delay_ms(500);
+//						RobotGoTo(0,1,0);
+//						RobotGoTo(0,0,0);
+//						SetPWM(0,0,0);
+					delay_ms(1000);
+					break;
+					
+					case 9:
+						SetPWM(-400,0,400);
+					break;
 				}
 				break;
 			case 1:			//传球第一回合				

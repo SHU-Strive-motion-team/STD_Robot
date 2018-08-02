@@ -274,7 +274,7 @@ void TIM3_CH3_PWM_Init(u32 arr,u32 psc)
 
 	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1; 			//选择定时器模式:TIM脉冲宽度调制模式2
  	TIM_OCInitStructure.TIM_OutputNState = TIM_OutputState_Enable; 	//比较输出使能
-	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_Low; 		//输出极性:TIM输出比较极性低
+	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High; 		//输出极性:TIM输出比较极性低
 	TIM_OC3Init(TIM3, &TIM_OCInitStructure);  					
 
 	TIM_OC3PreloadConfig(TIM3, TIM_OCPreload_Enable);  			

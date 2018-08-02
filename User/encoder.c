@@ -47,6 +47,9 @@ void encoder1_init(void)
 	TIM_ICStructInit(&TIM_ICInitStructure);
 	TIM_ICInitStructure.TIM_ICFilter = 10;
 	TIM_ICInit(TIM2, &TIM_ICInitStructure);
+	
+	TIM_ICInitStructure.TIM_Channel = TIM_Channel_2;
+	TIM_ICInit(TIM4, &TIM_ICInitStructure);
 
 //	TIM_ClearFlag(TIM2, TIM_FLAG_Update);//清除TIM的更新标志位
 //	TIM_ITConfig(TIM2, TIM_IT_Update, ENABLE);
@@ -80,6 +83,9 @@ void encoder2_init(void)
 	
 	TIM_ICStructInit(&TIM_ICInitStructure);
 	TIM_ICInitStructure.TIM_ICFilter = 10;
+	TIM_ICInit(TIM4, &TIM_ICInitStructure);
+	
+	TIM_ICInitStructure.TIM_Channel = TIM_Channel_2;
 	TIM_ICInit(TIM4, &TIM_ICInitStructure);
 
 //	TIM_ClearFlag(TIM4, TIM_FLAG_Update);//清除TIM的更新标志位

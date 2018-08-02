@@ -94,12 +94,15 @@ void TIM5_IRQHandler(void)
 	if(TIM_GetITStatus(TIM5,TIM_IT_Update)==SET) 
 	{
 		GetYaw();		
-		ReadEncoder();
+		GetPosition();
 		if(count++==1)
 			LCD_Show_position();
 		
 		if(count %50== 2)
 			LCD_Show_lcj();
+		
+		if(count == 10)
+			LCD_Show_v();
 //		printf("1 :   %d \r\n",TIM5->CNT);
 //		LCD_Show_position();
 //		printf("2 :   %d \r\n",TIM5->CNT);
@@ -110,7 +113,7 @@ void TIM5_IRQHandler(void)
 
 void ReadEncoder(void)
 {
-	//int16_t nEncoder1,nEncoder2,nEncoder3;
+	int16_t nEncoder1,nEncoder2,nEncoder3;
 	//读取CNT数值后清零
 	BasketballRobot.w[0] = TIM2->CNT;
 	TIM2->CNT = 0;
@@ -169,9 +172,18 @@ u8 GetYaw(void)
 		
 	if(USART2_RX_STA&0x8000)	
 	{
-		//(Re_buf [7]<<8| Re_buf [6]))/32768.0*180; 
-		BasketballRobot.ThetaD = ((float)((USART2_RX_BUF[7]<<8)|USART2_RX_BUF[6]))/32768*180;
+		//(Re_buf [7]<<8| Re_buf [6]))/32768.0*180;
+		BasketballRobot.theta_offset[0] =  BasketballRobot.theta_offset[1];
+		BasketballRobot.theta_offset[1] = ((float)((USART2_RX_BUF[7] << 8) | USART2_RX_BUF[6])) / 32768 * 180;
 		
+		BasketballRobot.theta_offset[2] = BasketballRobot.theta_offset[1]- BasketballRobot.theta_offset[0];
+		
+		if(BasketballRobot.theta_offset[2] > 300)
+			BasketballRobot.theta_offset[2] -= 360;
+		if(BasketballRobot.theta_offset[2] < -300)
+			BasketballRobot.theta_offset[2] += 360;
+		
+		BasketballRobot.ThetaD += BasketballRobot.theta_offset[2]/103.0f*90; //90/103.0f*360/(360+8/3) = 0.86736
 		BasketballRobot.ThetaR = BasketballRobot.ThetaD * PI / 180;
 		
 		while(BasketballRobot.ThetaR < 0)
@@ -205,37 +217,47 @@ void GetPosition(void)
 {
 	//根据速度运算球场坐标
 
-	float nW,nX,nY;
 	
+	float nW, nX, nY;
 
-	float l1,l2,l3;	//里程计减去自旋偏差后数值
-	
+	float l1, l2, l3; //里程计减去自旋偏差后数值
+
 	float theta_inv[2][2]; //角度矩阵
+
+//	if(GetYaw())
+//	{
 	
-	//GetYaw();
 	ReadEncoder();
-	
-	BasketballRobot.LastTheta = BasketballRobot.ThetaR;
-	
-	
+
+	//BasketballRobot.LastTheta = BasketballRobot.ThetaR;
+
 	//theta_inv
-	theta_inv[0][0]= cos(BasketballRobot.ThetaR);	theta_inv[0][1] = -theta_inv[1][0];		
-	theta_inv[1][0]= sin(BasketballRobot.ThetaR);	theta_inv[1][1] = theta_inv[0][0];	
+	theta_inv[0][0] = cos(BasketballRobot.ThetaR);
+	theta_inv[1][0] = sin(BasketballRobot.ThetaR);
+	theta_inv[0][1] = -theta_inv[1][0];	
+	theta_inv[1][1] = theta_inv[0][0];
 	
-	nW = (BasketballRobot.w[0]+BasketballRobot.w[1]+BasketballRobot.w[2])/3.0f;	
+	//BasketballRobot.LastTheta = BasketballRobot.ThetaR;
+
+	nW = (BasketballRobot.w[0] + BasketballRobot.w[1] + BasketballRobot.w[2]) / 3.0f;
+	
+	
 	//除去自传偏差
-	l1 = BasketballRobot.w[0] - nW;	
+	l1 = BasketballRobot.w[0] - nW;
 	l2 = BasketballRobot.w[1] - nW;
 	l3 = BasketballRobot.w[2] - nW;
+
+	nX = -l1 / 22400;
+	nY = -(-l2 + l3) / 1.7320508f / 22400;
+
+	//nX =
+
+	BasketballRobot.X += nX * theta_inv[0][0] + nY * theta_inv[0][1];
+	BasketballRobot.Y += nX * theta_inv[1][0] + nY * theta_inv[1][1];
 	
-	nX = -l1/20000;
-	nY = -(-l2 + l3)/1.7320508f/22400;
-	
-	//nX = 
-	
-	BasketballRobot.X += nX*theta_inv[0][0]+nY*theta_inv[0][1];
-	BasketballRobot.Y += nX*theta_inv[1][0]+nY*theta_inv[1][1];
-	
+	BasketballRobot.encoderCount[0] += BasketballRobot.w[0];
+	BasketballRobot.encoderCount[1] += BasketballRobot.w[1];
+	BasketballRobot.encoderCount[2] += BasketballRobot.w[2];
 	
 }
 

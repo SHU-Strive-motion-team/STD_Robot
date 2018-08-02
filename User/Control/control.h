@@ -21,7 +21,8 @@
 #define ENCODER_R 	0.0275f		//编码器轮子半径
 #define RAD	 0.1570796327f		//编码器一个脉冲对应的角度 pi/500/4/0.01
 
-#define MOTOR_L 0.2013f		//轮到机器人中心的距离
+//#define MOTOR_L 0.2013f		//轮到机器人中心的距离
+#define MOTOR_L 1.0f	//轮到机器人中心的距离
 #define MOTOR_R 0.0508f		//轮子的半径
 
 #define MOTOR_STATIC_1 4000		//TIM9 CH1 PE5
@@ -64,7 +65,7 @@ struct ROBOT
 	PD yPD;
 	PD wPD;
 	
-	float w[3];				//编码器速度
+	int16_t  w[3];				//编码器速度
 	int64_t encoderCount[3];	//编码器总计数
 	
 	float Velocity[3];	//轮子的速度

@@ -71,6 +71,12 @@ static void Velocity2PWM(float *V)
 //V3;	电机3速度
 void SetPWM(float V1,float V2,float V3)
 {
+	if(V1>-1&&V1<1)
+		V1=1;
+	if(V2>-1&&V2<1)
+		V2=1;
+	if(V3>-1&&V3<1)
+		V3=1;
 	BasketballRobot.Velocity[0] = V1;
 	BasketballRobot.Velocity[1] = V2;
 	BasketballRobot.Velocity[2] = V3;
@@ -232,7 +238,7 @@ void Robot_armDown(void)
 	//原来板子：3000
 	//V1.0：1750
 	u16 i,t;
-	u16 W=2700;
+//	u16 W=2700;
 	u16 nms=2000;
 
 	
@@ -276,7 +282,7 @@ void Robot_armUp(void)
 	//原来板子：1960
 	//V1.0:550
 	u16 i,t;
-	u16 W=2700;
+//	u16 W=2700;
 	u16 nms=2000;
 
 	
@@ -317,17 +323,114 @@ void Robot_armUp(void)
 //PD调整角速度
 static float adjustAngleV_PD(float D_Theta)
 {
-	float w;
+		float Vw=0;
+		if(D_Theta>0&&(D_Theta<180))  
+		{
+			Vw=D_Theta*5;
+		}
+		else if(D_Theta>0&&(D_Theta>180)) 
+		{
+			D_Theta = 2*180-D_Theta;
+			Vw=-D_Theta*5;
+		}
+		else if(D_Theta<0&&(D_Theta>-180)) 
+		{
+			Vw=D_Theta*5;
+		}
+		else if(D_Theta<0&&(D_Theta<-180)) 
+		{
+			D_Theta = 2*180+D_Theta;
+			Vw=D_Theta*5;
+		}
+		
+		if(Vw > 300)
+		Vw=300;
+		else if(Vw<-300)
+			Vw=-300;
+		
+		return Vw;
 }
 //PD调整Y轴速度
-static float adjustVy_PD(float D_Theta)
+static float adjustVy_PD(float D_Y)
 {
+		float sy;
+
+	if (D_Y > 0.05f)
+	{
+			sy = D_Y*300;
+			if (BasketballRobot.Vy < 0.3f)
+				sy = 80;
+			else if (BasketballRobot.Vy < 0.5f)
+				sy = 240;
+			else if (BasketballRobot.Vy < 0.9f)
+				sy = 300;
+			if(sy>800)
+				sy=800;
+		}
+		
 	
+	else if (D_Y < -0.05f)
+	{
+			sy = -D_Y*300;
+			if (BasketballRobot.Vy > -0.3f)
+				sy = -100;
+			else if (BasketballRobot.Vy > -0.5f)
+				sy = -200;
+			else if (BasketballRobot.Vy > -0.9f)
+				sy = -300;
+			
+			if(sy < -800)
+				sy = -800;
+		}
+
+
+	
+	else
+		sy = 0;
+
+	return sy;
 }
 //PD调整X轴速度
-static float adjustVx_PD(float D_Theta)
+static float adjustVx_PD(float D_X)
 {
+	float sx;
+
+	if (D_X > 0.05f)
+	{
+			sx = D_X*400;
+			if (BasketballRobot.Vy < 0.3f)
+				sx = 80;
+			else if (BasketballRobot.Vy < 0.5f)
+				sx = 240;
+			else if (BasketballRobot.Vy < 0.9f)
+				sx = 300;
+			if(sx>800)
+				sx=800;
+		}
+		
 	
+	else if (D_X < -0.05f)
+	{
+			sx = -D_X*400;
+			if (BasketballRobot.Vy > -0.3f)
+				sx = -100;
+			else if (BasketballRobot.Vy > -0.5f)
+				sx = -200;
+			else if (BasketballRobot.Vy > -0.9f)
+				sx = -300;
+			
+			if(sx < -800)
+				sx = -800;
+		}
+
+
+	
+	else
+		sx = 0;
+
+	return sx;
+
+
 }
 
 //根据偏差大小调整角速度
@@ -427,7 +530,7 @@ static float adjustVy(float D_Y)
 			sy = D_Y * 10 / 2;
 
 		if (D_Y < 0.2f)
-			sy = 0.25;
+			sy = 2;
 	}
 	else if (D_Y < -0.05f)
 	{
@@ -446,7 +549,7 @@ static float adjustVy(float D_Y)
 			sy = D_Y * 10 / 2;
 
 		if (D_Y > -0.2f)
-			sy = -0.25;
+			sy = -2;
 	}
 	else
 		sy = 0;
@@ -465,9 +568,9 @@ static float adjustVx(float D_X)
 		{
 			sx = 8;
 			if (BasketballRobot.Vx < 0.1f)
-				sx = 0.5;
-			else if (BasketballRobot.Vx < 0.2f)
 				sx = 1;
+			else if (BasketballRobot.Vx < 0.2f)
+				sx = 2;
 			else if (BasketballRobot.Vx < 0.4f)
 				sx = 2;
 			else if (BasketballRobot.Vx < 0.58f)
@@ -481,13 +584,13 @@ static float adjustVx(float D_X)
 				sx = 2;
 
 			else if (D_X > 0.15f)
-				sx = 1;
+				sx =2;
 
 			else if (D_X > 0.1f)
-				sx = 0.5f;
+				sx = 1.5f;
 
 			else
-				sx = 0.25f;
+				sx = 1;
 		}
 	}
 	else if (D_X < -0.05f)
@@ -496,9 +599,9 @@ static float adjustVx(float D_X)
 		{
 			sx = -8;
 			if (BasketballRobot.Vx > -0.1f)
-				sx = -0.5;
-			else if (BasketballRobot.Vx > -0.2f)
 				sx = -1;
+			else if (BasketballRobot.Vx > -0.2f)
+				sx = -2;
 			else if (BasketballRobot.Vx > -0.4f)
 				sx = -2;
 			else if (BasketballRobot.Vx > -0.58f)
@@ -512,12 +615,12 @@ static float adjustVx(float D_X)
 				sx = -2;
 
 			else if (D_X < -0.15f)
-				sx = -1;
+				sx = -2;
 
 			else if (D_X < -0.1f)
-				sx = -0.5f;
+				sx = -1.5f;
 			else
-				sx = -0.25f;
+				sx = -1;
 		}
 	}
 	else
@@ -534,11 +637,11 @@ void RobotRotate(float theta)
 	float Vw=0;        //W大于0 逆时针
 
 	//D_Theta = theta-BasketballRobot.ThetaD;
-	D_Theta = theta-0;
-	Vw = adjustAngleV(D_Theta);
+	D_Theta = theta-BasketballRobot.ThetaD;
+	Vw = adjustAngleV_PD(D_Theta);
 	
 	
-	while(D_Theta>1||D_Theta < -1)
+	while(D_Theta>5||D_Theta < -5)
 	{
 		GetMotorVelocity(0,0,Vw);	
 		
@@ -546,7 +649,7 @@ void RobotRotate(float theta)
 		
 		D_Theta = theta-BasketballRobot.ThetaD;
 		
-		Vw = adjustAngleV(D_Theta);
+		Vw  = adjustAngleV_PD(D_Theta);
 	}
 	SetPWM(0,0,0);
 
@@ -568,13 +671,13 @@ void RobotGoTo(float X_I,float Y_I,float Theta_I)
 	
 	while(fabs(D_Y) > 0.05f || fabs(D_X) > 0.05f)
 	{
-		sy = adjustVy(D_Y);		
+		sy = adjustVy_PD(D_Y);		
 		
-		sx = adjustVx(D_X);
+		sx = adjustVx_PD(D_X);
 		
-		Vw = adjustAngleV(D_Theta)/2;
+		Vw = adjustAngleV_PD(D_Theta)/2;
 		
-		GetMotorVelocity(sx*12,sy*100,Vw);
+		GetMotorVelocity(sx,sy,Vw);
 		
 		SetPWM(BasketballRobot.Velocity[0],BasketballRobot.Velocity[1],BasketballRobot.Velocity[2]);
 		
@@ -583,7 +686,7 @@ void RobotGoTo(float X_I,float Y_I,float Theta_I)
 		D_Y = Y_I - BasketballRobot.Y;
 	}
 	SetPWM(0,0,0);
-	delay_ms(1000);
+	delay_ms(100);
 	RobotRotate(Theta_I);
 }
 
@@ -601,9 +704,9 @@ void RobotGoAvoidance(void)
 	
 	while(fabs(D_X) > 0.05f){
 	
-	sx = adjustVx(D_X);
+	sx = adjustVx_PD(D_X);
 		
-	GetMotorVelocity_Self(sx*3,0,0);
+	GetMotorVelocity_Self(sx,0,0);
 		
 	SetPWM(BasketballRobot.Velocity[0],BasketballRobot.Velocity[1],BasketballRobot.Velocity[2]);
 		
