@@ -199,11 +199,14 @@ while (1)
 						//机械臂上升
 						Robot_armUp();
 						LED0 = !LED0;
+					BEEP=1;
+//						TIM_SetCompare2(TIM9,0);
+//						TIM_SetCompare1(TIM9,1500+1000);
 						break;
 					case 3:
 						//红外测试
 						GetInfraredState();
-						LED0 = !LED0;
+						BEEP=1;
 						break;
 					case 4:
 						//限位开关测试6
@@ -222,6 +225,10 @@ while (1)
 					case 5:
 						//避障测试
 						FindBall_radar();
+//					while(1)
+//					{
+//					GetRadarData();
+//					}
 						LED0 = !LED0;
 						break;
 					case 6:
@@ -230,12 +237,12 @@ while (1)
 						LED0 = !LED0;
 						break;
 					case 7:
-						RobotGoTo(0,3,0);
+						RobotGoTo(0,-6,0);
 //						RobotRotate(250);
 //						RobotRotate(0);
-						delay_ms(500);
-					  RobotGoTo(3,3,0);
-						delay_ms(1000);
+//						delay_ms(500);
+//					  RobotGoTo(3,3,0);
+						delay_ms(2000);
 						RobotGoTo(0,0,0);
 //						RobotGoTo(3,3.5,0);
 //						delay_ms(500);

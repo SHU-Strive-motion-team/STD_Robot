@@ -107,7 +107,7 @@ void USART3_IRQHandler(void)
 			if((Radar.RX_STA & 0X3FFF) == 10)
 			{
 				for (i3 = 0; i3 < 9; i3++)
-					sum3 += Radar.RX_BUF[i1];
+					sum3 += Radar.RX_BUF[i3];
 				if (sum3 == Radar.RX_BUF[9])
 					Radar.RX_STA |= 0x8000;
 				else

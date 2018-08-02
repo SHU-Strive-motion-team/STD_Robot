@@ -680,18 +680,18 @@ void RobotRotate(float theta)
 
 	//D_Theta = theta-BasketballRobot.ThetaD;
 	D_Theta = theta-BasketballRobot.ThetaD;
-	Vw = adjustAngleV_PD(D_Theta);
+	Vw = adjustAngleV_PD(D_Theta)+1;
 	
 	
 	while(D_Theta>5||D_Theta < -5)
 	{
-		GetMotorVelocity(0,0,Vw);	
 		
-		SetPWM(BasketballRobot.Velocity[0],BasketballRobot.Velocity[1],BasketballRobot.Velocity[2]);
+		
+		SetPWM(Vw,Vw,Vw);
 		
 		D_Theta = theta-BasketballRobot.ThetaD;
 		
-		Vw  = adjustAngleV_PD(D_Theta);
+		Vw  = adjustAngleV_PD(D_Theta)+1;
 	}
 	SetPWM(0,0,0);
 

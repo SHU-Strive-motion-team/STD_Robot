@@ -184,12 +184,12 @@ void FindBall_radar(void)
 	LCD_Show_pwm();
 	do
 	{
-		//while(receive3 != 1);
+		//while(!(Radar.RX_STA&0x8000));
 
 		if (!GetRadarData())
 		{
 
-			SetPWM(0, 0, 0);
+			//SetPWM(0, 0, 0);
 			continue;
 		}
 		LED0 = !LED0;
@@ -219,55 +219,57 @@ void FindBall_radar(void)
 		}
 		else if (Radar.Angle < RADAR_MID - 15)
 		{
-			GetMotorVelocity_Self(0, 0, 200);
+			GetMotorVelocity_Self(-20, 0, 0);
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
 		else if (Radar.Angle > RADAR_MID + 15)
 		{
-			GetMotorVelocity_Self(0, 0, -200);
+			GetMotorVelocity_Self(20, 0, 0);
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
 		else if (Radar.Distance > 1000)
 		{
-			GetMotorVelocity_Self(0, 30, 0);
+			GetMotorVelocity_Self(0, 300, 0);
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
 		else if ((Radar.Angle < RADAR_MID - 10) && Radar.Distance > 700)
 		{
-			GetMotorVelocity_Self(0, 0, 150);
+			GetMotorVelocity_Self(-15, 0, 0);
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
 		else if ((Radar.Angle > RADAR_MID + 10) && Radar.Distance > 700)
 		{
-			GetMotorVelocity_Self(0, 0, -150);
+			GetMotorVelocity_Self(15, 0, 0);
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
 		else if (Radar.Distance > 700)
 		{
-			GetMotorVelocity_Self(0, 20, 0);
+			GetMotorVelocity_Self(0, 200, 0);
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
-		else if (Radar.Angle < RADAR_MID - 5)
+		else if (Radar.Angle < RADAR_MID - 3)
 		{
-			GetMotorVelocity_Self(-8, 0, 0); //原来-80 0 0
+			GetMotorVelocity_Self(-10, 0, 0); //原来-80 0 0
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
-		else if (Radar.Angle > RADAR_MID + 5)
+		else if (Radar.Angle > RADAR_MID + 3)
 		{
-			GetMotorVelocity_Self(8, 0, 0); //原来80 0 0
+			GetMotorVelocity_Self(10, 0, 0); //原来80 0 0
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
 		else
 		{
-			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
+			SetPWM(0,0,0);
 			Robot_armDown();
-			GetMotorVelocity_Self(0, 7, 0);
+			GetMotorVelocity_Self(0, 100, 0);
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
-			if (Radar.Distance < 350)
+			if (Radar.Distance < 400)
 				break;
 		}
+		LCD_Show_pwm();
 	} while (1);
 
+	
 	GetInfraredState();
 
 	SetPWM(0, 0, 0);
