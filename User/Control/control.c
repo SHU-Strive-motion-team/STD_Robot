@@ -71,12 +71,6 @@ static void Velocity2PWM(float *V)
 //V3;	电机3速度
 void SetPWM(float V1,float V2,float V3)
 {
-	if(V1>-1&&V1<1)
-		V1=1;
-	if(V2>-1&&V2<1)
-		V2=1;
-	if(V3>-1&&V3<1)
-		V3=1;
 	BasketballRobot.Velocity[0] = V1;
 	BasketballRobot.Velocity[1] = V2;
 	BasketballRobot.Velocity[2] = V3;
@@ -221,13 +215,13 @@ void shoveMotor(shovemotor t)
 	{
 		//CH1高电平,铲子向上，接黑线，电机反转
 		TIM_SetCompare2(TIM9,0);
-		TIM_SetCompare1(TIM9,speed);
+		TIM_SetCompare1(TIM9,speed+1000);
 	}
 	else if(t == DOWM)
 	{
 		//CH2高电平,铲子向下，接红线，电机正转
 		TIM_SetCompare1(TIM9,0);
-		TIM_SetCompare2(TIM9,speed);
+		TIM_SetCompare2(TIM9,speed-1200);
 	}
 	
 }
@@ -247,29 +241,40 @@ void Robot_armDown(void)
 		shoveMotor(STOP);
 		return;
 	}
+	shoveMotor(DOWM);
+	while(1){
+		if(LimitSwitchDowm==1){
+			delay_ms(10);
+			if(LimitSwitchDowm==1){
+				shoveMotor(STOP);
+				break;
+			}
+		}
+	}
+		shoveMotor(STOP);
 	//EXTIX_Enable(1);
 	#ifdef ZQD_DEBUG
 	BEEP = 1;
 	#endif
-	shoveMotor(DOWM);
+//	shoveMotor(DOWM);
 	
-	LED1 = 1;
-	for(i=0;i<nms;i++)
-	{	  
-		if(LimitSwitchDowm == 1)
-		{	
-			for(t=0;t<0xff;t++);
-			if(LimitSwitchDowm==1)
-			{
-				shoveMotor(STOP);				
-				break;
-			}
-		}
-		for(t=0;t<0x4fff;t++)
-			if(LimitSwitchDowm == 1)
-				break;
-	}
-	shoveMotor(STOP);
+//	LED1 = 1;
+//	for(i=0;i<nms;i++)
+//	{	  
+//		if(LimitSwitchDowm == 1)
+//		{	
+//			for(t=0;t<0xff;t++);
+//			if(LimitSwitchDowm==1)
+//			{
+//				shoveMotor(STOP);				
+//				break;
+//			}
+//		}
+//		for(t=0;t<0x4fff;t++)
+//			if(LimitSwitchDowm == 1)
+//				break;
+//	}
+//	shoveMotor(STOP);
 
 	#ifdef ZQD_DEBUG
 	BEEP = 0;
@@ -289,30 +294,40 @@ void Robot_armUp(void)
 	if(LimitSwitchUp==1)
 	{
 		shoveMotor(STOP);
-		return ;
+		return;
+	}
+	shoveMotor(UP);
+	while(1){
+		if(LimitSwitchUp==1){
+			delay_ms(10);
+			if(LimitSwitchUp==1){
+				shoveMotor(STOP);
+				break;
+			}
+		}
 	}
 	//EXTIX_Enable(0);
 	#ifdef ZQD_DEBUG
 	BEEP = 1;
 	#endif
 	
-	shoveMotor(UP);
-	for(i=0;i<nms;i++)
-	{
-		if(LimitSwitchUp == 1)
-		{
-			for(t=0;t<0xff;t++);
-			if(LimitSwitchUp == 1)
-			{
-				shoveMotor(STOP);
-				break;
-			}
-		}
-		for(t=0;t<0x4fff;t++)
-			if(LimitSwitchUp == 1)
-				break;
-	}
-	shoveMotor(STOP);
+//	shoveMotor(UP);
+//	for(i=0;i<nms;i++)
+//	{
+//		if(LimitSwitchUp == 1)
+//		{
+//			for(t=0;t<0xff;t++);
+//			if(LimitSwitchUp == 1)
+//			{
+//				shoveMotor(STOP);
+//				break;
+//			}
+//		}
+//		for(t=0;t<0x4fff;t++)
+//			if(LimitSwitchUp == 1)
+//				break;
+//	}
+//	shoveMotor(STOP);
 
 	#ifdef ZQD_DEBUG
 	BEEP = 0;
@@ -759,7 +774,7 @@ void RobotGoAvoidance(void)
 		delay_ms(1000);
 	}
 */
-	GetMotorVelocity_Self(20,0,0);	
+	GetMotorVelocity_Self(0,40,0);	
 	SetPWM(BasketballRobot.Velocity[0],BasketballRobot.Velocity[1],BasketballRobot.Velocity[2]);
 	delay_ms(1000);
 	//RobotGoTo(BasketballRobot.PX+700,BasketballRobot.PY+500,60);
