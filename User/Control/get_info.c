@@ -79,9 +79,44 @@ void USART2_IRQHandler(void)
 	}	
 	
 }
+u8 res3,sum3,i3;
 void USART3_IRQHandler(void)
 {
- 
+	if(USART_GetITStatus(USART3, USART_IT_RXNE) != RESET)  //接收中断(接收到的数据必须是0x0d 0x0a结尾)
+	{
+		res3 = USART_ReceiveData(USART3);  //(USART3->DR);	//读取接收到的数据
+		if ((Radar.RX_STA & 0x8000) == 0) //接收未完成
+		{
+			Radar.RX_BUF[Radar.RX_STA & 0X3FFF] = res3;
+
+			if ((Radar.RX_STA & 0X3FFF) == 0 && Radar.RX_BUF[0] != '@')
+				return;
+			if ((Radar.RX_STA & 0X3FFF) == 1 && Radar.RX_BUF[1] != '^')
+			{
+				Radar.RX_STA = 0;
+				return;
+			}
+			if ((Radar.RX_STA & 0X3FFF) == 2 && Radar.RX_BUF[2] != 'r')
+			{
+				Radar.RX_STA = 0;
+				return;
+			}
+
+			Radar.RX_STA++;
+
+			if((Radar.RX_STA & 0X3FFF) == 10)
+			{
+				for (i1 = 0; i1 < 9; i1++)
+					sum3 += Radar.RX_BUF[i1];
+				if (sum3 == Radar.RX_BUF[9])
+					Radar.RX_STA |= 0x8000;
+				else
+					Radar.RX_STA=0;
+				sum3 = 0;
+				
+			}
+		}
+	}
 }
 
 
@@ -503,23 +538,22 @@ u8 GetRadarData(void)
 		d = (Radar.RX_BUF[5]<<8)|Radar.RX_BUF[6];
 		Radar.RX_STA=0;
 	}
-//	if(a<240 || a >300||d>4000||d<10) //原来&&
-//	{
-//		Radar.State = 0;
-//		return 0;
-//	}	
-//	else
-//	{
+	if(a<240 || a >300||d>4000||d<10) //原来&&
+	{
+		Radar.State = 0;
+		return 0;
+	}	
+	else
+	{
 		Radar.Angle = a;
 		Radar.Distance = d;
 		Radar.State = 1;
-		Radar.RX_STA=0;
 		LCD_ShowString(30+200,460,200,16,16,"Radar:rad");	
 		LCD_ShowNum(30+200+48+8+45,460,Radar.Angle,4,16);		
 		LCD_ShowString(30+200,480,200,16,16,"Radar:length");	
 		LCD_ShowNum(30+200+48+8+45,480,Radar.Distance,4,16);
 		return 1;
-//	}
+	}
 	#endif
 }
 
