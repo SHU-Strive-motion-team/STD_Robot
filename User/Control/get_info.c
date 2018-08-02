@@ -106,7 +106,7 @@ void USART3_IRQHandler(void)
 
 			if((Radar.RX_STA & 0X3FFF) == 10)
 			{
-				for (i1 = 0; i1 < 9; i1++)
+				for (i3 = 0; i3 < 9; i3++)
 					sum3 += Radar.RX_BUF[i1];
 				if (sum3 == Radar.RX_BUF[9])
 					Radar.RX_STA |= 0x8000;
@@ -148,7 +148,7 @@ void TIM5_IRQHandler(void)
 
 void ReadEncoder(void)
 {
-	int16_t nEncoder1,nEncoder2,nEncoder3;
+//	int16_t nEncoder1,nEncoder2,nEncoder3;
 	//读取CNT数值后清零
 	BasketballRobot.w[0] = TIM2->CNT;
 	TIM2->CNT = 0;
