@@ -10,7 +10,7 @@ Project File Date:  08/01/2018
 Build target 'Robot'
 compiling control.c...
 linking...
-Program Size: Code=46804 RO-data=6796 RW-data=60 ZI-data=2356  
+Program Size: Code=47072 RO-data=6792 RW-data=64 ZI-data=2352  
 FromELF: creating hex file...
 ".\Objects\myRobot.axf" - 0 Error(s), 0 Warning(s).
 Load "C:\\Users\\HI\\Desktop\\hal\\STD_Robot\\Objects\\myRobot.axf" 
@@ -48,61 +48,45 @@ Erase Done.
 Programming Done.
 Verify OK.
 Application running ...
- = 9, IRPrint = 0x0011
-* JLink Info: Found Cortex-M4 r0p1, Little endian.
-* JLink Info: FPUnit: 6 code (BP) slots and 2 literal slots
-* JLink Info: TPIU fitted.
-* JLink Info: ETM fitted.
-ROMTableAddr = 0xE00FF003
- 
-Target info:
-------------
-Device: STM32F407ZG
-VTarget = 3.228V
-State of Pins: 
-TCK: 1, TDI: 0, TDO: 1, TMS: 0, TRES: 1, TRST: 1
-Hardware-Breakpoints: 6
-Software-Breakpoints: 8192
-Watchpoints:          4
-JTAG speed: 2000 kHz
- 
-Erase Done.
-Programming Done.
-Verify OK.
-Application running ...
-onverted to double-precision
+indBasketry" declared implicitly
+                                                FindBasketry();
+User\main.c(459): warning:  #223-D: function "FindBall_VandR" declared implicitly
+                                                FindBall_VandR(qiu);
+User\main.c(467): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+                                                RobotGoTo(-9-Correction_X,3.7+Correction_Y,-90);
+User\main.c(476): warning:  #1035-D: single-precision operand implicitly converted to double-precision
                                                 RobotGoTo(4+Correction_X,3.7+Correction_Y,90);
-User\main.c(486): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+User\main.c(493): warning:  #1035-D: single-precision operand implicitly converted to double-precision
                                                 RobotGoTo(9+Correction_X,3.7+Correction_Y,90);
-User\main.c(501): warning:  #223-D: function "FindBall_VandR" declared implicitly
+User\main.c(508): warning:  #223-D: function "FindBall_VandR" declared implicitly
                                                 FindBall_VandR(qiu);
-User\main.c(507): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+User\main.c(514): warning:  #1035-D: single-precision operand implicitly converted to double-precision
                                                 RobotGoTo(-9-Correction_X,3.7+Correction_Y,-90);
-User\main.c(510): warning:  #223-D: function "FindBasketry" declared implicitly
+User\main.c(517): warning:  #223-D: function "FindBasketry" declared implicitly
                                                 FindBasketry();
-User\main.c(528): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+User\main.c(535): warning:  #1035-D: single-precision operand implicitly converted to double-precision
                                                 RobotGoTo(-9-Correction_X,3.7+Correction_Y,-90);
-User\main.c(544): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+User\main.c(551): warning:  #1035-D: single-precision operand implicitly converted to double-precision
                                                 RobotGoTo(9+Correction_X,3.7+Correction_Y,90);
-User\main.c(565): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+User\main.c(572): warning:  #1035-D: single-precision operand implicitly converted to double-precision
                                                 RobotGoTo(9+Correction_X,3.7+Correction_Y,90);
-User\main.c(580): warning:  #223-D: function "FindBall_VandR" declared implicitly
+User\main.c(587): warning:  #223-D: function "FindBall_VandR" declared implicitly
                                                 FindBall_VandR(qiu);
-User\main.c(583): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+User\main.c(590): warning:  #1035-D: single-precision operand implicitly converted to double-precision
                                                 RobotGoTo(-9-Correction_X,3.7+Correction_Y,-90);
-User\main.c(586): warning:  #223-D: function "FindBasketry" declared implicitly
+User\main.c(593): warning:  #223-D: function "FindBasketry" declared implicitly
                                                 FindBasketry();
-User\main.c(593): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+User\main.c(600): warning:  #1035-D: single-precision operand implicitly converted to double-precision
                                                 RobotGoTo(-9-Correction_X,3.7+Correction_Y,-90);
-User\main.c(606): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+User\main.c(613): warning:  #1035-D: single-precision operand implicitly converted to double-precision
                                                 RobotGoTo(9.0f+Correction_X,3.7+Correction_Y,90);
-User\main.c(616): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+User\main.c(623): warning:  #1035-D: single-precision operand implicitly converted to double-precision
                                                 RobotGoTo(9+Correction_X,3.7+Correction_Y,90);
 User\main.c(20): warning:  #177-D: variable "time" was declared but never referenced
         int16_t time = 0;                       //—” ±
 User\main.c: 25 warnings, 0 errors
 linking...
-Program Size: Code=46188 RO-data=6796 RW-data=60 ZI-data=2356  
+Program Size: Code=47080 RO-data=6792 RW-data=64 ZI-data=2352  
 FromELF: creating hex file...
 ".\Objects\myRobot.axf" - 0 Error(s), 25 Warning(s).
 Load "C:\\Users\\HI\\Desktop\\hal\\STD_Robot\\Objects\\myRobot.axf" 
@@ -138,8 +122,114 @@ JTAG speed: 2000 kHz
  
 Erase Done.
 Programming Done.
-Verify OK.
-Application running ...
+***JLink Error: Communication timed out: Requested 4 bytes, received 0 bytes !
+***JLink Error: Can not read register 15 (R15) while CPU is running
+**JLink Warning: CPU could not be halted
+***JLink Error: Could not read memory location 0x20000000 when trying to clear soft RAM BP
+Could not start CPU core. (ErrorCode: -1)
+***JLink Error: Could not read hardware status!
+Contents mismatch at: 08000000H  (Flash=AAH  Required=70H) !
+Contents mismatch at: 08000001H  (Flash=AAH  Required=09H) !
+Contents mismatch at: 08000002H  (Flash=AAH  Required=00H) !
+Contents mismatch at: 08000003H  (Flash=AAH  Required=20H) !
+Contents mismatch at: 08000004H  (Flash=AAH  Required=9DH) !
+Contents mismatch at: 08000005H  (Flash=AAH  Required=01H) !
+Contents mismatch at: 08000006H  (Flash=AAH  Required=00H) !
+Contents mismatch at: 08000007H  (Flash=AAH  Required=08H) !
+Contents mismatch at: 08000008H  (Flash=AAH  Required=45H) !
+Contents mismatch at: 08000009H  (Flash=AAH  Required=7AH) !
+Contents mismatch at: 0800000AH  (Flash=AAH  Required=00H) !
+Contents mismatch at: 0800000BH  (Flash=AAH  Required=08H) !
+Contents mismatch at: 0800000CH  (Flash=AAH  Required=E9H) !
+Contents mismatch at: 0800000DH  (Flash=AAH  Required=2BH) !
+Contents mismatch at: 0800000EH  (Flash=AAH  Required=00H) !
+Contents mismatch at: 0800000FH  (Flash=AAH  Required=08H) !
+Contents mismatch at: 08000010H  (Flash=AAH  Required=41H) !
+Contents mismatch at: 08000011H  (Flash=AAH  Required=7AH) !
+Contents mismatch at: 08000012H  (Flash=AAH  Required=00H) !
+Contents mismatch at: 08000013H  (Flash=AAH  Required=08H) !
+Contents mismatch at: 08000014H  (Flash=AAH  Required=3DH) !
+Contents mismatch at: 08000015H  (Flash=AAH  Required=08H) !
+Contents mismatch at: 08000016H  (Flash=AAH  Required=00H) !
+Contents mismatch at: 08000017H  (Flash=AAH  Required=08H) !
+Contents mismatch at: 08000018H  (Flash=AAH  Required=5FH) !
+Contents mismatch at: 08000019H  (Flash=AAH  Required=96H) !
+Contents mismatch at: 0800001AH  (Flash=AAH  Required=00H) !
+Contents mismatch at: 0800001BH  (Flash=AAH  Required=08H) !
+Contents mismatch at: 0800001CH  (Flash=AAH  Required=00H) !
+Contents mismatch at: 0800001DH  (Flash=AAH  Required=00H) !
+Contents mismatch at: 0800001EH  (Flash=AAH  Required=00H) !
+Contents mismatch at: 0800001FH  (Flash=AAH  Required=00H) !
+Contents mismatch at: 08000020H  (Flash=AAH  Required=00H) !
+Contents mismatch at: 08000021H  (Flash=AAH  Required=00H) !
+Contents mismatch at: 08000022H  (Flash=AAH  Required=00H) !
+Contents mismatch at: 08000023H  (Flash=AAH  Required=00H) !
+Contents mismatch at: 08000024H  (Flash=AAH  Required=00H) !
+Contents mismatch at: 08000025H  (Flash=AAH  Required=00H) !
+Contents mismatch at: 08000026H  (Flash=AAH  Required=00H) !
+Contents mismatch at: 08000027H  (Flash=AAH  Required=00H) !
+Contents mismatch at: 08000028H  (Flash=AAH  Required=00H) !
+Contents mismatch at: 08000029H  (Flash=AAH  Required=00H) !
+Contents mismatch at: 0800002AH  (Flash=AAH  Required=00H) !
+Contents mismatch at: 0800002BH  (Flash=AAH  Required=00H) !
+Contents mismatch at: 0800002CH  (Flash=AAH  Required=DDH) !
+Contents mismatch at: 0800002DH  (Flash=AAH  Required=82H) !
+Contents mismatch at: 0800002EH  (Flash=AAH  Required=00H) !
+Contents mismatch at: 0800002FH  (Flash=AAH  Required=08H) !
+Contents mismatch at: 08000030H  (Flash=AAH  Required=6DH) !
+Contents mismatch at: 08000031H  (Flash=AAH  Required=09H) !
+Contents mismatch at: 08000032H  (Flash=AAH  Required=00H) !
+Contents mismatch at: 08000033H  (Flash=AAH  Required=08H) !
+Contents mismatch at: 08000034H  (Flash=AAH  Required=00H) !
+Contents mismatch at: 08000035H  (Flash=AAH  Required=00H) !
+Contents mismatch at: 08000036H  (Flash=AAH  Required=00H) !
+Contents mismatch at: 08000037H  (Flash=AAH  Required=00H) !
+Contents mismatch at: 08000038H  (Flash=AAH  Required=0BH) !
+Contents mismatch at: 08000039H  (Flash=AAH  Required=7BH) !
+Contents mismatch at: 0800003AH  (Flash=AAH  Required=00H) !
+Contents mismatch at: 0800003BH  (Flash=AAH  Required=08H) !
+Contents mismatch at: 0800003CH  (Flash=AAH  Required=69H) !
+Contents mismatch at: 0800003DH  (Flash=AAH  Required=85H) !
+Contents mismatch at: 0800003EH  (Flash=AAH  Required=00H) !
+Contents mismatch at: 0800003FH  (Flash=AAH  Required=08H) !
+Contents mismatch at: 08000040H  (Flash=AAH  Required=B7H) !
+Contents mismatch at: 08000041H  (Flash=AAH  Required=01H) !
+Contents mismatch at: 08000042H  (Flash=AAH  Required=00H) !
+Contents mismatch at: 08000043H  (Flash=AAH  Required=08H) !
+Contents mismatch at: 08000044H  (Flash=AAH  Required=B7H) !
+Contents mismatch at: 08000045H  (Flash=AAH  Required=01H) !
+Contents mismatch at: 08000046H  (Flash=AAH  Required=00H) !
+Contents mismatch at: 08000047H  (Flash=AAH  Required=08H) !
+Contents mismatch at: 08000048H  (Flash=AAH  Required=B7H) !
+Contents mismatch at: 08000049H  (Flash=AAH  Required=01H) !
+Contents mismatch at: 0800004AH  (Flash=AAH  Required=00H) !
+Contents mismatch at: 0800004BH  (Flash=AAH  Required=08H) !
+Contents mismatch at: 0800004CH  (Flash=AAH  Required=B7H) !
+Contents mismatch at: 0800004DH  (Flash=AAH  Required=01H) !
+Contents mismatch at: 0800004EH  (Flash=AAH  Required=00H) !
+Contents mismatch at: 0800004FH  (Flash=AAH  Required=08H) !
+Contents mismatch at: 08000050H  (Flash=AAH  Required=B7H) !
+Contents mismatch at: 08000051H  (Flash=AAH  Required=01H) !
+Contents mismatch at: 08000052H  (Flash=AAH  Required=00H) !
+Contents mismatch at: 08000053H  (Flash=AAH  Required=08H) !
+Contents mismatch at: 08000054H  (Flash=AAH  Required=B7H) !
+Contents mismatch at: 08000055H  (Flash=AAH  Required=01H) !
+Contents mismatch at: 08000056H  (Flash=AAH  Required=00H) !
+Contents mismatch at: 08000057H  (Flash=AAH  Required=08H) !
+Contents mismatch at: 08000058H  (Flash=AAH  Required=B7H) !
+Contents mismatch at: 08000059H  (Flash=AAH  Required=01H) !
+Contents mismatch at: 0800005AH  (Flash=AAH  Required=00H) !
+Contents mismatch at: 0800005BH  (Flash=AAH  Required=08H) !
+Contents mismatch at: 0800005CH  (Flash=AAH  Required=B7H) !
+Contents mismatch at: 0800005DH  (Flash=AAH  Required=01H) !
+Contents mismatch at: 0800005EH  (Flash=AAH  Required=00H) !
+Contents mismatch at: 0800005FH  (Flash=AAH  Required=08H) !
+Contents mismatch at: 08000060H  (Flash=AAH  Required=B7H) !
+Contents mismatch at: 08000061H  (Flash=AAH  Required=01H) !
+Contents mismatch at: 08000062H  (Flash=AAH  Required=00H) !
+Contents mismatch at: 08000063H  (Flash=AAH  Required=08H) !
+Too many errors to display !
+Error: Flash Download failed  -  "Cortex-M4"
 Load "C:\\Users\\HI\\Desktop\\hal\\STD_Robot\\Objects\\myRobot.axf" 
 * JLink Info: Device "UNSPECIFIED" selected (0 KB flash, 0 KB RAM).
 Set JLink Project File to "C:\Users\HI\Desktop\hal\STD_Robot\JLinkSettings.ini"
@@ -163,7 +253,7 @@ ROMTableAddr = 0xE00FF003
 Target info:
 ------------
 Device: STM32F407ZG
-VTarget = 3.228V
+VTarget = 3.222V
 State of Pins: 
 TCK: 1, TDI: 0, TDO: 1, TMS: 0, TRES: 1, TRST: 1
 Hardware-Breakpoints: 6

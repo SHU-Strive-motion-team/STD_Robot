@@ -358,12 +358,16 @@ static float adjustVy_PD(float D_Y)
 	if (D_Y > 0.05f)
 	{
 			sy = D_Y*400;
-			if (BasketballRobot.Vy < 0.3f)
-				sy = 200;
+			if (BasketballRobot.Vy < 0.1f)
+				sy = 250;
+			else if (BasketballRobot.Vy < 0.3f)
+				sy = 300;
 			else if (BasketballRobot.Vy < 0.5f)
 				sy = 400;
-			else if (BasketballRobot.Vy < 0.9f)
-				sy = 400;
+			
+			if(D_Y<1)
+				sy = D_Y*400+100;
+			
 			if(sy>800)
 				sy=800;
 		}
@@ -371,13 +375,16 @@ static float adjustVy_PD(float D_Y)
 	
 	else if (D_Y < -0.05f)
 	{
-			sy = -D_Y*300;
-			if (BasketballRobot.Vy > -0.3f)
-				sy = -100;
-			else if (BasketballRobot.Vy > -0.5f)
-				sy = -200;
-			else if (BasketballRobot.Vy > -0.9f)
+			sy = -D_Y*400;
+			if (BasketballRobot.Vy > -0.1f)
+				sy = -250;
+			else if (BasketballRobot.Vy > -0.3f)
 				sy = -300;
+			else if (BasketballRobot.Vy > -0.5f)
+				sy = -400;
+			
+			if(D_Y>-1)
+				sy = D_Y*400-100;
 			
 			if(sy < -800)
 				sy = -800;
@@ -393,41 +400,61 @@ static float adjustVy_PD(float D_Y)
 //PD调整X轴速度
 static float adjustVx_PD(float D_X)
 {
-	float sx;
-
-	if (D_X > 0.05f)
+	float sx,NOW_DX;
+	static float Last_DX;
+	NOW_DX=D_X;
+	if (NOW_DX > 0.05f)
 	{
-			sx = D_X*350;
-			if (BasketballRobot.Vx< 0.3f)
-				sx = 100;
+			sx = NOW_DX*25;
+			
+			if (BasketballRobot.Vx< 0.1f)
+				sx = 30;
+			else if (BasketballRobot.Vx < 0.3f)
+				sx = 50;
 			else if (BasketballRobot.Vx < 0.5f)
-				sx = 240;
-			else if (BasketballRobot.Vx < 0.9f)
-				sx = 300;
-			if(sx>700)
-				sx=700;
+				sx = 55;
+			
+			
+			if(NOW_DX < 1)
+				sx = NOW_DX*25+10*(NOW_DX-Last_DX)+15;
+			
+			
+			
+			
+			if(sx>80)
+				sx=80;
+			
+			
 		}
 		
 	
-	else if (D_X < -0.05f)
+	else if (NOW_DX < -0.05f)
 	{
-			sx = -D_X*350;
-			if (BasketballRobot.Vx > -0.3f)
-				sx = -100;
-			else if (BasketballRobot.Vx > -0.5f)
-				sx = -200;
-			else if (BasketballRobot.Vx > -0.9f)
-				sx = -300;
+			sx = NOW_DX*25;
 			
-			if(sx < -700)
-				sx = -700;
+			if (BasketballRobot.Vx > -0.1f)
+				sx = -30;
+			else if (BasketballRobot.Vx > -0.3f)
+				sx = -50;
+			else if (BasketballRobot.Vx > -0.5f)
+				sx = -55;
+		
+			if(NOW_DX > -1)
+				sx = (NOW_DX*25+10*(NOW_DX-Last_DX))-15;
+			
+			
+			
+			if(sx < -80)
+				sx = -80;
 		}
 
 
 	
 	else
 		sx = 0;
-
+	
+	Last_DX=NOW_DX;
+	delay_ms(10);
 	return sx;
 
 
@@ -688,7 +715,7 @@ void RobotGoTo(float X_I,float Y_I,float Theta_I)
 		D_Y = Y_I - BasketballRobot.Y;
 	}
 	SetPWM(0,0,0);
-	delay_ms(100);
+	delay_ms(1000);
 	RobotRotate(Theta_I);
 }
 

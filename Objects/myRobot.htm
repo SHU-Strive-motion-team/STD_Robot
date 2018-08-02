@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\myRobot.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\myRobot.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5040049: Last Updated: Thu Aug 02 09:26:30 2018
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5040049: Last Updated: Thu Aug 02 11:07:13 2018
 <BR><P>
 <H3>Maximum Stack Usage =        576 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -599,11 +599,11 @@ Global Symbols
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f40_41xxx.o(RESET)
 </UL>
 <P><STRONG><a name="[82]"></a>DownShotUp</STRONG> (Thumb, 68 bytes, Stack size 8 bytes, control.o(i.DownShotUp))
-<BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = DownShotUp &rArr; Robot_armUp &rArr; shoveMotor
+<BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = DownShotUp &rArr; Robot_armDown &rArr; shoveMotor
 </UL>
 <BR>[Calls]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay_ms
-<LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot_armUp
 <LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot_armDown
+<LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot_armUp
 </UL>
 <BR>[Called By]<UL><LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
@@ -654,11 +654,11 @@ Global Symbols
 <LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FindVolleyball
 <LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FindBasketball
 <LI><a href="#[95]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetRadarData
+<LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot_armDown
 <LI><a href="#[97]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetMotorVelocity_Self
 <LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetMotorVelocity
 <LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetPWM
 <LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot_armUp
-<LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot_armDown
 <LI><a href="#[99]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetInfraredState
 </UL>
 <BR>[Called By]<UL><LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
@@ -671,11 +671,11 @@ Global Symbols
 <LI><a href="#[98]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_ShowString
 <LI><a href="#[9b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_ShowNum
 <LI><a href="#[95]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetRadarData
+<LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot_armDown
 <LI><a href="#[97]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetMotorVelocity_Self
 <LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetMotorVelocity
 <LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetPWM
 <LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot_armUp
-<LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot_armDown
 <LI><a href="#[99]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetInfraredState
 </UL>
 <BR>[Called By]<UL><LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
@@ -689,11 +689,11 @@ Global Symbols
 <LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetVisionData
 <LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FindVolleyball
 <LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FindBasketball
+<LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot_armDown
 <LI><a href="#[97]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetMotorVelocity_Self
 <LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetMotorVelocity
 <LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetPWM
 <LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot_armUp
-<LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot_armDown
 <LI><a href="#[99]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetInfraredState
 </UL>
 <BR>[Called By]<UL><LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
@@ -1258,11 +1258,10 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[d0]"></a>RobotGoTo</STRONG> (Thumb, 342 bytes, Stack size 64 bytes, control.o(i.RobotGoTo))
+<P><STRONG><a name="[d0]"></a>RobotGoTo</STRONG> (Thumb, 336 bytes, Stack size 64 bytes, control.o(i.RobotGoTo))
 <BR><BR>[Stack]<UL><LI>Max Depth = 560<LI>Call Chain = RobotGoTo &rArr; RobotRotate &rArr; GetMotorVelocity &rArr; __hardfp_sin &rArr; __ieee754_rem_pio2 &rArr; __aeabi_dsub &rArr; __aeabi_dadd &rArr; _double_epilogue &rArr; _double_round
 </UL>
-<BR>[Calls]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay_ms
-<LI><a href="#[ba]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Show_V
+<BR>[Calls]<UL><LI><a href="#[ba]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Show_V
 <LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_fabs
 <LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
 <LI><a href="#[cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_cdrcmple
@@ -1296,7 +1295,6 @@ Global Symbols
 <LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FindBall_radar
 <LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FindBall_VandR
 <LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DownShotUp
-<LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
 <P><STRONG><a name="[85]"></a>Robot_armUp</STRONG> (Thumb, 116 bytes, Stack size 16 bytes, control.o(i.Robot_armUp))
@@ -1882,7 +1880,7 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Init
 <LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IMU_Init
-<LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RobotGoTo
+<LI><a href="#[cd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;adjustVx_PD
 <LI><a href="#[cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RobotGoAvoidance
 <LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Remote_Scan
 <LI><a href="#[9c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FindBall_vision
@@ -1954,7 +1952,7 @@ Global Symbols
 <P><STRONG><a name="[60]"></a>fputc</STRONG> (Thumb, 22 bytes, Stack size 0 bytes, usart.o(i.fputc))
 <BR>[Address Reference Count : 1]<UL><LI> printf5.o(i.__0printf$5)
 </UL>
-<P><STRONG><a name="[5d]"></a>main</STRONG> (Thumb, 3438 bytes, Stack size 16 bytes, main.o(i.main))
+<P><STRONG><a name="[5d]"></a>main</STRONG> (Thumb, 3520 bytes, Stack size 16 bytes, main.o(i.main))
 <BR><BR>[Stack]<UL><LI>Max Depth = 576<LI>Call Chain = main &rArr; RobotGoTo &rArr; RobotRotate &rArr; GetMotorVelocity &rArr; __hardfp_sin &rArr; __ieee754_rem_pio2 &rArr; __aeabi_dsub &rArr; __aeabi_dadd &rArr; _double_epilogue &rArr; _double_round
 </UL>
 <BR>[Calls]<UL><LI><a href="#[107]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NVIC_PriorityGroupConfig
@@ -1969,7 +1967,6 @@ Global Symbols
 <LI><a href="#[e6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM5_Init
 <LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetPWM
 <LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot_armUp
-<LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot_armDown
 <LI><a href="#[d3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RobotRotate
 <LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RobotGoTo
 <LI><a href="#[cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RobotGoAvoidance
@@ -1994,8 +1991,8 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_SetCompare2
 <LI><a href="#[d5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_SetCompare1
 </UL>
-<BR>[Called By]<UL><LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot_armUp
-<LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot_armDown
+<BR>[Called By]<UL><LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot_armDown
+<LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot_armUp
 <LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_Init
 </UL>
 <P>
@@ -2041,12 +2038,16 @@ Local Symbols
 <LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RobotGoTo
 </UL>
 
-<P><STRONG><a name="[cd]"></a>adjustVx_PD</STRONG> (Thumb, 282 bytes, Stack size 0 bytes, control.o(i.adjustVx_PD))
-<BR><BR>[Called By]<UL><LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RobotGoTo
+<P><STRONG><a name="[cd]"></a>adjustVx_PD</STRONG> (Thumb, 412 bytes, Stack size 24 bytes, control.o(i.adjustVx_PD))
+<BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = adjustVx_PD &rArr; delay_ms
+</UL>
+<BR>[Calls]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay_ms
+</UL>
+<BR>[Called By]<UL><LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RobotGoTo
 <LI><a href="#[cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RobotGoAvoidance
 </UL>
 
-<P><STRONG><a name="[d1]"></a>adjustVy_PD</STRONG> (Thumb, 282 bytes, Stack size 0 bytes, control.o(i.adjustVy_PD))
+<P><STRONG><a name="[d1]"></a>adjustVy_PD</STRONG> (Thumb, 342 bytes, Stack size 0 bytes, control.o(i.adjustVy_PD))
 <BR><BR>[Called By]<UL><LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RobotGoTo
 </UL>
 

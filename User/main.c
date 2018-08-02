@@ -179,8 +179,15 @@ while (1)
 						break;
 					case 1:
 						//机械臂下降
-						Robot_armDown();
-//					RobotGoTo(0,2,0);
+//						Robot_armDown();
+					RobotGoTo(0,3,0);
+					BEEP=1;
+					delay_ms(1000);
+					BEEP=0;
+					RobotGoTo(3,5,0);
+					BEEP=1;
+					delay_ms(1000);
+					BEEP=0;
 //						2高电平往下，接红线，正转
 //						__HAL_TIM_SET_COMPARE(&htim9,TIM_CHANNEL_1,300);
 //						__HAL_TIM_SET_COMPARE(&htim9,TIM_CHANNEL_2,4000);
