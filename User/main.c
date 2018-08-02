@@ -4,7 +4,7 @@
 #include "EXIT.h"
 #include "control.h"
 #include "encoder.h"
-
+#include "FindBall.h"
 
 u8 zhongquan_case;
 u8 changdi;
@@ -17,7 +17,7 @@ int main(void)
 	//u8 chengxu = 0;				//程序选择
 	u8 flag=0;
 	u8 qiu = 0;				//找球
-	int16_t time = 0;			//延时
+//	int16_t time = 0;			//延时
 	u8 findballtime = 0;			//找球时调整角度次数
 	u8 i;
 	
@@ -425,7 +425,7 @@ while (1)
 						RobotGoTo(5+Correction_X,2+Correction_Y,45);
 						RobotGoTo(BasketballRobot.PX+Correction_X,BasketballRobot.PY+Correction_Y,210);
 			
-						RobotGoTo(6.75+Correction_X,2+Correction_Y,90);
+						RobotGoTo(6.75f+Correction_X,2+Correction_Y,90);
 						//FindBall_VandR(qiu);
 						FindBall_radar();
 			
@@ -447,7 +447,7 @@ while (1)
 				switch(changdi)
 				{
 					case 0:			//上场
-						RobotGoTo(-4-Correction_X,3.7+Correction_Y,-90);
+						RobotGoTo(-4-Correction_X,3.7f+Correction_Y,-90);
 			
 						//雷达找框
 						FindBasketry();
@@ -464,7 +464,7 @@ while (1)
 							FindBall_VandR(qiu);
 						}
 				
-						RobotGoTo(-9-Correction_X,3.7+Correction_Y,-90);
+						RobotGoTo(-9-Correction_X,3.7f+Correction_Y,-90);
 				
 						//雷达找框
 						FindBasketry();
@@ -473,7 +473,7 @@ while (1)
 							break;
 						break;
 					case 1:			//下场
-						RobotGoTo(4+Correction_X,3.7+Correction_Y,90);
+						RobotGoTo(4+Correction_X,3.7f+Correction_Y,90);
 			
 						//雷达找框
 						FindBasketry();
@@ -490,7 +490,7 @@ while (1)
 							FindBall_VandR(qiu);
 						}
 				
-						RobotGoTo(9+Correction_X,3.7+Correction_Y,90);
+						RobotGoTo(9+Correction_X,3.7f+Correction_Y,90);
 				
 						//雷达找框
 						FindBasketry();
@@ -511,7 +511,7 @@ while (1)
 						BasketballRobot.PX=BasketballRobot.X;
 						BasketballRobot.PY=BasketballRobot.Y;
 			
-						RobotGoTo(-9-Correction_X,3.7+Correction_Y,-90);
+						RobotGoTo(-9-Correction_X,3.7f+Correction_Y,-90);
 			
 						//雷达找框
 						FindBasketry();
@@ -532,7 +532,7 @@ while (1)
 						}
 				
 						RobotGoTo(BasketballRobot.PX-Correction_X,BasketballRobot.PY+Correction_Y,0);
-						RobotGoTo(-9-Correction_X,3.7+Correction_Y,-90);
+						RobotGoTo(-9-Correction_X,3.7f+Correction_Y,-90);
 				
 						//雷达找框
 						FindBasketry();
@@ -548,7 +548,7 @@ while (1)
 						BasketballRobot.PX=BasketballRobot.X;
 						BasketballRobot.PY=BasketballRobot.Y;
 			
-						RobotGoTo(9+Correction_X,3.7+Correction_Y,90);
+						RobotGoTo(9+Correction_X,3.7f+Correction_Y,90);
 			
 						//雷达找框
 						FindBasketry();
@@ -569,7 +569,7 @@ while (1)
 						}
 				
 						RobotGoTo(BasketballRobot.PX+Correction_X,BasketballRobot.PY+Correction_Y,0);
-						RobotGoTo(9+Correction_X,3.7+Correction_Y,90);
+						RobotGoTo(9+Correction_X,3.7f+Correction_Y,90);
 				
 						//雷达找框
 						FindBasketry();
@@ -587,7 +587,7 @@ while (1)
 						FindBall_VandR(qiu);
 			
 						RobotRotate(-90);
-						RobotGoTo(-9-Correction_X,3.7+Correction_Y,-90);
+						RobotGoTo(-9-Correction_X,3.7f+Correction_Y,-90);
 			
 						//雷达找框
 						FindBasketry();
@@ -597,7 +597,7 @@ while (1)
 			
 						RobotRotate(-240);
 						FindBall_VandR(qiu);
-						RobotGoTo(-9-Correction_X,3.7+Correction_Y,-90);
+						RobotGoTo(-9-Correction_X,3.7f+Correction_Y,-90);
 			
 						//雷达找框
 						FindBasketry();
@@ -610,7 +610,7 @@ while (1)
 						FindBall_VandR(qiu);
 			
 						RobotRotate(90);
-						RobotGoTo(9.0f+Correction_X,3.7+Correction_Y,90);
+						RobotGoTo(9.0f+Correction_X,3.7f+Correction_Y,90);
 			
 						//雷达找框
 						FindBasketry();
@@ -620,7 +620,7 @@ while (1)
 			
 						RobotRotate(240);
 						FindBall_VandR(qiu);
-						RobotGoTo(9+Correction_X,3.7+Correction_Y,90);
+						RobotGoTo(9+Correction_X,3.7f+Correction_Y,90);
 			
 						//雷达找框
 						FindBasketry();
