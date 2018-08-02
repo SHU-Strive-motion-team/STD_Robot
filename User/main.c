@@ -219,8 +219,8 @@ while (1)
 						break;
 					case 7:
 						RobotGoTo(0,3,0);
-						RobotRotate(250);
-						RobotRotate(0);
+//						RobotRotate(250);
+//						RobotRotate(0);
 						delay_ms(500);
 					  RobotGoTo(3,3,0);
 						delay_ms(1000);

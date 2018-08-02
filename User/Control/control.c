@@ -357,13 +357,13 @@ static float adjustVy_PD(float D_Y)
 
 	if (D_Y > 0.05f)
 	{
-			sy = D_Y*300;
+			sy = D_Y*400;
 			if (BasketballRobot.Vy < 0.3f)
-				sy = 80;
+				sy = 200;
 			else if (BasketballRobot.Vy < 0.5f)
-				sy = 240;
+				sy = 400;
 			else if (BasketballRobot.Vy < 0.9f)
-				sy = 300;
+				sy = 400;
 			if(sy>800)
 				sy=800;
 		}
@@ -397,30 +397,30 @@ static float adjustVx_PD(float D_X)
 
 	if (D_X > 0.05f)
 	{
-			sx = D_X*400;
-			if (BasketballRobot.Vy < 0.3f)
-				sx = 80;
-			else if (BasketballRobot.Vy < 0.5f)
+			sx = D_X*350;
+			if (BasketballRobot.Vx< 0.3f)
+				sx = 100;
+			else if (BasketballRobot.Vx < 0.5f)
 				sx = 240;
-			else if (BasketballRobot.Vy < 0.9f)
+			else if (BasketballRobot.Vx < 0.9f)
 				sx = 300;
-			if(sx>800)
-				sx=800;
+			if(sx>700)
+				sx=700;
 		}
 		
 	
 	else if (D_X < -0.05f)
 	{
-			sx = -D_X*400;
-			if (BasketballRobot.Vy > -0.3f)
+			sx = -D_X*350;
+			if (BasketballRobot.Vx > -0.3f)
 				sx = -100;
-			else if (BasketballRobot.Vy > -0.5f)
+			else if (BasketballRobot.Vx > -0.5f)
 				sx = -200;
-			else if (BasketballRobot.Vy > -0.9f)
+			else if (BasketballRobot.Vx > -0.9f)
 				sx = -300;
 			
-			if(sx < -800)
-				sx = -800;
+			if(sx < -700)
+				sx = -700;
 		}
 
 
@@ -680,6 +680,8 @@ void RobotGoTo(float X_I,float Y_I,float Theta_I)
 		GetMotorVelocity(sx,sy,Vw);
 		
 		SetPWM(BasketballRobot.Velocity[0],BasketballRobot.Velocity[1],BasketballRobot.Velocity[2]);
+		
+		LCD_Show_V();
 		
 		D_Theta =  Theta_I - BasketballRobot.ThetaD;
 		D_X = X_I - BasketballRobot.X;

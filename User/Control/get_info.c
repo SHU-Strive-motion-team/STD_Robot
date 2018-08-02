@@ -255,6 +255,10 @@ void GetPosition(void)
 	BasketballRobot.X += nX * theta_inv[0][0] + nY * theta_inv[0][1];
 	BasketballRobot.Y += nX * theta_inv[1][0] + nY * theta_inv[1][1];
 	
+	BasketballRobot.Vx =  100*nX * theta_inv[0][0] + 100*nY * theta_inv[0][1];
+	BasketballRobot.Vy =  100*nX * theta_inv[1][0] + 100*nY * theta_inv[1][1];
+	BasketballRobot.W = nW*100/22400;
+	
 	BasketballRobot.encoderCount[0] += BasketballRobot.w[0];
 	BasketballRobot.encoderCount[1] += BasketballRobot.w[1];
 	BasketballRobot.encoderCount[2] += BasketballRobot.w[2];
