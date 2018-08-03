@@ -215,13 +215,13 @@ void shoveMotor(shovemotor t)
 	{
 		//CH1高电平,铲子向上，接黑线，电机反转
 		TIM_SetCompare2(TIM9,0);
-		TIM_SetCompare1(TIM9,speed+1000);
+		TIM_SetCompare1(TIM9,speed+1500);
 	}
 	else if(t == DOWM)
 	{
 		//CH2高电平,铲子向下，接红线，电机正转
 		TIM_SetCompare1(TIM9,0);
-		TIM_SetCompare2(TIM9,speed-1200);
+		TIM_SetCompare2(TIM9,speed-1000);
 	}
 	
 }
@@ -336,7 +336,7 @@ void Robot_armUp(void)
 
 
 //PD调整角速度
-static float adjustAngleV_PD(float D_Theta)
+float adjustAngleV_PD(float D_Theta)
 {
 		float Vw=0;
 		if(D_Theta>0&&(D_Theta<180))  
@@ -366,7 +366,7 @@ static float adjustAngleV_PD(float D_Theta)
 		return Vw;
 }
 //PD调整Y轴速度
-static float adjustVy_PD(float D_Y)
+float adjustVy_PD(float D_Y)
 {
 		float sy;
 
@@ -413,7 +413,7 @@ static float adjustVy_PD(float D_Y)
 	return sy;
 }
 //PD调整X轴速度
-static float adjustVx_PD(float D_X)
+float adjustVx_PD(float D_X)
 {
 	float sx,NOW_DX;
 	static float Last_DX;
@@ -677,10 +677,17 @@ void RobotRotate(float theta)
 {
 	float D_Theta;
 	float Vw=0;        //W大于0 逆时针
-
+	
+	while(theta < 0)
+			theta = theta + 360;
+			
+		while (theta >360)
+			theta = theta - 360;
+	
 	//D_Theta = theta-BasketballRobot.ThetaD;
 	D_Theta = theta-BasketballRobot.ThetaD;
-	Vw = adjustAngleV_PD(D_Theta)+1;
+	
+	Vw = adjustAngleV_PD(D_Theta)+2;
 	
 	
 	while(D_Theta>5||D_Theta < -5)
@@ -691,11 +698,12 @@ void RobotRotate(float theta)
 		
 		D_Theta = theta-BasketballRobot.ThetaD;
 		
-		Vw  = adjustAngleV_PD(D_Theta)+1;
+		Vw  = adjustAngleV_PD(D_Theta)+2;
+		LCD_Show_pwm();
 	}
 	SetPWM(0,0,0);
 
-	while(BasketballRobot.W);
+//	while(BasketballRobot.W);
 }
 
 
@@ -793,61 +801,92 @@ void RobotGoAvoidance(void)
 void RobotGoToAvoid(float X_I, float Y_I, float Theta_I)
 {
 	float D_Theta, D_X, D_Y, Vw = 0, sx, sy = 0;
-	float Offest_theta,angle,standard=35,Distance;
+	float Offest_theta,angle,standard=350,Distance;
 
 	
 	D_X = X_I - BasketballRobot.X;
 	D_Y = Y_I - BasketballRobot.Y;
 	
 	angle=atan2(D_Y,D_X);
+	
 	if(angle>0)
 		angle=PI/2-angle;
+	
 	else
 		angle=-PI/2-angle;
-	RobotRotate(angle);
+	
+	RobotRotate(-angle/PI*180);
 	
 	D_Theta = Theta_I - BasketballRobot.ThetaD; //角度差
 	
 	while (fabs(D_Y) > 0.05f || fabs(D_X) > 0.05f)
 	{
-			if(!GetRadarData()){
-			sy = adjustVy(D_Y);
+			
+		//while((Radar.RX_STA&0x8000) != 0);
+		
+		GetRadarData();
+		
+			if(Radar.Distance>1500 || (Radar.State==0)){
+				
+			sx = adjustVx_PD(D_X)/3;
 
-			sx = adjustVx(D_X);
+			sy = adjustVy_PD(D_Y)/3;
 
-			Vw = adjustAngleV(D_Theta);
+			Vw = adjustAngleV_PD(angle - BasketballRobot.ThetaD+360);
 
-			GetMotorVelocity(sx * 12, sy * 100, Vw);
+			GetMotorVelocity(sx , sy , 0);
 
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 
 			D_Theta = Theta_I - BasketballRobot.ThetaD;
 			D_X = X_I - BasketballRobot.X;
 			D_Y = Y_I - BasketballRobot.Y;
+			//	RobotGoTo(X_I,Y_I,Theta_I);
+				//Radar.State = 0;
 			}		
 		  else{
-				SetPWM(0,0,0);
-			  Offest_theta=Radar.Angle-RADAR_MID;
+				
+//				SetPWM(0,0,0);
+				
+			  Offest_theta=(Radar.Angle*1.0f-RADAR_MID)*1.0f*PI/180;
 				Distance=Radar.Distance*sin(Offest_theta);
+				
+			  if(fabs(Distance)>350)
+			  {
+				 RobotGoTo(BasketballRobot.X-1.0f*sin(BasketballRobot.ThetaR),BasketballRobot.Y+1.0f*cos(BasketballRobot.ThetaR),BasketballRobot.ThetaD);
+				  continue;
+				  
+			  }
+			  
 				if(Offest_theta>0){
 					
-				while(Distance>35&&(!GetRadarData()))
-				{
-					GetMotorVelocity_Self(Distance-standard,0,0);
-				}
+					if(Distance<350)
+					{
+						
+							GetMotorVelocity_Self((Distance-standard)/5,0,0);
+							SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
+						while(((Radar.RX_STA & 0x8000) == 0));
+//							Offest_theta=(Radar.Angle*1.0f-RADAR_MID)*PI/180;
+//							Distance=Radar.Distance*sin(Offest_theta);
+					}
 				
 				}
 				else
 				{
-					while(Distance>35&&(!GetRadarData()))
-				  {
-					GetMotorVelocity_Self(standard-Distance,0,0);
-			   	}
+					if(Distance>-350)
+					{
+						GetMotorVelocity_Self((Distance-standard)/5,0,0);
+						SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
+						
+						while(((Radar.RX_STA & 0x8000) == 0));
+//						Offest_theta=(Radar.Angle*1.0f-RADAR_MID)*PI/180;
+//						Distance=Radar.Distance*sin(Offest_theta);
+					}
 					
 				}
-				RobotGoTo(BasketballRobot.X,Y_I,angle);
-				RobotGoTo(X_I,Y_I,Theta_I);
-						
+//				RobotGoTo(BasketballRobot.X,Y_I,angle);
+//				RobotGoTo(X_I,Y_I,Theta_I);
+			Radar.State=0;			
 			}
 			
 	}

@@ -551,6 +551,7 @@ u8 GetRadarData(void)
 		a = (Radar.RX_BUF[3]<<8)|Radar.RX_BUF[4];
 		d = (Radar.RX_BUF[5]<<8)|Radar.RX_BUF[6];
 		Radar.RX_STA=0;
+		
 	}
 	if(a<240 || a >300||d>4000||d<10) //Ô­À´&&
 	{

@@ -179,27 +179,18 @@ while (1)
 					case 1:
 						//机械臂下降
 						Robot_armDown();
-						GetInfraredState();
-						Robot_armUp();
-						//Robot_armUp();
-//					RobotGoTo(0,3,0);
-//					BEEP=1;
-//					delay_ms(1000);
-//					BEEP=0;
-//					RobotGoTo(3,5,0);
-//					BEEP=1;
-//					delay_ms(1000);
-//					BEEP=0;
-//						2高电平往下，接红线，正转
-//						__HAL_TIM_SET_COMPARE(&htim9,TIM_CHANNEL_1,300);
-//						__HAL_TIM_SET_COMPARE(&htim9,TIM_CHANNEL_2,4000);
+						BEEP=1;
+						delay_ms(2000);
+						BEEP=0;
 						LED0 = !LED0;
 						break;
 					case 2:
 						//机械臂上升
 						Robot_armUp();
 						LED0 = !LED0;
-					BEEP=1;
+						BEEP=1;
+						delay_ms(2000);
+						BEEP=0;
 //						TIM_SetCompare2(TIM9,0);
 //						TIM_SetCompare1(TIM9,1500+1000);
 						break;
@@ -207,24 +198,26 @@ while (1)
 						//红外测试
 						GetInfraredState();
 						BEEP=1;
+						delay_ms(2000);
+						BEEP=0;
 						break;
 					case 4:
 						//限位开关测试6
-					Robot_armDown();
-					while(!INFRARED)
-						Robot_armUp();
-//						if(LimitSwitchDowm == 1)
-//							LED1 = 0;
-//						else
-//							LED1 = 1;
-//						if(LimitSwitchUp == 1)
-//							LED0 = 0;
-//						else
-//							LED0 = 1;
+//					Robot_armDown();
+//					while(!INFRARED)
+//						Robot_armUp();
+						RobotGoToAvoid(3,3,0);
+							BEEP = 1;
+						delay_ms(1000);
+							BEEP = 0;
 						break;
 					case 5:
 						//避障测试
 						FindBall_radar();
+						BEEP=1;
+						delay_ms(2000);
+						BEEP=0;
+
 //					while(1)
 //					{
 //					GetRadarData();
