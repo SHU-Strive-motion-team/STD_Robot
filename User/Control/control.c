@@ -383,6 +383,10 @@ float adjustAngleV_PD(float D_Theta)
 		Vw = 300;
 	else if (Vw < -300)
 		Vw = -300;
+	if (Vw < 3 && Vw > 0)
+		Vw = 3;
+	if (Vw > -3 && Vw < 0)
+		Vw = 0;
 
 	return Vw;
 }
@@ -448,7 +452,7 @@ float adjustVx_PD(float D_X)
 			sx = 55;
 
 		if (NOW_DX < 1)
-			sx = NOW_DX * 25 + 10 * (NOW_DX - Last_DX) + 15;
+			sx = NOW_DX * 25 + 10 * (NOW_DX - Last_DX) + 20;
 
 		if (sx > 80)
 			sx = 80;
@@ -691,7 +695,7 @@ void RobotRotate(float theta)
 	//D_Theta = theta-BasketballRobot.ThetaD;
 	D_Theta = theta - BasketballRobot.ThetaD;
 
-	Vw = adjustAngleV_PD(D_Theta) + 2;
+	Vw = adjustAngleV_PD(D_Theta);
 
 	while (D_Theta > 5 || D_Theta < -5)
 	{
@@ -700,7 +704,7 @@ void RobotRotate(float theta)
 
 		D_Theta = theta - BasketballRobot.ThetaD;
 
-		Vw = adjustAngleV_PD(D_Theta) + 2;
+		Vw = adjustAngleV_PD(D_Theta);
 		LCD_Show_pwm();
 	}
 	SetPWM(0, 0, 0);
@@ -714,11 +718,23 @@ void RobotRotate(float theta)
 //Theta_I:目标坐标的角度
 void RobotGoTo(float X_I, float Y_I, float Theta_I)
 {
-	float D_Theta, D_X, D_Y, Vw = 0, sx, sy = 0;
+	float D_Theta, D_X, D_Y, Vw = 0, sx, sy = 0,angle;
 
 	D_Theta = Theta_I - BasketballRobot.ThetaD; //角度差
 	D_X = X_I - BasketballRobot.X;
 	D_Y = Y_I - BasketballRobot.Y;
+
+	angle = atan2(D_Y, D_X);
+
+	// if (angle > 0)
+	// 	angle = PI / 2 - angle;
+
+	// else
+	// 	angle = -PI / 2 - angle;
+
+	angle = (angle - PI/2)*180/PI;
+
+	RobotRotate(angle);
 
 	while (fabs(D_Y) > 0.05f || fabs(D_X) > 0.05f)
 	{
@@ -732,14 +748,14 @@ void RobotGoTo(float X_I, float Y_I, float Theta_I)
 
 		SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 
-		LCD_Show_V();
+		//LCD_Show_V();
 
 		D_Theta = Theta_I - BasketballRobot.ThetaD;
 		D_X = X_I - BasketballRobot.X;
 		D_Y = Y_I - BasketballRobot.Y;
 	}
 	SetPWM(0, 0, 0);
-	delay_ms(1000);
+	delay_ms(100);
 	RobotRotate(Theta_I);
 }
 
