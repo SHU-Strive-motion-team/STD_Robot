@@ -390,7 +390,7 @@ static float adjustVy_PD(float D_Y)
 	
 	else if (D_Y < -0.05f)
 	{
-			sy = -D_Y*400;
+			sy = D_Y*400;
 			if (BasketballRobot.Vy > -0.1f)
 				sy = -250;
 			else if (BasketballRobot.Vy > -0.3f)
