@@ -229,7 +229,7 @@ void FindBall_radar(void)
 		}
 		else if (Radar.Distance > 1000)
 		{
-			GetMotorVelocity_Self(0, 300, 0);
+			GetMotorVelocity_Self(0, 200, 0);
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
 		else if ((Radar.Angle < RADAR_MID - 10) && Radar.Distance > 700)
@@ -514,7 +514,7 @@ void FindBall_VandR(u8 ball)
 			{
 				SetPWM(0, 0, 0);
 				Robot_armDown();
-				GetMotorVelocity_Self(0, 100, 0); //原来0 7 0
+				GetMotorVelocity_Self(0, 70, 0); //原来0 7 0
 				SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 
 				if (Radar.Distance < 350)

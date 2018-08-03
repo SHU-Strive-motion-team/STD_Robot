@@ -50,6 +50,13 @@ void USART2_IRQHandler(void)
 {
 //	receiveIMUData();
 //	GetYaw();
+	if (USART_GetFlagStatus(USART2, USART_FLAG_ORE) != RESET)
+	{
+
+		USART_ReceiveData(USART2);
+		USART_ClearFlag(USART2, USART_FLAG_ORE);
+
+	}
 	//接收陀螺仪数据
 	if(USART_GetITStatus(USART2, USART_IT_RXNE) != RESET)  //接收中断(接收到的数据必须是0x0d 0x0a结尾)
 	{
@@ -82,6 +89,13 @@ void USART2_IRQHandler(void)
 u8 res3,sum3,i3;
 void USART3_IRQHandler(void)
 {
+	if (USART_GetFlagStatus(USART3, USART_FLAG_ORE) != RESET)
+	{
+
+		USART_ReceiveData(USART3);
+		USART_ClearFlag(USART3, USART_FLAG_ORE);
+
+	}
 	if(USART_GetITStatus(USART3, USART_IT_RXNE) != RESET)  //接收中断(接收到的数据必须是0x0d 0x0a结尾)
 	{
 		res3 = USART_ReceiveData(USART3);  //(USART3->DR);	//读取接收到的数据
