@@ -427,7 +427,12 @@ void EXTIX_Enable(shovemotor extix)
 
 void RobotArm_exit(shovemotor t)
 {
-	if (LimitSwitchUp == 1 || LimitSwitchDown == 1)
+	if (LimitSwitchUp == 1 && t == UP)
+	{
+		shoveMotor(STOP);
+		return;
+	}
+	if (LimitSwitchDown == 1 && t == DOWN)
 	{
 		shoveMotor(STOP);
 		return;
@@ -533,7 +538,7 @@ float adjustVx_PD(float D_X)
 			sx = 55;
 
 		if (NOW_DX < 1)
-			sx = NOW_DX * 25 + 10 * (NOW_DX - Last_DX) + 20;
+			sx = NOW_DX * 25 + 10 * (NOW_DX - Last_DX) + 15;
 
 		if (sx > 80)
 			sx = 80;
@@ -894,7 +899,7 @@ void RobotGoAvoidance(void)
 //先对准目标坐标，前行过程中判断是否有障碍，但是无法判别是篮球还是机器人，因此仅试用与球场中间空旷区域
 void RobotGoToAvoid(float X_I, float Y_I, float Theta_I)
 {
-	float D_Theta, D_X, D_Y, Vw = 0, sx, sy = 0;
+	float D_Theta, D_X, D_Y, Vw = 0, sx, sy = 0,ObsDistance;
 	float Offest_theta, angle, standard = 350, Distance;
 
 	D_X = X_I - BasketballRobot.X;
@@ -905,8 +910,8 @@ void RobotGoToAvoid(float X_I, float Y_I, float Theta_I)
 	if (angle > 0)
 		angle = PI / 2 - angle;
 
-	else
-		angle = -PI / 2 - angle;
+//	else
+//		angle = -PI / 2 - angle;
 
 	RobotRotate(-angle / PI * 180);
 
@@ -922,9 +927,9 @@ void RobotGoToAvoid(float X_I, float Y_I, float Theta_I)
 		if (Radar.Distance > 1500 || (Radar.State == 0))
 		{
 
-			sx = adjustVx_PD(D_X) / 3;
+			sx = adjustVx_PD(D_X) / 2;
 
-			sy = adjustVy_PD(D_Y) / 3;
+			sy = adjustVy_PD(D_Y) / 2;
 
 			Vw = adjustAngleV_PD(angle - BasketballRobot.ThetaD + 360);
 
@@ -945,17 +950,17 @@ void RobotGoToAvoid(float X_I, float Y_I, float Theta_I)
 
 			Offest_theta = (Radar.Angle * 1.0f - RADAR_MID) * 1.0f * PI / 180;
 			Distance = Radar.Distance * sin(Offest_theta);
-
-			if (fabs(Distance) > 350)
+			ObsDistance=0.5f+Radar.Distance * cos(Offest_theta)/1000;
+			if (fabs(Distance) > 600)
 			{
-				RobotGoTo(BasketballRobot.X - 1.0f * sin(BasketballRobot.ThetaR), BasketballRobot.Y + 1.0f * cos(BasketballRobot.ThetaR), BasketballRobot.ThetaD);
+				RobotGoTo(BasketballRobot.X - ObsDistance * sin(BasketballRobot.ThetaR), BasketballRobot.Y + ObsDistance * cos(BasketballRobot.ThetaR), BasketballRobot.ThetaD);
 				continue;
 			}
 
 			if (Offest_theta > 0)
 			{
 
-				if (Distance < 350)
+				if (Distance < 600)
 				{
 
 					GetMotorVelocity_Self((Distance - standard) / 5, 0, 0);
@@ -968,7 +973,7 @@ void RobotGoToAvoid(float X_I, float Y_I, float Theta_I)
 			}
 			else
 			{
-				if (Distance > -350)
+				if (Distance > -600)
 				{
 					GetMotorVelocity_Self((Distance - standard) / 5, 0, 0);
 					SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);

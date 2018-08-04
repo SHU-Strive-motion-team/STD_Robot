@@ -175,7 +175,8 @@ int main(void)
 				break;
 			case 1:
 				//机械臂下降
-				Robot_armDown();
+				//Robot_armDown();
+			RobotArm_exit(DOWN);
 				BEEP = 1;
 				delay_ms(2000);
 				BEEP = 0;
@@ -183,7 +184,8 @@ int main(void)
 				break;
 			case 2:
 				//机械臂上升
-				Robot_armUp();
+				//Robot_armUp();
+			RobotArm_exit(UP);
 				LED0 = !LED0;
 				BEEP = 1;
 				delay_ms(2000);
@@ -223,7 +225,7 @@ int main(void)
 				break;
 			case 6:
 				//视觉测试
-				FindBall_vision(qiu);
+				FindBall_vision(1);
 				LED0 = !LED0;
 				break;
 			case 7:

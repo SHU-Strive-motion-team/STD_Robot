@@ -11,33 +11,37 @@ void USART1_IRQHandler(void)
 	if(USART_GetITStatus(USART1, USART_IT_RXNE) != RESET)  //接收中断(接收到的数据必须是0x0d 0x0a结尾)
 	{
 		res1 = USART_ReceiveData(USART1);  //(USART3->DR);	//读取接收到的数据
-		if ((Radar.RX_STA & 0x8000) == 0) //接收未完成
+		if ((Vision.RX_STA & 0x8000) == 0) //接收未完成
 		{
-			Radar.RX_BUF[Radar.RX_STA & 0X3FFF] = res1;
+			Vision.RX_BUF[Vision.RX_STA & 0X3FFF] = res1;
 
-			if ((Radar.RX_STA & 0X3FFF) == 0 && Radar.RX_BUF[0] != '@')
+			if ((Vision.RX_STA & 0X3FFF) == 0 && Vision.RX_BUF[0] != '@')
 				return;
-			if ((Radar.RX_STA & 0X3FFF) == 1 && Radar.RX_BUF[1] != '^')
+			if ((Vision.RX_STA & 0X3FFF) == 1 && Vision.RX_BUF[1] != '^')
 			{
-				Radar.RX_STA = 0;
+				Vision.RX_STA = 0;
 				return;
 			}
-	//		if ((Radar.RX_STA & 0X3FFF) == 2 && Radar.RX_BUF[2] != 'r')
-	//			return;
+			if ((Vision.RX_STA & 0X3FFF) == 2 && Vision.RX_BUF[2] != 'v')
+			{
+				Vision.RX_STA = 0;
+				return;
+			}
 
-			Radar.RX_STA++;
+			Vision.RX_STA++;
 
-			if((Radar.RX_STA & 0X3FFF) == 10)
+			if((Vision.RX_STA & 0X3FFF) == 10)
 			{
 				for (i1 = 0; i1 < 9; i1++)
-					sum1 += Radar.RX_BUF[i1];
-				if (sum1 == Radar.RX_BUF[9])
-					Radar.RX_STA |= 0x8000;
+					sum1 += Vision.RX_BUF[i1];
+				if (sum1 == Vision.RX_BUF[9])
+					Vision.RX_STA |= 0x8000;
 				else
-					Radar.RX_STA=0;
+					Vision.RX_STA=0;
 				sum1 = 0;
 				
 			}
+			
 		}
 	}
 }
@@ -360,7 +364,7 @@ void receiveVisionData(void)
 u8 GetVisionData(void)
 {	
 	u32 x,d;
-
+#if 0
 	//receiveVisionData();
 
 	if (Vision.RX_STA&0x8000)
@@ -419,6 +423,33 @@ u8 GetVisionData(void)
 		LCD_ShowNum(30 + 200 + 48 + 8 + 45, 440, Vision.Depth, 4, 16);
 		return 1;
 	}
+	
+#else
+	if(Vision.RX_STA&0x8000)
+	{
+		x = (Radar.RX_BUF[5]<<8)|Radar.RX_BUF[6];
+		d = (Radar.RX_BUF[7]<<8)|Radar.RX_BUF[8];
+		Vision.RX_STA=0;
+		
+	}
+	if (x < 10 || x > 630 || d < 500)
+	{
+		Vision.State = 0;
+		return 0;
+	}
+
+	else
+	{
+		Vision.X = x;
+		Vision.Depth = d;
+		Vision.State = 1;
+		LCD_ShowString(30 + 200, 420, 200, 16, 16, "View :pix");
+		LCD_ShowNum(30 + 200 + 48 + 8 + 45, 420, Vision.X, 4, 16);
+		LCD_ShowString(30 + 200, 440, 200, 16, 16, "View :length");
+		LCD_ShowNum(30 + 200 + 48 + 8 + 45, 440, Vision.Depth, 4, 16);
+		return 1;
+	}
+#endif	
 }
 
 void receiveRadarData(void)
