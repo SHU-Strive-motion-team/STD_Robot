@@ -53,7 +53,7 @@ void FindBall_vision(u8 ball)
 	do
 	{
 		//等待数据接收完成
-		while (Vision.RX_STA != 1);
+		while (((Vision.RX_STA & 0x8000) == 0));
 
 		//所得数据无效
 		if (!GetVisionData())

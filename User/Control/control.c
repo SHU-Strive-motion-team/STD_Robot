@@ -965,8 +965,7 @@ void RobotGoToAvoid(float X_I, float Y_I, float Theta_I)
 
 					GetMotorVelocity_Self((Distance - standard) / 5, 0, 0);
 					SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
-					while (((Radar.RX_STA & 0x8000) == 0))
-						;
+					while (((Radar.RX_STA & 0x8000) == 0));
 					//							Offest_theta=(Radar.Angle*1.0f-RADAR_MID)*PI/180;
 					//							Distance=Radar.Distance*sin(Offest_theta);
 				}
@@ -978,8 +977,7 @@ void RobotGoToAvoid(float X_I, float Y_I, float Theta_I)
 					GetMotorVelocity_Self((Distance - standard) / 5, 0, 0);
 					SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 
-					while (((Radar.RX_STA & 0x8000) == 0))
-						;
+					while (((Radar.RX_STA & 0x8000) == 0));
 					//						Offest_theta=(Radar.Angle*1.0f-RADAR_MID)*PI/180;
 					//						Distance=Radar.Distance*sin(Offest_theta);
 				}

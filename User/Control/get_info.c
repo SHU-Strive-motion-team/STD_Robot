@@ -427,8 +427,8 @@ u8 GetVisionData(void)
 #else
 	if(Vision.RX_STA&0x8000)
 	{
-		x = (Radar.RX_BUF[5]<<8)|Radar.RX_BUF[6];
-		d = (Radar.RX_BUF[7]<<8)|Radar.RX_BUF[8];
+		x = (Vision.RX_BUF[5]<<8)|Vision.RX_BUF[6];
+		d = (Vision.RX_BUF[7]<<8)|Vision.RX_BUF[8];
 		Vision.RX_STA=0;
 		
 	}

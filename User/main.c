@@ -39,7 +39,7 @@ int main(void)
 	Encoder_Init();
 	TIM5_Init(10000 - 1, 83);
 	EXTIX_Init();
-
+	
 	while (1)
 	{
 
