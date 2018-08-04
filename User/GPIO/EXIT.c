@@ -1,8 +1,5 @@
 #include "EXIT.h"
-#include "GPIO.h"
-#include "delay.h"
-#include "usart.h"
-//#include "control.h"
+
 
 
 //外部中断初始化
@@ -19,7 +16,8 @@ void EXTIX_Init(void)
 	SYSCFG_EXTILineConfig(EXTI_PortSourceGPIOC, EXTI_PinSource0);	//PC0 连接到中断线0
 	SYSCFG_EXTILineConfig(EXTI_PortSourceGPIOC, EXTI_PinSource1);	//PC1 连接到中断线1
 
-	
+	//LimitSwitchDown 	C1
+	//LimitSwitchUp 	C0
 
 	// 配置EXTI_Line0 
 	EXTI_InitStructure.EXTI_Line = EXTI_Line0;				//LINE0
@@ -51,83 +49,19 @@ void EXTIX_Init(void)
 
 }
 
-//关闭外部中断    
-//exitx:  中断线
-void EXTIX_Disable(u8 extix)
-{
-	EXTI_InitTypeDef   EXTI_InitStructure;
-
-	if(extix == 0)
-	{
-		EXTI_InitStructure.EXTI_Line = EXTI_Line0;//LINE0
-		EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;//中断事件
-		EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising; //上升沿触发 
-		EXTI_InitStructure.EXTI_LineCmd = DISABLE;//使能LINE0
-	}
-	else if(extix == 1)
-	{
-		EXTI_InitStructure.EXTI_Line = EXTI_Line1;//LINE1
-		EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;//中断事件
-		EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising; //上升沿触发 
-		EXTI_InitStructure.EXTI_LineCmd = DISABLE;//使能LINE1
-	}
-	else if(extix==9)
-	{
-		EXTI_InitStructure.EXTI_Line = EXTI_Line9;//LINE9
-		EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;//中断事件
-		EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Falling; //下降沿触发 
-		EXTI_InitStructure.EXTI_LineCmd = DISABLE;//使能LINE9
-	}
-	else 
-		return;
-	
-	EXTI_Init(&EXTI_InitStructure);//配置
-}
-
-//使能外部中断    
-//exitx:  中断线
-void EXTIX_Enable(u8 extix)
-{
- 	EXTI_InitTypeDef   EXTI_InitStructure;
-
-	if(extix == 0)
-	{
-		EXTI_InitStructure.EXTI_Line = EXTI_Line0;//LINE0
-		EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;//中断事件
-		EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising; //上升沿触发 
-		EXTI_InitStructure.EXTI_LineCmd = ENABLE;//使能LINE0
-	}
-	else if(extix == 1)
-	{
-		EXTI_InitStructure.EXTI_Line = EXTI_Line1;//LINE1
-		EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;//中断事件
-		EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising; //上升沿触发 
-		EXTI_InitStructure.EXTI_LineCmd = ENABLE;//使能LINE1
-	}
-	else if(extix==9)
-	{
-		EXTI_InitStructure.EXTI_Line = EXTI_Line9;//LINE9
-		EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;//中断事件
-		EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Falling; //下降沿触发 
-		EXTI_InitStructure.EXTI_LineCmd = ENABLE;//使能LINE9
-	}
-	
-	else 
-		return;
-	
-	EXTI_Init(&EXTI_InitStructure);//配置
-}
 
 
-/*
 //外部中断0服务程序 
 void EXTI0_IRQHandler(void)
 {
-	if(LimitSwitchUp==1)	 	 //Up
-	{				 
-		TIM_SetCompare1(TIM9,MOTOR_STATIC_1);
-		TIM_SetCompare2(TIM9,MOTOR_STATIC_2);	
-		EXTIX_Disable(0);
+	if (LimitSwitchUp == 1)
+	{
+		delay_ms(5);
+		if (LimitSwitchUp == 1)
+		{
+			shoveMotor(STOP);
+			EXTIX_Disable(0);
+		}
 	}
 	EXTI_ClearITPendingBit(EXTI_Line0);			//清除中断标志位
 	
@@ -136,14 +70,17 @@ void EXTI0_IRQHandler(void)
 //外部中断1服务程序
 void EXTI1_IRQHandler(void)
 {
-	if(LimitSwitchUp==1)	  //Down
+	if (LimitSwitchDown == 1)
 	{
-		TIM_SetCompare1(TIM9,MOTOR_STATIC_1);
-		TIM_SetCompare2(TIM9,MOTOR_STATIC_2);	
-		EXTIX_Disable(1);
+		delay_ms(5);
+		if (LimitSwitchDown == 1)
+		{
+			shoveMotor(STOP);
+			EXTIX_Disable(0);
+		}
 	}		 
 	EXTI_ClearITPendingBit(EXTI_Line1);			//清除中断标志位
 	
 }
-*/
+
 

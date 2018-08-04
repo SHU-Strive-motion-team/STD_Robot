@@ -10,6 +10,7 @@
 #include "remote.h"
 #include "tim.h"
 #include "get_info.h"
+#include "EXIT.h"
 #include <math.h>
 
 #define PI 		3.141592654f
@@ -107,7 +108,7 @@ typedef enum
 {
 	STOP = 0,
 	UP,
-	DOWM
+	DOWN
 }shovemotor;	
 
 extern struct ROBOT BasketballRobot;
@@ -130,6 +131,10 @@ void GetInfraredState(void);	//获取红外开关状态
 void shoveMotor(shovemotor t);	//铲球电机状态
 void Robot_armDown(void);		//机械臂下降
 void Robot_armUp(void);			//机械臂上升
+
+void EXTIX_Disable(shovemotor t);
+void EXTIX_Enable(shovemotor t);
+void RobotArm_exit(shovemotor t);		//通过中断控制机械臂
 
 u8 DownShotUp(void);
 
