@@ -236,7 +236,7 @@ void shoveMotor(shovemotor t)
 		TIM_SetCompare2(TIM9, 0);
 		TIM_SetCompare1(TIM9, speed + 1500);
 	}
-	else if (t == DOWN)
+	else if (t == DOWM)
 	{
 		//CH2高电平,铲子向下，接红线，电机正转
 		TIM_SetCompare1(TIM9, 0);
@@ -253,18 +253,18 @@ void Robot_armDown(void)
 	//	u16 W=2700;
 	u16 nms = 2000;
 
-	if (LimitSwitchDown == 1)
+	if (LimitSwitchDowm == 1)
 	{
 		shoveMotor(STOP);
 		return;
 	}
-	shoveMotor(DOWN);
+	shoveMotor(DOWM);
 	while (1)
 	{
-		if (LimitSwitchDown == 1)
+		if (LimitSwitchDowm == 1)
 		{
 			delay_ms(10);
-			if (LimitSwitchDown == 1)
+			if (LimitSwitchDowm == 1)
 			{
 				shoveMotor(STOP);
 				break;
@@ -276,22 +276,22 @@ void Robot_armDown(void)
 #ifdef ZQD_DEBUG
 	BEEP = 1;
 #endif
-	//	shoveMotor(DOWN);
+	//	shoveMotor(DOWM);
 
 	//	LED1 = 1;
 	//	for(i=0;i<nms;i++)
 	//	{
-	//		if(LimitSwitchDown == 1)
+	//		if(LimitSwitchDowm == 1)
 	//		{
 	//			for(t=0;t<0xff;t++);
-	//			if(LimitSwitchDown==1)
+	//			if(LimitSwitchDowm==1)
 	//			{
 	//				shoveMotor(STOP);
 	//				break;
 	//			}
 	//		}
 	//		for(t=0;t<0x4fff;t++)
-	//			if(LimitSwitchDown == 1)
+	//			if(LimitSwitchDowm == 1)
 	//				break;
 	//	}
 	//	shoveMotor(STOP);
@@ -354,87 +354,6 @@ void Robot_armUp(void)
 #ifdef ZQD_DEBUG
 	BEEP = 0;
 #endif
-}
-
-//中断服务函数在exit.c
-//关闭外部中断    
-//exitx:  中断线
-void EXTIX_Disable(shovemotor extix)
-{
-	EXTI_InitTypeDef   EXTI_InitStructure;
-
-	if(extix == UP)
-	{
-		EXTI_InitStructure.EXTI_Line = EXTI_Line0;//LINE0
-		EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;//中断事件
-		EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising; //上升沿触发 
-		EXTI_InitStructure.EXTI_LineCmd = DISABLE;//使能LINE0
-	}
-	else if(extix == DOWN)
-	{
-		EXTI_InitStructure.EXTI_Line = EXTI_Line1;//LINE1
-		EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;//中断事件
-		EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising; //上升沿触发 
-		EXTI_InitStructure.EXTI_LineCmd = DISABLE;//使能LINE1
-	}
-//	else if(extix==9)
-//	{
-//		EXTI_InitStructure.EXTI_Line = EXTI_Line9;//LINE9
-//		EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;//中断事件
-//		EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Falling; //下降沿触发 
-//		EXTI_InitStructure.EXTI_LineCmd = DISABLE;//使能LINE9
-//	}
-	else 
-		return;
-	
-	EXTI_Init(&EXTI_InitStructure);//配置
-}
-
-//使能外部中断    
-//exitx:  中断线
-void EXTIX_Enable(shovemotor extix)
-{
- 	EXTI_InitTypeDef   EXTI_InitStructure;
-
-	if(extix == UP)
-	{
-		EXTI_InitStructure.EXTI_Line = EXTI_Line0;//LINE0
-		EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;//中断事件
-		EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising; //上升沿触发 
-		EXTI_InitStructure.EXTI_LineCmd = ENABLE;//使能LINE0
-	}
-	else if(extix == DOWN)
-	{
-		EXTI_InitStructure.EXTI_Line = EXTI_Line1;//LINE1
-		EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;//中断事件
-		EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising; //上升沿触发 
-		EXTI_InitStructure.EXTI_LineCmd = ENABLE;//使能LINE1
-	}
-//	else if(extix==9)
-//	{
-//		EXTI_InitStructure.EXTI_Line = EXTI_Line9;//LINE9
-//		EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;//中断事件
-//		EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Falling; //下降沿触发 
-//		EXTI_InitStructure.EXTI_LineCmd = ENABLE;//使能LINE9
-//	}
-	
-	else 
-		return;
-	
-	EXTI_Init(&EXTI_InitStructure);//配置
-}
-
-
-void RobotArm_exit(shovemotor t)
-{
-	if (LimitSwitchUp == 1 || LimitSwitchDown == 1)
-	{
-		shoveMotor(STOP);
-		return;
-	}
-		
-	EXTIX_Enable(t);
-	shoveMotor(t);
 }
 
 //PD调整角速度
@@ -993,7 +912,7 @@ u8 DownShotUp(void)
 {
 	Robot_armDown();
 	CHARGE = 0;
-	if (LimitSwitchDown == 1)
+	if (LimitSwitchDowm == 1)
 	{
 		CHARGE = 0;
 		delay_ms(500);

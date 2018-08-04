@@ -30,7 +30,7 @@ void Charge_Init(void);
 void ShotSwitch_Init(void);
 
 //限位开关端口定义	
-#define LimitSwitchDown 	PCin(1)	
+#define LimitSwitchDowm 	PCin(1)	
 #define LimitSwitchUp   	PCin(0)
 //限位开关初始化
 void LimitSwitch_init(void);
