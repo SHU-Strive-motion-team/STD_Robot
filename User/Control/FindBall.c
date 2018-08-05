@@ -1,14 +1,22 @@
 #include "FindBall.h"
 #include "control.h"
 
-void FindBasketball(void)
+
+void FindVolleyball_red(void)
 {
 	USART_SendData(USART1, '1');
 }
-
-void FindVolleyball(void)
+void FindVolleyball_yellow(void)
+{
+	USART_SendData(USART1, '2');
+}
+void FindBasketball_blue(void)
 {
 	USART_SendData(USART1, '3');
+}
+void FindBasketball_red(void)
+{
+	USART_SendData(USART1, '4');
 }
 
 void FindFrame(void)
@@ -16,31 +24,46 @@ void FindFrame(void)
 	USART_SendData(USART1, 'a');
 }
 
+
 //视觉找球
 //限制4米以内
 void FindBall_vision(u8 ball)
 {
-	float w = 200;
+	float w = 80;
 
 	u8 time = 1;
 
-	float theta = BasketballRobot.ThetaR, D_theta = 0;
+	float theta = BasketballRobot.ThetaD, D_theta = 0;
 
 	switch (ball)
 	{
 	case 1:
-		FindBasketball();
+		FindVolleyball_red();
 		delay_ms(100);
-		FindBasketball();
+		FindVolleyball_red();
 		delay_ms(100);
-		FindBasketball();
+		FindVolleyball_red();
+		break;
+	case 2:
+		FindVolleyball_yellow();
+		delay_ms(100);
+		FindVolleyball_yellow();
+		delay_ms(100);
+		FindVolleyball_yellow();
 		break;
 	case 3:
-		FindVolleyball();
+		FindBasketball_blue();
 		delay_ms(100);
-		FindVolleyball();
+		FindBasketball_blue();
 		delay_ms(100);
-		FindVolleyball();
+		FindBasketball_blue();
+		break;
+	case 4:
+		FindBasketball_red();
+		delay_ms(100);
+		FindBasketball_red();
+		delay_ms(100);
+		FindBasketball_red();
 		break;
 	}
 
@@ -77,17 +100,17 @@ void FindBall_vision(u8 ball)
 		//没找到球,自转
 		if (time == 0)
 		{
-			D_theta = BasketballRobot.ThetaR - theta;
-			if ((D_theta > PI / 6.0f && D_theta < PI) || (D_theta < -PI && D_theta > -PI * 11.0f / 6.0f))
+			D_theta = BasketballRobot.ThetaD - theta;
+			if ((D_theta >30 && D_theta < 180) || (D_theta < -180 && D_theta > -330))
 			{
-				w = -200;
+				w = -80;
 			}
-			if ((D_theta < -PI / 6.0f && D_theta > -PI) || (D_theta > PI && D_theta < PI * 11.0f / 6.0f))
+			if ((D_theta < -30 && D_theta > -180) || (D_theta > 180 && D_theta < 330))
 			{
-				w = 200;
+				w = 80;
 			}
-			GetMotorVelocity(0, 0, w);
-			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
+			//GetMotorVelocity(0, 0, w);
+			SetPWM(w,w,w);
 
 			LCD_Show_pwm();
 		}
@@ -99,12 +122,12 @@ void FindBall_vision(u8 ball)
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
 
-		else if ((Vision.X < VISION_MID - 30) && Vision.Depth > 1300)
+		else if ((Vision.X < VISION_MID - 30) && Vision.Depth > 1500)
 		{
 			GetMotorVelocity_Self(10, 200, 0); //原来 -50 10 0
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
-		else if ((Vision.X > VISION_MID + 30) && Vision.Depth > 1300)
+		else if ((Vision.X > VISION_MID + 30) && Vision.Depth > 1500)
 		{
 			GetMotorVelocity_Self(-10, 200, 0);
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
@@ -114,17 +137,17 @@ void FindBall_vision(u8 ball)
 			GetMotorVelocity_Self(0, 20, 0);
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
-		else if ((Vision.X < VISION_MID - 20) && Vision.Depth > 700)
+		else if ((Vision.X < VISION_MID - 20) && Vision.Depth > 1000)
 		{
 			GetMotorVelocity_Self(7, 0, 0); //原来-40 0 0
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
-		else if ((Vision.X > VISION_MID + 20) && (Vision.Depth > 700))
+		else if ((Vision.X > VISION_MID + 20) && (Vision.Depth > 1000))
 		{
 			GetMotorVelocity_Self(-5, 0, 0); //原来4 0 0
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
-		else if (Vision.Depth > 700)
+		else if (Vision.Depth > 1000)
 		{
 			GetMotorVelocity_Self(0, 120, 0);
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
@@ -174,7 +197,7 @@ void FindBall_vision(u8 ball)
 //限制3m以内
 void FindBall_radar(void)
 {
-	float w = 300;
+	float w = 100;
 	float theta = BasketballRobot.ThetaD, D_theta = 0;
 
 	SetPWM(0, 0, 0);
@@ -202,17 +225,21 @@ void FindBall_radar(void)
 		//			continue;
 		if (Radar.Distance > 3000)
 		{
-			D_theta = BasketballRobot.ThetaR - theta;
-			if ((D_theta > PI / 6.0f && D_theta < PI) || (D_theta < -PI && D_theta > -PI * 11.0f / 6.0f))
+			D_theta = BasketballRobot.ThetaD - theta;
+			
+			D_theta = BasketballRobot.ThetaD - theta;
+			if ((D_theta >30 && D_theta < 180) || (D_theta < -180 && D_theta > -330))
 			{
-				w = -300;
+				w = -100;
 			}
-			if ((D_theta < -PI / 6.0f && D_theta > -PI) || (D_theta > PI && D_theta < PI * 11.0f / 6.0f))
+			if ((D_theta < -30 && D_theta > -180) || (D_theta > 180 && D_theta < 330))
 			{
-				w = 300;
+				w = 100;
 			}
-			GetMotorVelocity(0, 0, w);
-			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
+			//GetMotorVelocity(0, 0, w);
+			SetPWM(w,w,w);
+
+			LCD_Show_pwm();
 		}
 		else if (Radar.Angle < RADAR_MID - 15)
 		{
@@ -283,24 +310,24 @@ void FindBall_VandR(u8 ball)
 
 	float w = 200;
 	u8 time = 1;
-	float theta = BasketballRobot.ThetaR, D_theta = 0;
+	float theta = BasketballRobot.ThetaD, D_theta = 0;
 	switch (ball)
 	{
 	case 1:
-		FindBasketball();
-		delay_ms(10000);
-		FindBasketball();
-		delay_ms(10000);
-		FindBasketball();
+//		FindBasketball();
+//		delay_ms(10000);
+//		FindBasketball();
+//		delay_ms(10000);
+//		FindBasketball();
 		break;
 	case 3:
-		FindVolleyball();
+//		FindVolleyball();
 
-		delay_ms(10000);
+//		delay_ms(10000);
 
-		FindVolleyball();
-		delay_ms(10000);
-		FindVolleyball();
+//		FindVolleyball();
+//		delay_ms(10000);
+//		FindVolleyball();
 
 		break;
 	}
@@ -324,10 +351,8 @@ void FindBall_VandR(u8 ball)
 
 	do
 	{
-		while (Vision.RX_STA & 0x8000)
-			;
-		while (Radar.RX_STA & 0x8000)
-			;
+		while ((Vision.RX_STA & 0x8000) == 0);
+		while ((Radar.RX_STA & 0x8000) == 0);
 
 		if (!GetVisionData())
 		{
@@ -347,21 +372,24 @@ void FindBall_VandR(u8 ball)
 
 		GetRadarData();
 
+		//没找到球,自转
 		if (time == 0)
 		{
-			D_theta = BasketballRobot.ThetaR - theta;
-			if ((D_theta > PI / 6.0f && D_theta < PI) || (D_theta < -PI && D_theta > -PI * 11.0f / 6.0f))
+			D_theta = BasketballRobot.ThetaD - theta;
+			if ((D_theta >30 && D_theta < 180) || (D_theta < -180 && D_theta > -330))
 			{
-				w = -200;
+				w = -80;
 			}
-			if ((D_theta < -PI / 6.0f && D_theta > -PI) || (D_theta > PI && D_theta < PI * 11.0f / 6.0f))
+			if ((D_theta < -30 && D_theta > -180) || (D_theta > 180 && D_theta < 330))
 			{
-				w = 200;
+				w = 80;
 			}
-			GetMotorVelocity(0, 0, w);
-			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
+			//GetMotorVelocity(0, 0, w);
+			SetPWM(w,w,w);
+
 			LCD_Show_pwm();
 		}
+		
 		else if (Vision.Depth > 4000)
 		{
 
@@ -392,10 +420,9 @@ void FindBall_VandR(u8 ball)
 		//雷达距离过大时，按照视觉数据寻找
 		while (1)
 		{
-			while (Vision.RX_STA & 0x8000)
-				;
+			while ((Vision.RX_STA & 0x8000) == 0);
 
-			GetVisionData();
+			//GetVisionData();
 			GetRadarData();
 
 			if (Radar.Distance < 800)
@@ -543,8 +570,7 @@ void FindBasketry(void)
 	LCD_Show_pwm();
 	do
 	{
-		while (Radar.RX_STA & 0x8000)
-			;
+		while ((Radar.RX_STA & 0x8000) == 0);
 
 		if (!GetRadarData())
 		{
@@ -700,12 +726,12 @@ void GoBack_Vision(u8 ball)
 
 		else if ((Vision.X < VISION_MID - 30) && Vision.Depth > 1300)
 		{
-			GetMotorVelocity_Self(-5, 10, 0); //原来 -50 10 0
+			GetMotorVelocity_Self(5, 10, 0); //原来 -50 10 0
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
 		else if ((Vision.X > VISION_MID + 30) && Vision.Depth > 1300)
 		{
-			GetMotorVelocity_Self(5, 10, 0);
+			GetMotorVelocity_Self(-5, 10, 0);
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
 		else if (Vision.Depth > 1300)
@@ -715,12 +741,12 @@ void GoBack_Vision(u8 ball)
 		}
 		else if ((Vision.X < VISION_MID - 20) && Vision.Depth > 700)
 		{
-			GetMotorVelocity_Self(-4, 0, 0); //原来-40 0 0
+			GetMotorVelocity_Self(4, 0, 0); //原来-40 0 0
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
 		else if ((Vision.X > VISION_MID + 20) && (Vision.Depth > 700))
 		{
-			GetMotorVelocity_Self(4, 0, 0); //原来4 0 0
+			GetMotorVelocity_Self(-4, 0, 0); //原来4 0 0
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
 		else if (Vision.Depth > 700)
@@ -730,23 +756,23 @@ void GoBack_Vision(u8 ball)
 		}
 		else if (Vision.X < VISION_MID - 30)
 		{
-			GetMotorVelocity_Self(-3, 0, 0); //原来-30 0 0
+			GetMotorVelocity_Self(3, 0, 0); //原来-30 0 0
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 			;
 		}
 		else if (Vision.X > VISION_MID + 30)
 		{
-			GetMotorVelocity_Self(3, 0, 0); //原来30 0 0
+			GetMotorVelocity_Self(-3, 0, 0); //原来30 0 0
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
 		else if (Vision.X <= VISION_MID + 30 && Vision.X > VISION_MID + 10)
 		{
-			GetMotorVelocity_Self(1.5, 0, 0); //原来15 0 0
+			GetMotorVelocity_Self(-1.5, 0, 0); //原来15 0 0
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
 		else if (Vision.X >= VISION_MID - 30 && Vision.X < VISION_MID - 10)
 		{
-			GetMotorVelocity_Self(-1.5, 0, 0); //原来-15 0 0
+			GetMotorVelocity_Self(1.5, 0, 0); //原来-15 0 0
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
 		else
@@ -770,23 +796,23 @@ void Findball_PD(u8 ball)
 	float theta = BasketballRobot.ThetaR, D_theta = 0;
 	switch (ball)
 	{
-	case 1:
-		FindBasketball();
-		delay_ms(10000);
-		FindBasketball();
-		delay_ms(10000);
-		FindBasketball();
-		break;
-	case 3:
-		FindVolleyball();
+//	case 1:
+//		FindBasketball();
+//		delay_ms(10000);
+//		FindBasketball();
+//		delay_ms(10000);
+//		FindBasketball();
+//		break;
+//	case 3:
+//		FindVolleyball();
 
-		delay_ms(10000);
+//		delay_ms(10000);
 
-		FindVolleyball();
-		delay_ms(10000);
-		FindVolleyball();
+//		FindVolleyball();
+//		delay_ms(10000);
+//		FindVolleyball();
 
-		break;
+//		break;
 	}
 	SetPWM(0, 0, 0);
 	LCD_Show_pwm();

@@ -7,9 +7,10 @@
 
 
 
-void FindBasketball(void);
-void FindVolleyball(void);
-void FindFrame(void);
+void FindVolleyball_red(void);
+void FindVolleyball_yellow(void);
+void FindBasketball_blue(void);
+void FindBasketball_red(void);
 
 
 void FindBall_vision(u8 ball);		//视觉找球,限制4米以内

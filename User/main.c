@@ -225,7 +225,7 @@ int main(void)
 				break;
 			case 6:
 				// ”æı≤‚ ‘
-				FindBall_vision(1);
+				FindBall_vision(changdi);
 				LED0 = !LED0;
 				break;
 			case 7:
