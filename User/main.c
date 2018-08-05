@@ -205,10 +205,15 @@ int main(void)
 				//					Robot_armDown();
 				//					while(!INFRARED)
 				//						Robot_armUp();
-				RobotGoToAvoid(3, 3, 0);
-				BEEP = 1;
+				RobotGoTo(0, 2, 0);
 				delay_ms(1000);
-				BEEP = 0;
+				RobotGoTo(2,2,0);
+				delay_ms(1000);
+				RobotGoTo(0, 2, 180
+			);
+				delay_ms(1000);
+				RobotGoTo(0,0,180);
+				
 				break;
 			case 5:
 				//±‹’œ≤‚ ‘
@@ -230,17 +235,27 @@ int main(void)
 				break;
 			case 7:
 				SetPWM(-400,0,400);
-				delay_ms(500);
-				RobotArm_exit(DOWN);
-				RobotGoTo(2, 3, 0);
+				delay_ms(1000);
+				//RobotArm_exit(DOWN);
+				RobotGoTo(2, 2, 250);
 				
 				//						RobotRotate(250);
 				//						RobotRotate(0);
 				//						delay_ms(500);
 				//					  RobotGoTo(3,3,0);
 				delay_ms(2000);
-				RobotArm_exit(UP);
-				RobotGoTo(0, 0, 0);
+				//RobotArm_exit(UP);
+				RobotRotate(60);
+				RobotRotate(-60);
+				//RobotArm_exit(DOWN);
+				RobotGoTo(2, 3.7, 0);
+				//RobotArm_exit(UP);
+				delay_ms(4000);
+				//RobotArm_exit(DOWN);
+				RobotGoTo(2, 2, 250);
+				//RobotArm_exit(UP);
+				RobotGoTo(0,0,0);
+				
 				
 				//						RobotGoTo(3,3.5,0);
 				//						delay_ms(500);
@@ -255,9 +270,15 @@ int main(void)
 				//						SetPWM(0,0,0);
 				delay_ms(1000);
 				break;
-
+			case 8:
+				GoBack_Vision();
+				break;
 			case 9:
-				SetPWM(-400, 0, 400);
+				SetPWM(-200,0,200);
+				delay_ms(2000);
+				SetPWM(-400,0,400);
+				delay_ms(1000);==r]=r
+				SetPWM(-600, 0, 600);
 				break;
 			}
 			break;
