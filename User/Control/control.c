@@ -528,7 +528,7 @@ float adjustVx_PD(float D_X)
 	NOW_DX = D_X;
 	if (NOW_DX > 0.05f)
 	{
-		sx = NOW_DX * 25;
+		sx = NOW_DX * 35;
 
 		if (BasketballRobot.Vx < 0.1f)
 			sx = 30;
@@ -538,7 +538,7 @@ float adjustVx_PD(float D_X)
 			sx = 55;
 
 		if (NOW_DX < 1)
-			sx = NOW_DX * 25 + 10 * (NOW_DX - Last_DX) + 15;
+			sx = NOW_DX * 35 + 10 * (NOW_DX - Last_DX) + 15;
 
 		if (sx > 80)
 			sx = 80;
@@ -546,7 +546,7 @@ float adjustVx_PD(float D_X)
 
 	else if (NOW_DX < -0.05f)
 	{
-		sx = NOW_DX * 25;
+		sx = NOW_DX * 35;
 
 		if (BasketballRobot.Vx > -0.1f)
 			sx = -30;
@@ -556,7 +556,7 @@ float adjustVx_PD(float D_X)
 			sx = -55;
 
 		if (NOW_DX > -1)
-			sx = (NOW_DX * 25 + 10 * (NOW_DX - Last_DX)) - 15;
+			sx = (NOW_DX * 35 + 10 * (NOW_DX - Last_DX)) - 15;
 
 		if (sx < -80)
 			sx = -80;
@@ -810,17 +810,17 @@ void RobotGoTo(float X_I, float Y_I, float Theta_I)
 	D_X = X_I - BasketballRobot.X;
 	D_Y = Y_I - BasketballRobot.Y;
 
-	angle = atan2(D_Y, D_X);
+//	angle = atan2(D_Y, D_X);
 
-	// if (angle > 0)
-	// 	angle = PI / 2 - angle;
+//	// if (angle > 0)
+//	// 	angle = PI / 2 - angle;
 
-	// else
-	// 	angle = -PI / 2 - angle;
+//	// else
+//	// 	angle = -PI / 2 - angle;
 
-	angle = (angle - PI/2)*180/PI;
+//	angle = (angle - PI/2)*180/PI;
 
-	RobotRotate(angle);
+//	RobotRotate(angle);
 
 	while (fabs(D_Y) > 0.05f || fabs(D_X) > 0.05f)
 	{

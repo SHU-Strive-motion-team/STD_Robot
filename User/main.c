@@ -176,7 +176,7 @@ int main(void)
 			case 1:
 				//»úÐµ±ÛÏÂ½µ
 				//Robot_armDown();
-			RobotArm_exit(DOWN);
+				RobotArm_exit(DOWN);
 				BEEP = 1;
 				delay_ms(2000);
 				BEEP = 0;
@@ -229,13 +229,19 @@ int main(void)
 				LED0 = !LED0;
 				break;
 			case 7:
-				RobotGoTo(0, -6, 0);
+				SetPWM(-400,0,400);
+				delay_ms(500);
+				RobotArm_exit(DOWN);
+				RobotGoTo(2, 3, 0);
+				
 				//						RobotRotate(250);
 				//						RobotRotate(0);
 				//						delay_ms(500);
 				//					  RobotGoTo(3,3,0);
 				delay_ms(2000);
+				RobotArm_exit(UP);
 				RobotGoTo(0, 0, 0);
+				
 				//						RobotGoTo(3,3.5,0);
 				//						delay_ms(500);
 				//						RobotGoTo(6,4,0);
