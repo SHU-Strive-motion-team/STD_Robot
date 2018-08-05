@@ -608,7 +608,7 @@ void FindBasketry(void)
 		}
 		else if (Radar.Distance > 3000)
 		{
-			GetMotorVelocity_Self(0, 30, 0);
+			GetMotorVelocity_Self(0, 20, 0);
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
 		else if (Radar.Distance > DIS_RADAR + 100)
@@ -686,7 +686,7 @@ void GoBack_Vision(u8 ball)
 				;
 
 			//尝试五次
-			else if (time++ < 5)
+			else if (time++ < 10)
 			{
 				//SetPWM(0,0,0);
 				continue;
@@ -696,64 +696,40 @@ void GoBack_Vision(u8 ball)
 				time = 0;
 		}
 		//数据有效
-		else
+		else{
 			time = 1;
+		}
 
 		//没找到框,自转
 		if (time == 0)
 		{
-			D_theta = BasketballRobot.ThetaR - theta;
-			if ((D_theta > PI / 6.0f && D_theta < PI) || (D_theta < -PI && D_theta > -PI * 11.0f / 6.0f))
-			{
-				w = -200;
-			}
-			if ((D_theta < -PI / 6.0f && D_theta > -PI) || (D_theta > PI && D_theta < PI * 11.0f / 6.0f))
-			{
-				w = 200;
-			}
-			GetMotorVelocity(0, 0, w);
-			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
-
-			LCD_Show_pwm();
+			RobotGoTo(0,0,0);
 		}
 
 		//无效数据
-		else if (Vision.Depth > 4000)
-		{
-			GetMotorVelocity(0, 0, 0);
-			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
-		}
 
-		else if ((Vision.X < VISION_MID - 30) && Vision.Depth > 1300)
+		else if ((Vision.X < VISION_MID - 30) )
 		{
-			GetMotorVelocity_Self(5, 10, 0); //原来 -50 10 0
+			GetMotorVelocity_Self(5, 0, 0); //原来 -50 10 0
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
-		else if ((Vision.X > VISION_MID + 30) && Vision.Depth > 1300)
+		else if ((Vision.X > VISION_MID + 30) )
 		{
-			GetMotorVelocity_Self(-5, 10, 0);
+			GetMotorVelocity_Self(-5, 0, 0);
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
-		else if (Vision.Depth > 1300)
-		{
-			GetMotorVelocity_Self(0, 20, 0);
-			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
-		}
-		else if ((Vision.X < VISION_MID - 20) && Vision.Depth > 700)
+		
+		else if ((Vision.X < VISION_MID - 20))
 		{
 			GetMotorVelocity_Self(4, 0, 0); //原来-40 0 0
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
-		else if ((Vision.X > VISION_MID + 20) && (Vision.Depth > 700))
+		else if ((Vision.X > VISION_MID + 20))
 		{
 			GetMotorVelocity_Self(-4, 0, 0); //原来4 0 0
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
-		else if (Vision.Depth > 700)
-		{
-			GetMotorVelocity_Self(0, 12, 0);
-			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
-		}
+		
 		else if (Vision.X < VISION_MID - 30)
 		{
 			GetMotorVelocity_Self(3, 0, 0); //原来-30 0 0
@@ -777,11 +753,9 @@ void GoBack_Vision(u8 ball)
 		}
 		else
 		{
+			BasketballRobot.X=0;
 			SetPWM(0, 0, 0);
-
-			Robot_armDown();
-			GetMotorVelocity_Self(0, 7, 0);
-			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
+			RobotGoTo(0,0,180);
 			break;
 		}
 	} while (1);
