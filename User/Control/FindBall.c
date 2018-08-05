@@ -225,7 +225,7 @@ void FindBall_radar(void)
 		//			continue;
 		if (Radar.Distance > 3000)
 		{
-			D_theta = BasketballRobot.ThetaD - theta;
+			//D_theta = BasketballRobot.ThetaD - theta;
 			
 			D_theta = BasketballRobot.ThetaD - theta;
 			if ((D_theta >30 && D_theta < 180) || (D_theta < -180 && D_theta > -330))
@@ -311,24 +311,36 @@ void FindBall_VandR(u8 ball)
 	float w = 200;
 	u8 time = 1;
 	float theta = BasketballRobot.ThetaD, D_theta = 0;
+	
 	switch (ball)
 	{
 	case 1:
-//		FindBasketball();
-//		delay_ms(10000);
-//		FindBasketball();
-//		delay_ms(10000);
-//		FindBasketball();
+		FindVolleyball_red();
+		delay_ms(100);
+		FindVolleyball_red();
+		delay_ms(100);
+		FindVolleyball_red();
+		break;
+	case 2:
+		FindVolleyball_yellow();
+		delay_ms(100);
+		FindVolleyball_yellow();
+		delay_ms(100);
+		FindVolleyball_yellow();
 		break;
 	case 3:
-//		FindVolleyball();
-
-//		delay_ms(10000);
-
-//		FindVolleyball();
-//		delay_ms(10000);
-//		FindVolleyball();
-
+		FindBasketball_blue();
+		delay_ms(100);
+		FindBasketball_blue();
+		delay_ms(100);
+		FindBasketball_blue();
+		break;
+	case 4:
+		FindBasketball_red();
+		delay_ms(100);
+		FindBasketball_red();
+		delay_ms(100);
+		FindBasketball_red();
 		break;
 	}
 	SetPWM(0, 0, 0);
@@ -563,7 +575,7 @@ void FindBall_VandR(u8 ball)
 //À×´ïÕÒÀº¿ğ
 void FindBasketry(void)
 {
-	float w = 300;
+	float w = 100;
 	float theta = BasketballRobot.ThetaD, D_theta = 0;
 
 	SetPWM(0, 0, 0);
@@ -584,17 +596,19 @@ void FindBasketry(void)
 			continue;
 		if (Radar.Distance > 3000)
 		{
-			D_theta = BasketballRobot.ThetaR - theta;
-			if ((D_theta > PI / 6.0f && D_theta < PI) || (D_theta < -PI && D_theta > -PI * 11.0f / 6.0f))
+			D_theta = BasketballRobot.ThetaD - theta;
+			
+			if ((D_theta >30 && D_theta < 180) || (D_theta < -180 && D_theta > -330))
 			{
-				w = -300;
+				w = -100;
 			}
-			if ((D_theta < -PI / 6.0f && D_theta > -PI) || (D_theta > PI && D_theta < PI * 11.0f / 6.0f))
+			if ((D_theta < -30 && D_theta > -180) || (D_theta > 180 && D_theta < 330))
 			{
-				w = 300;
+				w = 100;
 			}
-			GetMotorVelocity(0, 0, w);
-			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
+			
+			
+			SetPWM(w,w,w);
 		}
 		else if (Radar.Angle < RADAR_MID - 10)
 		{
@@ -923,7 +937,7 @@ void Findball_PD(u8 ball)
 			{
 
 				D_X = (VISION_MID - Vision.X);
-				D_Y = Vision.Depth;
+				D_Y = (Vision.Depth-700)/1000;
 				sx = adjustVx_PD(D_X);
 				sy = adjustVy_PD(D_Y);
 				GetMotorVelocity_Self(sx, sy, 0); //Ô­À´-4 0 0
