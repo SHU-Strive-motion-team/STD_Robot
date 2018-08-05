@@ -101,12 +101,12 @@ void FindBall_vision(u8 ball)
 
 		else if ((Vision.X < VISION_MID - 30) && Vision.Depth > 1300)
 		{
-			GetMotorVelocity_Self(-10, 200, 0); //原来 -50 10 0
+			GetMotorVelocity_Self(10, 200, 0); //原来 -50 10 0
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
 		else if ((Vision.X > VISION_MID + 30) && Vision.Depth > 1300)
 		{
-			GetMotorVelocity_Self(10, 200, 0);
+			GetMotorVelocity_Self(-10, 200, 0);
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
 		else if (Vision.Depth > 1300)
@@ -116,12 +116,12 @@ void FindBall_vision(u8 ball)
 		}
 		else if ((Vision.X < VISION_MID - 20) && Vision.Depth > 700)
 		{
-			GetMotorVelocity_Self(-7, 0, 0); //原来-40 0 0
+			GetMotorVelocity_Self(7, 0, 0); //原来-40 0 0
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
 		else if ((Vision.X > VISION_MID + 20) && (Vision.Depth > 700))
 		{
-			GetMotorVelocity_Self(5, 0, 0); //原来4 0 0
+			GetMotorVelocity_Self(-5, 0, 0); //原来4 0 0
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
 		else if (Vision.Depth > 700)
@@ -131,23 +131,23 @@ void FindBall_vision(u8 ball)
 		}
 		else if (Vision.X < VISION_MID - 30)
 		{
-			GetMotorVelocity_Self(-4, 0, 0); //原来-30 0 0
+			GetMotorVelocity_Self(4, 0, 0); //原来-30 0 0
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 			;
 		}
 		else if (Vision.X > VISION_MID + 30)
 		{
-			GetMotorVelocity_Self(4, 0, 0); //原来30 0 0
+			GetMotorVelocity_Self(-4, 0, 0); //原来30 0 0
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
 		else if (Vision.X <= VISION_MID + 30 && Vision.X > VISION_MID + 10)
 		{
-			GetMotorVelocity_Self(3, 0, 0); //原来15 0 0
+			GetMotorVelocity_Self(-3, 0, 0); //原来15 0 0
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
 		else if (Vision.X >= VISION_MID - 30 && Vision.X < VISION_MID - 10)
 		{
-			GetMotorVelocity_Self(-3, 0, 0); //原来-15 0 0
+			GetMotorVelocity_Self(3, 0, 0); //原来-15 0 0
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
 		else

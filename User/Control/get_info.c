@@ -316,6 +316,19 @@ void GetPosition(void)
 	BasketballRobot.encoderCount[1] += BasketballRobot.w[1];
 	BasketballRobot.encoderCount[2] += BasketballRobot.w[2];
 	
+//	BasketballRobot.ThetaD = (BasketballRobot.encoderCount[2] +BasketballRobot.encoderCount[1] +BasketballRobot.encoderCount[0])*1.0f*360/3/30500;
+//	BasketballRobot.ThetaR = BasketballRobot.ThetaD * PI / 180;
+//	while(BasketballRobot.ThetaR < 0)
+//		BasketballRobot.ThetaR  = BasketballRobot.ThetaR + PI + PI;
+//			
+//	while (BasketballRobot.The taR > 2 * PI)
+//		BasketballRobot.ThetaR= BasketballRobot.ThetaR - PI - PI;
+//			
+//	while(BasketballRobot.ThetaD < 0)
+//		BasketballRobot.ThetaD  = BasketballRobot.ThetaD + 360;
+//			
+//	while (BasketballRobot.ThetaD >360)
+//		BasketballRobot.ThetaD = BasketballRobot.ThetaD - 360;
 }
 
 void receiveVisionData(void)
