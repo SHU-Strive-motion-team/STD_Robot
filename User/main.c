@@ -236,24 +236,24 @@ int main(void)
 			case 7:
 				SetPWM(-400,0,400);
 				delay_ms(1000);
-				//RobotArm_exit(DOWN);
-				RobotGoTo(2, 2, 250);
+				RobotArm_exit(DOWN);
+				RobotGoTo(1.5, 2, 250);
 				
 				//						RobotRotate(250);
 				//						RobotRotate(0);
 				//						delay_ms(500);
 				//					  RobotGoTo(3,3,0);
 				delay_ms(2000);
-				//RobotArm_exit(UP);
+				RobotArm_exit(UP);
 				RobotRotate(60);
 				RobotRotate(-60);
-				//RobotArm_exit(DOWN);
+				RobotArm_exit(DOWN);
 				RobotGoTo(2, 3.7, 0);
-				//RobotArm_exit(UP);
+				RobotArm_exit(UP);
 				delay_ms(4000);
-				//RobotArm_exit(DOWN);
+				RobotArm_exit(DOWN);
 				RobotGoTo(2, 2, 250);
-				//RobotArm_exit(UP);
+				RobotArm_exit(UP);
 				RobotGoTo(0,0,0);
 				
 				
@@ -277,7 +277,7 @@ int main(void)
 				SetPWM(-200,0,200);
 				delay_ms(2000);
 				SetPWM(-400,0,400);
-				delay_ms(1000);==r]=r
+				delay_ms(1000);
 				SetPWM(-600, 0, 600);
 				break;
 			}
@@ -292,27 +292,29 @@ int main(void)
 					SetPWM(0, 0, 0);
 					delay_ms(1000);
 				}
-
-				RobotGoTo(0 - Correction_X, 2 + Correction_Y, -110);
+				SetPWM(-400,0,400);
+				delay_ms(1000);
+				RobotArm_exit(DOWN);
+				RobotGoTo(1.5, 2, 250);
 				if (!DownShotUp())
 					break;
 				RobotRotate(0);
 				FindBall_VandR(qiu);
 
 				//判断是否找到球，如果没有
-				if (findballtime == 0)
-				{ //没找到球
-					RobotGoTo(-3 - Correction_X, 2 + Correction_Y, 0);
-					FindBall_VandR(qiu);
-				}
+//				if (findballtime == 0)
+//				{ //没找到球
+//					RobotGoTo(-3 - Correction_X, 2 + Correction_Y, 0);
+//					FindBall_VandR(qiu);
+//				}
 
-				RobotGoTo(0 - Correction_X, 2 + Correction_Y, -110);
+				RobotGoTo(1.5, 2 + Correction_Y, 250);
 
 				if (!DownShotUp())
 					break;
 
 				RobotGoTo(0, 1 + Correction_Y, -180);
-
+				RobotGoTo(0,0,-180);
 				//加视觉找框回位
 				break;
 			case 1: //下场
@@ -322,8 +324,8 @@ int main(void)
 					SetPWM(0, 0, 0);
 					delay_ms(1000);
 				}
-
-				RobotGoTo(0 + Correction_X, 2 + Correction_Y, 110);
+				
+				RobotGoTo(1.5, 2, -110);
 				if (!DownShotUp())
 					break;
 				RobotRotate(0);
@@ -336,12 +338,13 @@ int main(void)
 					FindBall_VandR(qiu);
 				}
 
-				RobotGoTo(0 + Correction_X, 2 + Correction_Y, 110);
+				RobotGoTo(1.5, 2, 10);
 
 				if (!DownShotUp())
 					break;
 
 				RobotGoTo(0, 1 + Correction_Y, 180);
+				RobotGoTo(0,0,0);
 
 				//加视觉找框回位
 				break;

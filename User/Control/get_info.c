@@ -316,16 +316,16 @@ void GetPosition(void)
 	BasketballRobot.encoderCount[1] += BasketballRobot.w[1];
 	BasketballRobot.encoderCount[2] += BasketballRobot.w[2];
 	
-	nW = (BasketballRobot.encoderCount[0] + BasketballRobot.encoderCount[1] + BasketballRobot.encoderCount[2]) / 3.0f;
-	l1 = BasketballRobot.encoderCount[0] - nW;
-	l2 = BasketballRobot.encoderCount[1] - nW;
-	l3 = BasketballRobot.encoderCount[2] - nW;
+//	nW = (BasketballRobot.encoderCount[0] + BasketballRobot.encoderCount[1] + BasketballRobot.encoderCount[2]) / 3.0f;
+//	l1 = BasketballRobot.encoderCount[0] - nW;
+//	l2 = BasketballRobot.encoderCount[1] - nW;
+//	l3 = BasketballRobot.encoderCount[2] - nW;
 
-	nX = -l1 / 22400;
-	nY = -(-l2 + l3) / 1.7320508f / 22400;
-	
-	LCD_ShowxNum(30,50+400+40,fabs(nX)*100,7,16,0);
-	LCD_ShowxNum(30,50+400+80,fabs(nY)*100,7,16,0);
+//	nX = -l1 / 22400;
+//	nY = -(-l2 + l3) / 1.7320508f / 22400;
+//	
+//	LCD_ShowxNum(30,50+400+40,fabs(nX)*100,7,16,0);
+//	LCD_ShowxNum(30,50+400+80,fabs(nY)*100,7,16,0);
 	//LCD_ShowString(30,50+400,200,16,16,"std robot");
 	//BasketballRobot.LastTheta = BasketballRobot.ThetaR;
 //	BasketballRobot.ThetaD = (BasketballRobot.encoderCount[2] +BasketballRobot.encoderCount[1] +BasketballRobot.encoderCount[0])*1.0f*360/3/30500;
