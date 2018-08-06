@@ -60,7 +60,7 @@ void EXTI0_IRQHandler(void)
 		if (LimitSwitchUp == 1)
 		{
 			shoveMotor(STOP);
-			EXTIX_Disable(0);
+			EXTIX_Disable(UP);
 		}
 	}
 	EXTI_ClearITPendingBit(EXTI_Line0);			//清除中断标志位
@@ -76,7 +76,7 @@ void EXTI1_IRQHandler(void)
 		if (LimitSwitchDown == 1)
 		{
 			shoveMotor(STOP);
-			EXTIX_Disable(0);
+			EXTIX_Disable(DOWN);
 		}
 	}		 
 	EXTI_ClearITPendingBit(EXTI_Line1);			//清除中断标志位

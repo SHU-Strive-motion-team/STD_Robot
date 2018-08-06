@@ -137,6 +137,7 @@ void EXTIX_Enable(shovemotor t);
 void RobotArm_exit(shovemotor t);		//通过中断控制机械臂
 
 u8 DownShotUp(void);
+u8 ShotUp(void);
 
 
 //uint8_t GetVisionData(void);		//视觉数据处理
@@ -147,9 +148,9 @@ static float adjustAngleV(float D_Theta);	//根据偏差大小调整角速度
 static float adjustVy(float D_Y);			//根据偏差大小调整Y轴速度
 static float adjustVx(float D_X);			//根据偏差大小调整X轴速度
 
-float adjustAngleV_PD(float D_Theta);	//根据偏差大小调整角速度
-float adjustVy_PD(float D_Y);			//根据偏差大小调整Y轴速度
-float adjustVx_PD(float D_X);			//根据偏差大小调整X轴速度
+static float adjustAngleV_PD(float D_Theta);	//根据偏差大小调整角速度
+static float adjustVy_PD(float D_Y);			//根据偏差大小调整Y轴速度
+static float adjustVx_PD(float D_X);			//根据偏差大小调整X轴速度
 
 
 void RobotRotate(float theta);	//自旋运动，根据误差角度，自动调节

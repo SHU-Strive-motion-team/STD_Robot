@@ -443,7 +443,7 @@ void RobotArm_exit(shovemotor t)
 }
 
 //PD调整角速度
-float adjustAngleV_PD(float D_Theta)
+static float adjustAngleV_PD(float D_Theta)
 {
 	float Vw = 0;
 	if (D_Theta > 0 && (D_Theta < 180))
@@ -477,7 +477,7 @@ float adjustAngleV_PD(float D_Theta)
 	return Vw;
 }
 //PD调整Y轴速度
-float adjustVy_PD(float D_Y)
+static float adjustVy_PD(float D_Y)
 {
 	float sy;
 
@@ -521,7 +521,7 @@ float adjustVy_PD(float D_Y)
 	return sy;
 }
 //PD调整X轴速度
-float adjustVx_PD(float D_X)
+static float adjustVx_PD(float D_X)
 {
 	float sx, NOW_DX;
 	static float Last_DX;
@@ -1009,4 +1009,23 @@ u8 DownShotUp(void)
 
 	Robot_armUp();
 	return 1;
+}
+
+u8 ShotUp(void)
+{
+	CHARGE=0;
+	if (LimitSwitchDown == 1)
+	{
+		CHARGE = 0;
+		delay_ms(500);
+		SHOT = 1;
+		delay_ms(500);
+		SHOT = 0;
+		
+		return 0;
+	}
+
+	return 1;
+	
+	
 }

@@ -4,14 +4,15 @@
 #include "control.h"
 
 
-
+static float adjustVy_findPD(float D_Y);			//根据偏差大小调整Y轴速度
+static float adjustVx_findPD(float D_X);			//根据偏差大小调整X轴速度
 
 
 void FindVolleyball_red(void);
 void FindVolleyball_yellow(void);
 void FindBasketball_blue(void);
 void FindBasketball_red(void);
-
+void FindBasketball_double(void);
 
 void FindBall_vision(u8 ball);		//视觉找球,限制4米以内
 void FindBall_radar(void);			//利用激光找球
