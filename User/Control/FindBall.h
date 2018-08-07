@@ -13,6 +13,7 @@ void FindVolleyball_yellow(void);
 void FindBasketball_blue(void);
 void FindBasketball_red(void);
 void FindBasketball_double(void);
+void FindFindVolleyball_double(void);
 
 void FindBall_vision(u8 ball);		//视觉找球,限制4米以内
 void FindBall_radar(void);			//利用激光找球

@@ -468,10 +468,19 @@ u8 GetVisionData(void)
 		Vision.X = x;
 		Vision.Depth = d;
 		Vision.State = 1;
+		Vision.goBackSign = Vision.RX_BUF[4];
+		
 		LCD_ShowString(30 + 200, 420, 200, 16, 16, "View :pix");
 		LCD_ShowNum(30 + 200 + 48 + 8 + 45, 420, Vision.X, 4, 16);
-		LCD_ShowString(30 + 200, 440, 200, 16, 16, "View :length");
-		LCD_ShowNum(30 + 200 + 48 + 8 + 45, 440, Vision.Depth, 4, 16);
+		if(Vision.goBackSign == 'z')
+			LCD_ShowString(30 + 200, 440, 200, 16, 16, "View :Go back");
+		else
+		{
+			LCD_ShowString(30 + 200, 440, 200, 16, 16, "View :length");
+			LCD_ShowNum(30 + 200 + 48 + 8 + 45, 440, Vision.Depth, 4, 16);
+		}
+//		LCD_ShowString(30 + 200, 440, 200, 16, 16, "View :length");
+//		LCD_ShowNum(30 + 200 + 48 + 8 + 45, 440, Vision.Depth, 4, 16);
 		return 1;
 	}
 #endif	

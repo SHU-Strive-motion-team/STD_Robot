@@ -247,23 +247,10 @@ int main(void)
 				LED0 = !LED0;
 				break;
 			case 7:
-				SetPWM(-400,0,400);
-				delay_ms(1000);
-				RobotArm_exit(DOWN);
-				RobotGoTo(1, 2.5, 250);
-				delay_ms(2000);
-				RobotArm_exit(UP);
-				RobotRotate(0);
-				FindBall_VandR(5);
-				RobotGoTo(1, 2.5, 250);
-				while(LimitSwitchUp == 0);
-				RobotArm_exit(DOWN);
-				delay_ms(2000);
-				RobotArm_exit(UP);
-				RobotGoTo(0,1,0);				
-				RobotGoTo(0,0,0);
-				
-				delay_ms(1000);
+				FindBasketry();
+				BEEP = 1;
+				delay_ms(500);
+				BEEP = 0;
 				break;
 			case 8:
 				GoBack_Vision();
@@ -294,7 +281,7 @@ int main(void)
 				SetPWM(-400,0,400);
 				delay_ms(1000);
 				RobotArm_exit(DOWN);
-				RobotGoTo(1.6, 2, 250);
+				RobotGoTo(1.5, 2.5, 250);
 				while (ShotUp());
 				RobotRotate(0);
 				FindBall_VandR(qiu);
@@ -306,13 +293,13 @@ int main(void)
 //					FindBall_VandR(qiu);
 //				}
 
-				RobotGoTo(1.6, 2 , 250);
+				RobotGoTo(1.5, 2.5 , 250);
 				while(LimitSwitchUp == 0);
 				Robot_armDown();
 				while (ShotUp());
 				RobotArm_exit(UP);
-				RobotGoTo(0, 1 ,-180);
-				RobotGoTo(0,0,-180);
+				RobotGoTo(0, 1 ,180);
+				RobotGoTo(0,0,180);
 				//加视觉找框回位
 				break;
 			case 0: //上场
@@ -322,29 +309,28 @@ int main(void)
 					SetPWM(0, 0, 0);
 					delay_ms(1000);
 				}
-				
-				RobotGoTo(1.5, 2, -110);
-				while (DownShotUp())
-					break;
+				SetPWM(-400,0,400);
+				delay_ms(1000);
+				RobotArm_exit(DOWN);
+				RobotGoTo(-1.5f, 2.5f, 110);
+				while (ShotUp());
 				RobotRotate(0);
 				FindBall_VandR(qiu);
 
 				//判断是否找到球，如果没有
-				if (findballtime == 0)
-				{ //没找到球
-					RobotGoTo(3 + Correction_X, 2 + Correction_Y, 0);
-					FindBall_VandR(qiu);
-				}
+//				if (findballtime == 0)
+//				{ //没找到球
+//					RobotGoTo(-3 - Correction_X, 2 + Correction_Y, 0);
+//					FindBall_VandR(qiu);
+//				}
 
-				RobotGoTo(1.5, 2, 10);
-
-				if (!DownShotUp())
-					break;
-
-				RobotGoTo(0, 1 + Correction_Y, 180);
-				RobotGoTo(0,0,0);
-
-				//加视觉找框回位
+				RobotGoTo(-1.5f, 2.5f , 110);
+				while(LimitSwitchUp == 0);
+				Robot_armDown();
+				while (ShotUp());
+				RobotArm_exit(UP);
+				RobotGoTo(0, 1 ,180);
+				RobotGoTo(0,0,180);
 				break;
 			}
 			break;
@@ -359,7 +345,7 @@ int main(void)
 				}
 				SetPWM(-400,0,400);
 				delay_ms(1000);
-				RobotGoTo(-1.5, 2 , 0);
+				RobotGoTo(-1.5f, 2.5 , 0);
 				FindBall_VandR(qiu);
 
 //				//判断是否找到球，如果没有
@@ -368,12 +354,12 @@ int main(void)
 //					RobotGoTo(3 + Correction_X, 2 + Correction_Y, 0);
 //					FindBall_VandR(qiu);
 //				}
-				RobotGoTo(-1.5, 2 ,-250);
+				RobotGoTo(-1.5f, 2.5f ,-250);
 				while (ShotUp());
 
-				RobotGoTo(-5.5, 2 , -250);
+				RobotGoTo(-4.3f, 2.5f , -250);
 				FindBall_VandR(qiu);
-				RobotGoTo(-1.5, 2 ,-250);
+				RobotGoTo(-1.5f, 2.5f ,-250);
 
 				while(ShotUp());
 
@@ -409,9 +395,9 @@ int main(void)
 				delay_ms(2000);
 //				while (ShotUp());
 				RobotArm_exit(UP);
-				RobotGoTo(4.3, 2.5 , 270);
+				RobotGoTo(4.3f, 2.5f , 290);
 				FindBall_VandR(5);
-				RobotGoTo(1.5, 2.5 ,250);
+				RobotGoTo(1.5f, 2.5f ,250);
 				while(LimitSwitchUp==0);
 				Robot_armDown();
 				delay_ms(2000);
@@ -430,36 +416,40 @@ int main(void)
 			{
 			case 0: //上场
 				for (i = 0; i < 10; i++)
-				{
-					SetPWM(0, 0, 0);
-					delay_ms(1000);
-				}
+//				{
+//					SetPWM(0, 0, 0);
+//					delay_ms(1000);
+//				}
 				SetPWM(-400,0,400);
 				delay_ms(1000);
-				RobotGoTo(-4.3, 2.5, -270);
-				FindBall_VandR(qiu);
+				RobotGoTo(-4.5f, 2.5f, 90);
+				FindBall_VandR(5);
 
 				//记录铲球点A的位置
 				BasketballRobot.PX = BasketballRobot.X;
 				BasketballRobot.PY = BasketballRobot.Y;
-
-				RobotGoTo(-4.5, 2.5, -270);
+				RobotGoTo(-5.3f, 3.3f,-160);
+				while(LimitSwitchUp==0);
+				Robot_armDown();
+				delay_ms(2000);
+				RobotArm_exit(UP);
 //				while(ShotUp());
-				//原路返回
-//				RobotGoTo(-4.5, 2.5, -270);
-				RobotGoTo(-BasketballRobot.PX + Correction_X, BasketballRobot.PY + Correction_Y, -270);
-				FindBall_VandR(qiu);
+//				//原路返回
+				RobotGoTo(BasketballRobot.PX-0.35f , BasketballRobot.PY-0.35f , 270);
+				FindBall_VandR(5);
 //				FindBall_radar();
 
 				//原路返回
-				RobotGoTo(-BasketballRobot.PX + Correction_X, BasketballRobot.PY + Correction_Y, -270);
-				RobotGoTo(-5.5, 2.5, -90);
+				RobotGoTo(BasketballRobot.PX, BasketballRobot.PY , 270);
+				RobotGoTo(-5.3f, 3.3f,-160);
+				while(LimitSwitchUp==0);
+				Robot_armDown();
+				delay_ms(2000);
+				RobotArm_exit(UP);
+//				while(ShotUp());
 
-				RobotGoTo(6 + Correction_X, 4 + Correction_Y, 210);
-				while(ShotUp());
-
-				RobotGoTo(0 , 1 , 180);
-				RobotGoTo(0 , 0 , 180);
+				RobotGoTo(0 , 1 , 0);
+				RobotGoTo(0 , 0 , 0);
 
 				//加视觉找框回位
 				break;
@@ -473,27 +463,27 @@ int main(void)
 //				}
 				SetPWM(-400,0,400);
 				delay_ms(1000);
-				RobotGoTo(4.5, 2.5, 270);
+				RobotGoTo(4.5f, 2.5f, 270);
 				FindBall_VandR(5);
 
 				//记录铲球点A的位置
 				BasketballRobot.PX = BasketballRobot.X;
 				BasketballRobot.PY = BasketballRobot.Y;
-				RobotGoTo(5.3, 3.3,160);
+				RobotGoTo(5.3f, 3.3f,160);
 				while(LimitSwitchUp==0);
 				Robot_armDown();
 				delay_ms(2000);
 				RobotArm_exit(UP);
 //				while(ShotUp());
 //				//原路返回
-//				RobotGoTo(4.5, 2.5, 270);
+//				RobotGoTo(4.5f, 2.5f, 270);
 				RobotGoTo(BasketballRobot.PX-0.35f , BasketballRobot.PY-0.35f , 270);
 				FindBall_VandR(5);
 //				FindBall_radar();
 
 				//原路返回
 				RobotGoTo(BasketballRobot.PX, BasketballRobot.PY , 270);
-				RobotGoTo(5.3, 3.3,160);
+				RobotGoTo(5.3f, 3.3f,160);
 				while(LimitSwitchUp==0);
 				Robot_armDown();
 				delay_ms(2000);
@@ -511,139 +501,148 @@ int main(void)
 			switch (changdi)
 			{
 			case 0: //上场
-				RobotGoTo(-4 - Correction_X, 3.7f + Correction_Y, -90);
-
+				RobotGoTo(-8.5, 4.2,90);
+				
 				//雷达找框
 				FindBasketry();
 
-				if (!DownShotUp())
-					break;
-
-				RobotGoTo(0 - Correction_X, 2 + Correction_Y, 0);
+				while (ShotUp());
+				RobotArm_exit(UP);
+				RobotGoTo(-1.5f, 2.5f, 0);
 				FindBall_VandR(qiu);
 
 				//判断是否找到球，如果没有
-				if (findballtime == 0)
-				{ //没找到球
-					RobotGoTo(-3 - Correction_X, 2 + Correction_Y, 0);
-					FindBall_VandR(qiu);
-				}
+//				if (findballtime == 0)
+//				{ //没找到球
+//					RobotGoTo(3 + Correction_X, 2 + Correction_Y, 0);
+//					FindBall_VandR(qiu);
+//				}
 
-				RobotGoTo(-9 - Correction_X, 3.7f + Correction_Y, -90);
+				RobotGoTo(-8.5f, 4.2f, 90);
 
 				//雷达找框
 				FindBasketry();
 
-				if (!DownShotUp())
-					break;
+				while(ShotUp());
+				SetPWM(0,0,0);
+				
 				break;
+				
 			case 1: //下场
-				RobotGoTo(4 + Correction_X, 3.7f + Correction_Y, 90);
+//				RobotGoTo(8.5f, 4.2f,270);
+				SetPWM(-400,0,400);
+				delay_ms(2000);
+				RobotGoTo(4,3.6,270);
 
 				//雷达找框
 				FindBasketry();
 
-				if (!DownShotUp())
-					break;
+//				while (ShotUp());
 
-				RobotGoTo(0 + Correction_X, 2 + Correction_Y, 0);
+				RobotGoTo(1.5f, 2.5f, 0);
 				FindBall_VandR(qiu);
 
 				//判断是否找到球，如果没有
-				if (findballtime == 0)
-				{ //没找到球
-					RobotGoTo(3 + Correction_X, 2 + Correction_Y, 0);
-					FindBall_VandR(qiu);
-				}
+//				if (findballtime == 0)
+//				{ //没找到球
+//					RobotGoTo(3 + Correction_X, 2 + Correction_Y, 0);
+//					FindBall_VandR(qiu);
+//				}
 
-				RobotGoTo(9 + Correction_X, 3.7f + Correction_Y, 90);
-
+//				RobotGoTo(8.5f, 4.2f, 270);
+				RobotGoTo(4,3.6,270);
 				//雷达找框
 				FindBasketry();
 
-				if (!DownShotUp())
-					break;
+				while(ShotUp());
+				SetPWM(0,0,0);
+				
 				break;
+				
 			}
 			break;
 		case 5: //投篮第二回合
 			switch (changdi)
 			{
 			case 0: //上场
-				RobotGoTo(-5 - Correction_X, 2 + Correction_Y, -45);
+				RobotGoTo(-4.3f, 2.5f, -290);
 				FindBall_VandR(qiu);
 
 				//记录铲球点A的位置
 				BasketballRobot.PX = BasketballRobot.X;
 				BasketballRobot.PY = BasketballRobot.Y;
 
-				RobotGoTo(-9 - Correction_X, 3.7f + Correction_Y, -90);
+				RobotGoTo(-8.5f, 4.2f, -270);
 
 				//雷达找框
 				FindBasketry();
 
-				if (!DownShotUp())
-					break;
-
+				while(ShotUp());
+				delay_ms(2000);
+				RobotArm_exit(UP);
 				//RobotGoTo(A);
-				RobotGoTo(BasketballRobot.PX - Correction_X, BasketballRobot.PY + Correction_Y, -90);
+				RobotGoTo(BasketballRobot.PX , BasketballRobot.PY , -290);
 
-				RobotGoTo(0 - Correction_X, 2 + Correction_Y, 0);
+				RobotGoTo(-1.5f, 2.5f, 0);
 				FindBall_VandR(qiu);
 
-				//判断是否找到球，如果没有
-				if (findballtime == 0)
-				{ //没找到球
-					RobotGoTo(-3 - Correction_X, 2 + Correction_Y, 0);
-					FindBall_VandR(qiu);
-				}
+//				//判断是否找到球，如果没有
+//				if (findballtime == 0)
+//				{ //没找到球
+//					RobotGoTo(3 + Correction_X, 2 + Correction_Y, 0);
+//					FindBall_VandR(qiu);
+//				}
 
-				RobotGoTo(BasketballRobot.PX - Correction_X, BasketballRobot.PY + Correction_Y, 0);
-				RobotGoTo(-9 - Correction_X, 3.7f + Correction_Y, -90);
+				RobotGoTo(BasketballRobot.PX, BasketballRobot.PY, 0);
+				RobotGoTo(-8.5f, 4.2f, -270);
 
 				//雷达找框
 				FindBasketry();
-
-				if (!DownShotUp())
-					break;
+				delay_ms(2000);
+//				while(ShotUp());
+				SetPWM(0,0,0);
+	
 				break;
 			case 1: //下场
-				RobotGoTo(5 + Correction_X, 2 + Correction_Y, 45);
+				SetPWM(-400,0,400);
+				delay_ms(2000);
+				RobotGoTo(4.3f, 2.5f, 290);
 				FindBall_VandR(qiu);
 
 				//记录铲球点A的位置
 				BasketballRobot.PX = BasketballRobot.X;
 				BasketballRobot.PY = BasketballRobot.Y;
 
-				RobotGoTo(9 + Correction_X, 3.7f + Correction_Y, 90);
+//				RobotGoTo(8.5f, 4.2f, 270);
+				RobotGoTo(4.3f, 3.6f, 270);
 
 				//雷达找框
 				FindBasketry();
 
-				if (!DownShotUp())
-					break;
-
+//				while(ShotUp());
+				delay_ms(2000);
+				RobotArm_exit(UP);
 				//RobotGoTo(A);
-				RobotGoTo(BasketballRobot.PX + Correction_X, BasketballRobot.PY + Correction_Y, 90);
+				RobotGoTo(BasketballRobot.PX , BasketballRobot.PY , 290);
 
-				RobotGoTo(0 + Correction_X, 2 + Correction_Y, 0);
+				RobotGoTo(1.5f, 2.5f, 0);
 				FindBall_VandR(qiu);
 
-				//判断是否找到球，如果没有
-				if (findballtime == 0)
-				{ //没找到球
-					RobotGoTo(3 + Correction_X, 2 + Correction_Y, 0);
-					FindBall_VandR(qiu);
-				}
+//				//判断是否找到球，如果没有
+//				if (findballtime == 0)
+//				{ //没找到球
+//					RobotGoTo(3 + Correction_X, 2 + Correction_Y, 0);
+//					FindBall_VandR(qiu);
+//				}
 
-				RobotGoTo(BasketballRobot.PX + Correction_X, BasketballRobot.PY + Correction_Y, 0);
-				RobotGoTo(9 + Correction_X, 3.7f + Correction_Y, 90);
+				RobotGoTo(BasketballRobot.PX, BasketballRobot.PY, 0);
+				RobotGoTo(4.3f, 3.6f, 270);
 
 				//雷达找框
 				FindBasketry();
+				delay_ms(2000);
 
-				if (!DownShotUp())
-					break;
+//				while(ShotUp());
 				break;
 			}
 			break;
@@ -674,27 +673,30 @@ int main(void)
 					break;
 				break;
 			case 1: //下场
-				RobotGoTo(5 + Correction_X, 2 + Correction_Y, 30);
+				SetPWM(-400,0,400);
+				delay_ms(2000);
+				RobotGoTo(4.3f, 2.5f, 290);
 				FindBall_VandR(qiu);
 
-				RobotRotate(90);
-				RobotGoTo(9.0f + Correction_X, 3.7f + Correction_Y, 90);
+//				RobotGoTo(8.5f, 4.2f, 270);
+				RobotGoTo(4.3f, 3.6f, 270);
 
 				//雷达找框
 				FindBasketry();
+				delay_ms(2000);
+//				while (ShotUp());
 
-				if (!DownShotUp())
-					break;
-
-				RobotRotate(240);
+				RobotArm_exit(UP);
+				RobotRotate(145);
+				while(LimitSwitchUp==0);
 				FindBall_VandR(qiu);
-				RobotGoTo(9 + Correction_X, 3.7f + Correction_Y, 90);
-
+				
 				//雷达找框
+				RobotGoTo(4.3f, 3.6f, 270);
 				FindBasketry();
-
-				if (!DownShotUp())
-					break;
+				delay_ms(2000);
+//				while(ShotUp());
+				SetPWM(0,0,0);
 				break;
 			}
 			break;

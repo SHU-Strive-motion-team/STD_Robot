@@ -100,6 +100,8 @@ struct VISION
 	
 	uint32_t X;		//X位置，横轴
 	
+	u8 goBackSign; 	//回位标志
+	
 	u8 State;	//状态
 };
 

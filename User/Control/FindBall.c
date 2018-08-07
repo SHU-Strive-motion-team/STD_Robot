@@ -22,6 +22,10 @@ void FindBasketball_double(void)
 {
 	USART_SendData(USART1, '5');
 }
+void FindFindVolleyball_double(void)
+{
+	USART_SendData(USART1, '6');
+}
 void FindFrame(void)
 {
 	USART_SendData(USART1, 'a');
@@ -402,6 +406,14 @@ void FindBall_VandR(u8 ball)
 		FindBasketball_double();
 		delay_ms(100);
 		FindBasketball_double();
+		break;
+	case 6:
+		FindFindVolleyball_double();
+		delay_ms(100);
+		FindFindVolleyball_double();
+		delay_ms(100);
+		FindFindVolleyball_double();
+		break;
 		
 	}
 	SetPWM(0, 0, 0);
@@ -632,11 +644,15 @@ void FindBall_VandR(u8 ball)
 			else
 			{
 				SetPWM(0, 0, 0);
-				while(LimitSwitchDown == 0);
-				//Robot_armDown();
-				GetMotorVelocity_Self(0,150, 0); //原来0 7 0
-				SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
-
+				if(LimitSwitchUp == 0)
+				{
+					while(LimitSwitchDown == 0);
+					//Robot_armDown();
+					GetMotorVelocity_Self(0,150, 0); //原来0 7 0
+					SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
+				}
+				else
+					Robot_armDown();
 				if (Radar.Distance < 350)
 					break;
 			}
@@ -675,7 +691,7 @@ void FindBasketry(void)
 
 		if (Radar.Distance < 1500)
 			continue;
-		if (Radar.Distance > 3000)
+		if (Radar.Distance > 4000)
 		{
 			D_theta = BasketballRobot.ThetaD - theta;
 			
@@ -693,12 +709,12 @@ void FindBasketry(void)
 		}
 		else if (Radar.Distance > 3000 && Radar.Angle < RADAR_MID - 10)
 		{ 
-			GetMotorVelocity_Self(20, 300, 0);
+			GetMotorVelocity_Self(-20, 200, 0);
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
 		else if (Radar.Distance > 3000 && Radar.Angle > RADAR_MID + 10)
 		{ 
-			GetMotorVelocity_Self(-20, 300, 0);
+			GetMotorVelocity_Self(20, 200, 0);
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
 		else if (Radar.Distance > 3000)
@@ -708,59 +724,80 @@ void FindBasketry(void)
 		}
 		else if (Radar.Angle < RADAR_MID - 10)
 		{
-			GetMotorVelocity_Self(20, 0, 0);
+			GetMotorVelocity_Self(-20, 0, 0);
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
 		else if (Radar.Angle > RADAR_MID + 10)
 		{
-			GetMotorVelocity_Self(-20, 0, 0);
+			GetMotorVelocity_Self(20, 0, 0);
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
 		
 		else if (Radar.Distance > DIS_RADAR + 100)
 		{
-			GetMotorVelocity_Self(0, 20, 0);
+			GetMotorVelocity_Self(0, 200, 0);
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
 		else if (Radar.Distance < DIS_RADAR - 100)
 		{
-			GetMotorVelocity_Self(0, -20, 0);
+			GetMotorVelocity_Self(0, -200, 0);
+			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
+		}
+		else if ((Radar.Angle < RADAR_MID - 5)&&(Radar.Distance > DIS_RADAR + 40))
+		{
+			GetMotorVelocity_Self(-5, 80, 0); //?-à′-80 0 0
+			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
+		}
+		else if ((Radar.Angle > RADAR_MID + 5)&&(Radar.Distance > DIS_RADAR + 40))
+		{
+			GetMotorVelocity_Self(5, 80, 0); //?-à′80 0 0
+			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
+		}
+		else if ((Radar.Angle < RADAR_MID - 5)&&(Radar.Distance < DIS_RADAR - 40))
+		{
+			GetMotorVelocity_Self(-5, -80, 0); //?-à′-80 0 0
+			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
+		}
+		else if ((Radar.Angle > RADAR_MID + 5)&&(Radar.Distance < DIS_RADAR - 40))
+		{
+			GetMotorVelocity_Self(5, -80, 0); //?-à′80 0 0
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
 		else if (Radar.Angle < RADAR_MID - 5)
 		{
-			GetMotorVelocity_Self(5, 0, 0); //?-à′-80 0 0
+			GetMotorVelocity_Self(-5, 0, 0); //?-à′-80 0 0
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
 		else if (Radar.Angle > RADAR_MID + 5)
 		{
-			GetMotorVelocity_Self(-5, 0, 0); //?-à′80 0 0
+			GetMotorVelocity_Self(5, 0, 0); //?-à′80 0 0
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
+		
 		else if ((Radar.Angle < RADAR_MID - 5) && (Radar.Angle > RADAR_MID - 2))
 		{
-			GetMotorVelocity_Self(3, 0, 0); //?-à′-80 0 0
+			GetMotorVelocity_Self(-3, 0, 0); //?-à′-80 0 0
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
 		else if ((Radar.Angle > RADAR_MID + 5) && (Radar.Angle > RADAR_MID + 2))
 		{
-			GetMotorVelocity_Self(-3, 0, 0); //?-à′80 0 0
+			GetMotorVelocity_Self(3, 0, 0); //?-à′80 0 0
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
 		else if (Radar.Distance > DIS_RADAR + 10)
 		{
-			GetMotorVelocity_Self(0, 10, 0);
+			GetMotorVelocity_Self(0, 60, 0);
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
 		else if (Radar.Distance < DIS_RADAR - 10)
 		{
-			GetMotorVelocity_Self(0, -10, 0);
+			GetMotorVelocity_Self(0, -60, 0);
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
 		else
 		{
 			SetPWM(0, 0, 0);
-			//			Robot_armDown();
+			Robot_armDown();
 			break;
 		}
 	} while (1);
@@ -770,6 +807,8 @@ void FindBasketry(void)
 void GoBack_Vision(void)
 {
 	float w = 200;
+	
+	u16 vision_centre = 320;
 
 	u8 time = 1;
 
@@ -792,8 +831,7 @@ void GoBack_Vision(void)
 	do
 	{
 		//等待数据接收完成
-		while (Vision.RX_STA & 0x8000)
-			;
+		while ((Vision.RX_STA & 0x8000) == 0);
 
 		//所得数据无效
 		if (!GetVisionData())
@@ -816,62 +854,66 @@ void GoBack_Vision(void)
 			time = 1;
 		}
 
-		//没找到框,自转
+		//没找到框,自己回位
 		if (time == 0)
 		{
-			RobotGoTo(0,0,0);
+			RobotGoTo(0,0,180);
 		}
 
 		//无效数据
 
-		else if ((Vision.X < VISION_MID - 30) )
+		else if ((Vision.X < vision_centre - 30) )
 		{
-			GetMotorVelocity_Self(5, 0, 0); //原来 -50 10 0
+			GetMotorVelocity_Self(-10, 0, 0); //原来 -50 10 0
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
-		else if ((Vision.X > VISION_MID + 30) )
+		else if ((Vision.X > vision_centre + 30) )
 		{
-			GetMotorVelocity_Self(-5, 0, 0);
-			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
-		}
-		
-		else if ((Vision.X < VISION_MID - 20))
-		{
-			GetMotorVelocity_Self(4, 0, 0); //原来-40 0 0
-			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
-		}
-		else if ((Vision.X > VISION_MID + 20))
-		{
-			GetMotorVelocity_Self(-4, 0, 0); //原来4 0 0
+			GetMotorVelocity_Self(10, 0, 0);
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
 		
-		else if (Vision.X < VISION_MID - 30)
+		else if ((Vision.X < vision_centre - 20))
 		{
-			GetMotorVelocity_Self(3, 0, 0); //原来-30 0 0
-			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
-			;
-		}
-		else if (Vision.X > VISION_MID + 30)
-		{
-			GetMotorVelocity_Self(-3, 0, 0); //原来30 0 0
+			GetMotorVelocity_Self(-8, 0, 0); //原来-40 0 0
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
-		else if (Vision.X <= VISION_MID + 30 && Vision.X > VISION_MID + 10)
+		else if ((Vision.X > vision_centre + 20))
 		{
-			GetMotorVelocity_Self(-1.5, 0, 0); //原来15 0 0
+			GetMotorVelocity_Self(8, 0, 0); //原来4 0 0
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
-		else if (Vision.X >= VISION_MID - 30 && Vision.X < VISION_MID - 10)
+		
+//		else if (Vision.X < vision_centre - 30)
+//		{
+//			GetMotorVelocity_Self(3, 0, 0); //原来-30 0 0
+//			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
+//		}
+//		else if (Vision.X > vision_centre + 30)
+//		{
+//			GetMotorVelocity_Self(-3, 0, 0); //原来30 0 0
+//			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
+//		}
+		else if (Vision.X <= vision_centre + 20 && Vision.X > vision_centre + 10)
 		{
-			GetMotorVelocity_Self(1.5, 0, 0); //原来-15 0 0
+			GetMotorVelocity_Self(3, 0, 0); //原来15 0 0
+			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
+		}
+		else if (Vision.X >= vision_centre - 20 && Vision.X < vision_centre - 10)
+		{
+			GetMotorVelocity_Self(-3, 0, 0); //原来-15 0 0
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
 		else
 		{
+			
+		}
+		if(Vision.goBackSign == 'z')
+		{
+			SetPWM(0,0,0);
 			BasketballRobot.X=0;
-			SetPWM(0, 0, 0);
-			RobotGoTo(0,0,180);
+			RobotGoTo(BasketballRobot.X,BasketballRobot.Y+1.2,BasketballRobot.ThetaD);
+			SetPWM(0,0,0);
 			break;
 		}
 	} while (1);
