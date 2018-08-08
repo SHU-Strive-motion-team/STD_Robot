@@ -26,6 +26,14 @@ void FindFindVolleyball_double(void)
 {
 	USART_SendData(USART1, '6');
 }
+void FindFindVolleyball_jindian(void)
+{
+	USART_SendData(USART1, '7');
+}
+void FindFindbasketball_jindian(void)
+{
+	USART_SendData(USART1, '8');
+}
 void FindFrame(void)
 {
 	USART_SendData(USART1, 'a');
@@ -414,6 +422,20 @@ void FindBall_VandR(u8 ball)
 		delay_ms(100);
 		FindFindVolleyball_double();
 		break;
+	case 7:
+		FindFindVolleyball_jindian();
+		delay_ms(100);
+		FindFindVolleyball_jindian();
+		delay_ms(100);
+		FindFindVolleyball_jindian();
+		break;
+	case 8:
+		FindFindbasketball_jindian();
+		delay_ms(100);
+		FindFindbasketball_jindian();
+		delay_ms(100);
+		FindFindbasketball_jindian();
+		break;
 		
 	}
 	SetPWM(0, 0, 0);
@@ -644,15 +666,15 @@ void FindBall_VandR(u8 ball)
 			else
 			{
 				SetPWM(0, 0, 0);
-				if(LimitSwitchUp == 0)
-				{
-					while(LimitSwitchDown == 0);
-					//Robot_armDown();
+//				if(LimitSwitchUp == 0)
+//				{
+//					while(LimitSwitchDown == 0);
+					Robot_armDown();
 					GetMotorVelocity_Self(0,150, 0); //原来0 7 0
 					SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
-				}
-				else
-					Robot_armDown();
+//				}
+//				else
+//					Robot_armDown();
 				if (Radar.Distance < 350)
 					break;
 			}
@@ -806,13 +828,13 @@ void FindBasketry(void)
 //视觉回位
 void GoBack_Vision(void)
 {
-	float w = 200;
+	float w = 10;
 	
-	u16 vision_centre = 320;
+	u16 vision_centre = 360;
 
 	u8 time = 1;
 
-	float theta = BasketballRobot.ThetaR, D_theta = 0;
+	float x = BasketballRobot.X, D_x = 0;
 
 	//发a给视觉调用回位代码
 	FindFrame();
@@ -842,7 +864,7 @@ void GoBack_Vision(void)
 			//尝试五次
 			else if (time++ < 10)
 			{
-				//SetPWM(0,0,0);
+				SetPWM(0,0,0);
 				continue;
 			}
 			//尝试五次后仍未找到框
@@ -857,7 +879,19 @@ void GoBack_Vision(void)
 		//没找到框,自己回位
 		if (time == 0)
 		{
-			RobotGoTo(0,0,180);
+			D_x = BasketballRobot.X - x;
+			if (D_x  >0.3)
+			{
+				w = -10;
+			}
+			if (D_x < -0.3)
+			{
+				w = 10;
+			}
+			GetMotorVelocity(w, 0, 0);
+			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
+
+			LCD_Show_pwm();
 		}
 
 		//无效数据
@@ -906,13 +940,14 @@ void GoBack_Vision(void)
 		}
 		else
 		{
-			
+			GetMotorVelocity_Self(0, 100, 0); //原来-15 0 0
+			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
 		if(Vision.goBackSign == 'z')
 		{
 			SetPWM(0,0,0);
 			BasketballRobot.X=0;
-			RobotGoTo(BasketballRobot.X,BasketballRobot.Y+1.2,BasketballRobot.ThetaD);
+			RobotGoTo(BasketballRobot.X,BasketballRobot.Y+1.8,BasketballRobot.ThetaD);
 			SetPWM(0,0,0);
 			break;
 		}

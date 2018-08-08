@@ -701,7 +701,7 @@ void LCD_Init(void)
 		FSMC_Bank1E->BWTR[6]|=10<<0;	//地址建立时间（ADDSET）为10个HCLK =60ns  	 
 		FSMC_Bank1E->BWTR[6]|=12<<8; 	//数据保存时间为6ns*13个HCLK=96ns
 	}
-	printf(" LCD ID:%x\r\n",lcddev.id); //打印LCD ID  
+	//printf(" LCD ID:%x\r\n",lcddev.id); //打印LCD ID  
 	if(lcddev.id==0X9341)	//9341初始化
 	{	 
 		LCD_WR_REG(0xCF);  

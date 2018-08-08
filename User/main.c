@@ -195,7 +195,14 @@ int main(void)
 				break;
 			case 3:
 				//红外测试
-				GetInfraredState();
+				//GetInfraredState();
+				while(1)
+				{
+					if(LimitSwitchUp ==1)
+						BEEP = 1;
+					else
+						BEEP = 0;
+				}
 				BEEP = 1;
 				delay_ms(2000);
 				BEEP = 0;
@@ -256,11 +263,10 @@ int main(void)
 				GoBack_Vision();
 				break;
 			case 9:
-				SetPWM(-200,0,200);
-				delay_ms(2000);
-				SetPWM(-400,0,400);
-				delay_ms(1000);
-				SetPWM(-600, 0, 600);
+				FindBall_VandR(5);
+				RobotRotate(270);
+				delay_ms(3000);
+				RobotGoAvoidance();
 				break;
 			case 10:
 				FindBall_vision(changdi);
@@ -281,8 +287,11 @@ int main(void)
 				SetPWM(-400,0,400);
 				delay_ms(1000);
 				RobotArm_exit(DOWN);
-				RobotGoTo(1.5, 2.5, 250);
-				while (ShotUp());
+				RobotGoTo(1, 2.5, 250);
+				//while (ShotUp());
+				while(LimitSwitchDown ==0);
+				delay_ms(2000);
+				RobotArm_exit(UP);
 				RobotRotate(0);
 				FindBall_VandR(qiu);
 
@@ -293,13 +302,14 @@ int main(void)
 //					FindBall_VandR(qiu);
 //				}
 
-				RobotGoTo(1.5, 2.5 , 250);
+				RobotGoTo(1, 2.5 , 250);
 				while(LimitSwitchUp == 0);
 				Robot_armDown();
-				while (ShotUp());
+				//while (ShotUp());
+				delay_ms(2000);
 				RobotArm_exit(UP);
-				RobotGoTo(0, 1 ,180);
-				RobotGoTo(0,0,180);
+				RobotGoTo(0, 1 ,0);
+				RobotGoTo(0,0,0);
 				//加视觉找框回位
 				break;
 			case 0: //上场
@@ -379,7 +389,7 @@ int main(void)
 				SetPWM(-400,0,400);
 				delay_ms(1000);
 				RobotGoTo(1.5, 2.5 ,0);
-				delay_ms(2000);
+				
 				FindBall_VandR(5);
 //				//判断是否找到球，如果没有
 //				if (findballtime == 0)
@@ -463,12 +473,13 @@ int main(void)
 //				}
 				SetPWM(-400,0,400);
 				delay_ms(1000);
-				RobotGoTo(4.5f, 2.5f, 270);
-				FindBall_VandR(5);
+				RobotGoTo(3.8f, 1.8f, 290);
+				FindBall_VandR(7);
 
 				//记录铲球点A的位置
 				BasketballRobot.PX = BasketballRobot.X;
 				BasketballRobot.PY = BasketballRobot.Y;
+				RobotGoTo(5.3f, BasketballRobot.PY,160);
 				RobotGoTo(5.3f, 3.3f,160);
 				while(LimitSwitchUp==0);
 				Robot_armDown();
@@ -477,12 +488,15 @@ int main(void)
 //				while(ShotUp());
 //				//原路返回
 //				RobotGoTo(4.5f, 2.5f, 270);
-				RobotGoTo(BasketballRobot.PX-0.35f , BasketballRobot.PY-0.35f , 270);
+				RobotGoTo(5.5 , BasketballRobot.PY , 270);
+				RobotGoTo(BasketballRobot.X+0.2 , BasketballRobot.PY , 270);
+				
 				FindBall_VandR(5);
 //				FindBall_radar();
 
 				//原路返回
-				RobotGoTo(BasketballRobot.PX, BasketballRobot.PY , 270);
+				RobotGoTo(BasketballRobot.PX+0.2, BasketballRobot.PY , 270);
+				RobotGoTo(5.3f, BasketballRobot.PY,160);
 				RobotGoTo(5.3f, 3.3f,160);
 				while(LimitSwitchUp==0);
 				Robot_armDown();

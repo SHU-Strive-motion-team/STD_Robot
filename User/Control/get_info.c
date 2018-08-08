@@ -226,18 +226,21 @@ u8 GetYaw(void)
 	if(USART2_RX_STA&0x8000)	
 	{
 		//(Re_buf [7]<<8| Re_buf [6]))/32768.0*180;
-		BasketballRobot.theta_offset[0] =  BasketballRobot.theta_offset[1];
-		BasketballRobot.theta_offset[1] = ((float)((USART2_RX_BUF[7] << 8) | USART2_RX_BUF[6])) / 32768 * 180;
-		
-		BasketballRobot.theta_offset[2] = BasketballRobot.theta_offset[1]- BasketballRobot.theta_offset[0];
-		
-		if(BasketballRobot.theta_offset[2] > 300)
-			BasketballRobot.theta_offset[2] -= 360;
-		if(BasketballRobot.theta_offset[2] < -300)
-			BasketballRobot.theta_offset[2] += 360;
-		
-		BasketballRobot.ThetaD += BasketballRobot.theta_offset[2]/103.0f*90; //90/103.0f*360/(360+8/3) = 0.86736
+//		BasketballRobot.theta_offset[0] =  BasketballRobot.theta_offset[1];
+//		BasketballRobot.theta_offset[1] = ((float)((USART2_RX_BUF[7] << 8) | USART2_RX_BUF[6])) / 32768 * 180;
+//		
+//		BasketballRobot.theta_offset[2] = BasketballRobot.theta_offset[1]- BasketballRobot.theta_offset[0];
+//		
+//		if(BasketballRobot.theta_offset[2] > 300)
+//			BasketballRobot.theta_offset[2] -= 360;
+//		if(BasketballRobot.theta_offset[2] < -300)
+//			BasketballRobot.theta_offset[2] += 360;
+//		
+//		BasketballRobot.ThetaD += BasketballRobot.theta_offset[2]/103.0f*90; //90/103.0f*360/(360+8/3) = 0.86736
+//		BasketballRobot.ThetaR = BasketballRobot.ThetaD * PI / 180;
+		BasketballRobot.ThetaD = ((float)((USART2_RX_BUF[7] << 8) | USART2_RX_BUF[6])) / 32768 * 180;
 		BasketballRobot.ThetaR = BasketballRobot.ThetaD * PI / 180;
+		
 		
 		while(BasketballRobot.ThetaR < 0)
 				BasketballRobot.ThetaR  = BasketballRobot.ThetaR + PI + PI;
