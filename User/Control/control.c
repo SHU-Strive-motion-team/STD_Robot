@@ -16,12 +16,12 @@ void Control_Init(void)
 	BasketballRobot.Vy = 0; //机器人在坐标系y方向速度
 	BasketballRobot.W = 0;  //机器人角速度，顺时针正方向
 
-	BasketballRobot.xPD.Kp = 0;
-	BasketballRobot.xPD.Kd = 0;
-	BasketballRobot.yPD.Kp = 0;
-	BasketballRobot.yPD.Kd = 0;
-	BasketballRobot.wPD.Kp = 0;
-	BasketballRobot.wPD.Kd = 0;
+//	BasketballRobot.xPD.Kp = 0;
+//	BasketballRobot.xPD.Kd = 0;
+//	BasketballRobot.yPD.Kp = 0;
+//	BasketballRobot.yPD.Kd = 0;
+//	BasketballRobot.wPD.Kp = 0;
+//	BasketballRobot.wPD.Kd = 0;
 
 	BasketballRobot.w[1] = 0; //第一个编码器速度
 	BasketballRobot.w[2] = 0; //第二个编码器速度
@@ -110,9 +110,9 @@ void GetMotorVelocity(float vx, float vy, float w)
 	L[2][0] = 0.5;
 	L[2][1] = -0.8660254037844386;
 	L[2][2] = -MOTOR_L;
-	//		cos(theta)	sin(theta)	0
-	//theta= -sin(theta)	cos(theta) 	0
-	//		 	0			0		1
+	//			cos(theta)	sin(theta)	0
+	//theta= 	-sin(theta)	cos(theta) 	0
+	//		 	0			0			1
 	theta[0][0] = cos(BasketballRobot.ThetaR);
 	theta[0][1] = sin(BasketballRobot.ThetaR);
 	theta[0][2] = 0;
@@ -173,9 +173,9 @@ void GetMotorVelocity_Self(float vx, float vy, float w)
 	L[2][0] = 0.5;
 	L[2][1] = -0.8660254037844386;
 	L[2][2] = -MOTOR_L;
-	//		cos(0)	sin(0)	0
-	//theta= -sin(0)	cos(0) 	0
-	//		 0			0		1
+	//			cos(0)	sin(0)	0
+	//theta= 	-sin(0)	cos(0) 	0
+	//		 	0		0		1
 	theta[0][0] = 1;
 	theta[0][1] = 0;
 	theta[0][2] = 0;
@@ -223,7 +223,7 @@ void GetInfraredState(void)
 //铲球电机状态
 void shoveMotor(shovemotor t)
 {
-	u16 speed = 2000;
+	//u16 speed = 2000;
 
 	if (t == STOP)
 	{
@@ -234,25 +234,19 @@ void shoveMotor(shovemotor t)
 	{
 		//CH1高电平,铲子向上，接黑线，电机反转
 		TIM_SetCompare2(TIM9, 0);
-		TIM_SetCompare1(TIM9, speed + 1500);
+		TIM_SetCompare1(TIM9, 3500);
 	}
 	else if (t == DOWN)
 	{
 		//CH2高电平,铲子向下，接红线，电机正转
 		TIM_SetCompare1(TIM9, 0);
-		TIM_SetCompare2(TIM9, speed - 1000);
+		TIM_SetCompare2(TIM9, 1000);
 	}
 }
 
 //机械臂下降
 void Robot_armDown(void)
 {
-	//原来板子：3000
-	//V1.0：1750
-	u16 i, t;
-	//	u16 W=2700;
-	u16 nms = 2000;
-
 	if (LimitSwitchDown == 1)
 	{
 		shoveMotor(STOP);
@@ -264,7 +258,7 @@ void Robot_armDown(void)
 		shoveMotor(DOWN);
 		if (LimitSwitchDown == 1)
 		{
-			delay_ms(10);
+			delay_ms(5);
 			if (LimitSwitchDown == 1)
 			{
 				shoveMotor(STOP);
@@ -273,30 +267,9 @@ void Robot_armDown(void)
 		}
 	}
 	shoveMotor(STOP);
-//EXTIX_Enable(1);
 #ifdef ZQD_DEBUG
 	BEEP = 1;
 #endif
-	//	shoveMotor(DOWN);
-
-	//	LED1 = 1;
-	//	for(i=0;i<nms;i++)
-	//	{
-	//		if(LimitSwitchDown == 1)
-	//		{
-	//			for(t=0;t<0xff;t++);
-	//			if(LimitSwitchDown==1)
-	//			{
-	//				shoveMotor(STOP);
-	//				break;
-	//			}
-	//		}
-	//		for(t=0;t<0x4fff;t++)
-	//			if(LimitSwitchDown == 1)
-	//				break;
-	//	}
-	//	shoveMotor(STOP);
-
 #ifdef ZQD_DEBUG
 	BEEP = 0;
 #endif
@@ -305,12 +278,6 @@ void Robot_armDown(void)
 //机械臂上升
 void Robot_armUp(void)
 {
-	//原来板子：1960
-	//V1.0:550
-	u16 i, t;
-	//	u16 W=2700;
-	u16 nms = 2000;
-
 	if (LimitSwitchUp == 1)
 	{
 		shoveMotor(STOP);
@@ -321,7 +288,7 @@ void Robot_armUp(void)
 	{
 		if (LimitSwitchUp == 1)
 		{
-			delay_ms(10);
+			delay_ms(5);
 			if (LimitSwitchUp == 1)
 			{
 				shoveMotor(STOP);
@@ -329,28 +296,9 @@ void Robot_armUp(void)
 			}
 		}
 	}
-//EXTIX_Enable(0);
 #ifdef ZQD_DEBUG
 	BEEP = 1;
 #endif
-
-	//	shoveMotor(UP);
-	//	for(i=0;i<nms;i++)
-	//	{
-	//		if(LimitSwitchUp == 1)
-	//		{
-	//			for(t=0;t<0xff;t++);
-	//			if(LimitSwitchUp == 1)
-	//			{
-	//				shoveMotor(STOP);
-	//				break;
-	//			}
-	//		}
-	//		for(t=0;t<0x4fff;t++)
-	//			if(LimitSwitchUp == 1)
-	//				break;
-	//	}
-	//	shoveMotor(STOP);
 
 #ifdef ZQD_DEBUG
 	BEEP = 0;
@@ -470,10 +418,10 @@ static float adjustAngleV_PD(float D_Theta)
 		Vw = 300;
 	else if (Vw < -300)
 		Vw = -300;
-	if (Vw < 3 && Vw > 0)
-		Vw = 3;
-	if (Vw > -3 && Vw < 0)
-		Vw = 0;
+	if (Vw < 5 && Vw > 0)
+		Vw = 5;
+	if (Vw > -5 && Vw < 0)
+		Vw = -5;
 
 	return Vw;
 }
@@ -572,6 +520,7 @@ static float adjustVx_PD(float D_X)
 }
 
 //根据偏差大小调整角速度
+//舍弃不用，采用PD调节
 static float adjustAngleV(float D_Theta)
 {
 	float Vw = 0;
@@ -647,6 +596,7 @@ static float adjustAngleV(float D_Theta)
 }
 
 //根据偏差大小调整Y轴速度
+//舍弃不用，采用PD调节
 static float adjustVy(float D_Y)
 {
 	float sy;
@@ -696,6 +646,7 @@ static float adjustVy(float D_Y)
 }
 
 //根据偏差大小调整X轴速度
+//舍弃不用，采用PD调节
 static float adjustVx(float D_X)
 {
 	float sx;
@@ -805,23 +756,11 @@ void RobotRotate(float theta)
 //Theta_I:目标坐标的角度
 void RobotGoTo(float X_I, float Y_I, float Theta_I)
 {
-	float D_Theta, D_X, D_Y, Vw = 0, sx, sy = 0,angle;
+	float D_Theta, D_X, D_Y, Vw = 0, sx, sy = 0;
 
 	D_Theta = Theta_I - BasketballRobot.ThetaD; //角度差
 	D_X = X_I - BasketballRobot.X;
 	D_Y = Y_I - BasketballRobot.Y;
-
-//	angle = atan2(D_Y, D_X);
-
-//	// if (angle > 0)
-//	// 	angle = PI / 2 - angle;
-
-//	// else
-//	// 	angle = -PI / 2 - angle;
-
-//	angle = (angle - PI/2)*180/PI;
-
-//	RobotRotate(angle);
 
 	while (fabs(D_Y) > 0.05f || fabs(D_X) > 0.05f)
 	{
@@ -842,16 +781,62 @@ void RobotGoTo(float X_I, float Y_I, float Theta_I)
 		D_X = X_I - BasketballRobot.X;
 		D_Y = Y_I - BasketballRobot.Y;
 	}
-	SetPWM(0, 0, 0);
-	delay_ms(100);
+	//SetPWM(0, 0, 0);
+	//delay_ms(100);
 	RobotRotate(Theta_I);
+	SetPWM(0, 0, 0);
+}
+
+//折线直行 前三个参数为目标点,后三个参数为中间点
+void RobotGoBrokenLine(float X_I,float Y_I,float Theta_I,float pointX, float pointY,float pointTheta)
+{
+	float D_Theta, D_X, D_Y, Vw = 0, sx, sy = 0;
+	int8_t flagX,flagY; // 判断走中间点是否超调
+
+	D_Theta = pointTheta - BasketballRobot.ThetaD; //角度差
+	//加快到中间点的速度
+	D_X = (pointX - BasketballRobot.X) * 2;
+	D_Y = (pointY - BasketballRobot.Y) * 2;
+
+	if (D_X >= 0)
+		flagX = 1;
+	else
+		flagX = -1;
+
+	if (D_Y >= 0)
+		flagY = 1;
+	else
+		flagY = -1;
+
+	while (1)
+	{	
+		sy = adjustVy_PD(D_Y);
+		sx = adjustVx_PD(D_X);
+		Vw = adjustAngleV_PD(D_Theta) / 2;
+
+		GetMotorVelocity(sx, sy, Vw);
+		SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
+
+		D_Theta = pointTheta - BasketballRobot.ThetaD; //角度差
+		//加快到中间点的速度
+		D_X = (pointX - BasketballRobot.X) * 2;
+		D_Y = (pointY - BasketballRobot.Y) * 2;
+
+		//走到点或超调后跳出
+		if(fabs(D_Y) > 0.1f && fabs(D_X) > 0.1f)
+			break;
+		if (D_X * flagX <= 0 && D_Y * flagY <= 0)
+			break;
+	}
+
+	RobotGoTo(X_I,Y_I,Theta_I);
 }
 
 //避障直行
 //直行1m
 void RobotGoAvoidance(void)
 {
-float w = 100;
+	//float w = 100;
 	float theta = BasketballRobot.ThetaD, D_theta = 0;
 
 	SetPWM(0, 0, 0);
@@ -866,7 +851,7 @@ float w = 100;
 		if (!GetRadarData())
 		{
 
-			//SetPWM(0, 0, 0);
+			SetPWM(0, 0, 0);
 			continue;
 		}
 		LED0 = !LED0;
@@ -955,7 +940,7 @@ void RobotGoToAvoid(float X_I, float Y_I, float Theta_I)
 
 	angle = atan2(D_Y, D_X);
 
-	if (angle > 0)
+	//if (angle > 0)
 		angle = PI / 2 - angle;
 
 //	else

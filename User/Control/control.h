@@ -62,9 +62,9 @@ struct ROBOT
 	float Vy;		//机器人在坐标系y方向速度	
 	float W;		//机器人角速度，顺时针正方向
 	
-	PD xPD;			//机器人在坐标系x方向 PD
-	PD yPD;
-	PD wPD;
+//	PD xPD;			//机器人在坐标系x方向 PD
+//	PD yPD;
+//	PD wPD;
 	
 	int16_t  w[3];				//编码器速度
 	int64_t encoderCount[3];	//编码器总计数
@@ -156,6 +156,7 @@ static float adjustVx_PD(float D_X);			//根据偏差大小调整X轴速度
 
 
 void RobotRotate(float theta);	//自旋运动，根据误差角度，自动调节
+void RobotGoBrokenLine(float X_I,float Y_I,float Theta_I,float pointX, float pointY,float pointTheta);
 void RobotGoToAvoid(float X_I, float Y_I, float Theta_I);
 void RobotGoTo(float X_I,float Y_I,float Theta_I);	//行至指定坐标
 void RobotGoAvoidance(void);	//避障直行

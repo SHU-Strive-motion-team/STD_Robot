@@ -17,7 +17,7 @@ int main(void)
 	//u8 chengxu = 0;				//程序选择
 	u8 flag = 0;
 	u8 qiu = 0;			 //找球
-						 //	int16_t time = 0;			//延时
+//	int16_t time = 0;			//延时
 	u8 findballtime = 0; //找球时调整角度次数
 	u8 i;
 
@@ -127,6 +127,7 @@ int main(void)
 
 		flag = 0;
 		key = 0;
+		//选择场地
 		while (1)
 		{
 			key = Remote_Scan();
@@ -185,7 +186,7 @@ int main(void)
 			case 2:
 				//机械臂上升
 				//Robot_armUp();
-			RobotArm_exit(UP);
+				RobotArm_exit(UP);
 				LED0 = !LED0;
 				BEEP = 1;
 				delay_ms(2000);
@@ -209,31 +210,31 @@ int main(void)
 				break;
 			case 4:
 				//弹射测试
-				while(1)
+				while (1)
 				{
 					key = Remote_Scan();
-						switch(key)
-						{
-							case KEY_1:
-							CHARGE=1;
-							break;
-							
-							case KEY_2:
-							CHARGE=0;
-							break;
-							
-							case KEY_3:
-							CHARGE=0;
-							delay_ms(1000);
-							SHOT=1;
-							delay_ms(1000);
-							SHOT=0;
-							
-							break;
-						}
-				}				
+					switch (key)
+					{
+					case KEY_1:
+						CHARGE = 1;
+						break;
+
+					case KEY_2:
+						CHARGE = 0;
+						break;
+
+					case KEY_3:
+						CHARGE = 0;
+						delay_ms(1000);
+						SHOT = 1;
+						delay_ms(1000);
+						SHOT = 0;
+
+						break;
+					}
+				}
 				break;
-				
+
 			case 5:
 				//避障测试
 				FindBall_radar();
@@ -454,13 +455,13 @@ int main(void)
 				while(ShotUp());
 //				//原路返回
 				RobotGoTo(-5.3 , BasketballRobot.PY , 90);
-				RobotGoTo(BasketballRobot.X+0.2 , BasketballRobot.PY ,90);
+				RobotGoTo(BasketballRobot.X+0.2f , BasketballRobot.PY ,90);
 				
 				FindBall_VandR(5);
 //				FindBall_radar();
 
 				//原路返回
-				RobotGoTo(BasketballRobot.PX+0.2, BasketballRobot.PY , 90);
+				RobotGoTo(BasketballRobot.PX+0.2f, BasketballRobot.PY , 90);
 				RobotGoTo(-5.3f, BasketballRobot.PY,-160);
 				RobotGoTo(-5.3f, 3.3f,-160);
 				while(LimitSwitchUp==0);
@@ -496,13 +497,13 @@ int main(void)
 				while(ShotUp());
 //				//原路返回
 				RobotGoTo(5.3 , BasketballRobot.PY , 270);
-				RobotGoTo(BasketballRobot.X+0.2 , BasketballRobot.PY , 270);
+				RobotGoTo(BasketballRobot.X+0.2f , BasketballRobot.PY , 270);
 				
 				FindBall_VandR(5);
 //				FindBall_radar();
 
 				//原路返回
-				RobotGoTo(BasketballRobot.PX+0.2, BasketballRobot.PY , 270);
+				RobotGoTo(BasketballRobot.PX+0.2f, BasketballRobot.PY , 270);
 				RobotGoTo(5.3f, BasketballRobot.PY,160);
 				RobotGoTo(5.3f, 3.3f,160);
 //				RobotGoTo(1.5,2.5,250);

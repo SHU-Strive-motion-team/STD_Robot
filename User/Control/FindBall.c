@@ -45,8 +45,8 @@ void FindFrame(void)
 void FindBall_vision(u8 ball)
 {
 	float w = 80;
-	float sx, sy;
-	float D_X, D_Y;
+//	float sx, sy;
+//	float D_X, D_Y;
 	u8 time = 1;
 
 	float theta = BasketballRobot.ThetaD, D_theta = 0;
@@ -278,7 +278,7 @@ void FindBall_radar(void)
 			//SetPWM(0, 0, 0);
 			continue;
 		}
-		LED0 = !LED0;
+		//LED0 = !LED0;
 
 		LCD_ShowString(30 + 200, 460, 200, 16, 16, "Radar:rad");
 		LCD_ShowNum(30 + 200 + 48 + 8 + 45, 460, Radar.Angle, 4, 16);
@@ -442,20 +442,11 @@ void FindBall_VandR(u8 ball)
 	LCD_Show_pwm();
 
 	//清空视觉串口数据
-	//while (Vision.RX_STA&0x8000);
-
 	Vision.RX_STA = 0;
 
 	//清空串口接收数据缓存
 	Radar.RX_STA = 0;
-
-	SetPWM(0, 0, 0);
-	LCD_Show_pwm();
-
-	//防止无效数据
-	//while (Radar.RX_STA&0x8000);
-	Radar.RX_STA = 0;
-
+	
 	do
 	{
 		while ((Vision.RX_STA & 0x8000) == 0);
@@ -512,19 +503,30 @@ void FindBall_VandR(u8 ball)
 			GetMotorVelocity_Self(-15, 300, 0); //原来 5 10 0
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
+		//先调整后直行
+		else if (Vision.X < VISION_MID - 30)
+		{
+			GetMotorVelocity_Self(15, 0, 0); //原来-3 0 0
+			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
+		}
+		else if (Vision.X > VISION_MID + 30)
+		{
+			GetMotorVelocity_Self(-15, 0, 0); //原来 3 0 0
+			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
+		}
 		else if ((Vision.X < VISION_MID - 20) && Vision.Depth > 1000)
 		{
-			GetMotorVelocity_Self(8, 300, 0); //原来-5 10 0
+			GetMotorVelocity_Self(10, 250, 0); //原来-5 10 0
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
 		else if ((Vision.X > VISION_MID + 20) && Vision.Depth > 1000)
 		{
-			GetMotorVelocity_Self(-8, 300, 0); //原来 5 10 0
+			GetMotorVelocity_Self(-10, 250, 0); //原来 5 10 0
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
 		else if (Vision.Depth > 1000)
 		{
-			GetMotorVelocity_Self(0, 300, 0);
+			GetMotorVelocity_Self(0, 250, 0);
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
 		else
@@ -548,14 +550,14 @@ void FindBall_VandR(u8 ball)
 			if (!GetVisionData())
 				SetPWM(0, 0, 0);
 
-			if (Vision.X < VISION_MID - 20)
+			if (Vision.X < VISION_MID - 30)
 			{
-				GetMotorVelocity_Self(10, 0, 0); //原来-4 0 0
+				GetMotorVelocity_Self(15, 0, 0); //原来-4 0 0
 				SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 			}
-			else if (Vision.X > VISION_MID + 20)
+			else if (Vision.X > VISION_MID + 30)
 			{
-				GetMotorVelocity_Self(-10, 0, 0); //原来4 0 0
+				GetMotorVelocity_Self(-15, 0, 0); //原来4 0 0
 				SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 			}
 
@@ -570,22 +572,22 @@ void FindBall_VandR(u8 ball)
 				SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 			}
 
-			else if (Vision.X < VISION_MID - 30)
+			else if (Vision.X < VISION_MID - 20)
 			{
 				GetMotorVelocity_Self(10, 0, 0); //原来-3 0 0
 				SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 			}
-			else if (Vision.X > VISION_MID + 30)
+			else if (Vision.X > VISION_MID + 20)
 			{
 				GetMotorVelocity_Self(-10, 0, 0); //原来 3 0 0
 				SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 			}
-			else if (Vision.X <= VISION_MID + 30 && Vision.X > VISION_MID + 10)
+			else if (Vision.X <= VISION_MID + 20 && Vision.X > VISION_MID + 10)
 			{
 				GetMotorVelocity_Self(-5, 0, 0); //原来 1.5 0 0
 				SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 			}
-			else if (Vision.X >= VISION_MID - 30 && Vision.X < VISION_MID - 10)
+			else if (Vision.X >= VISION_MID - 20 && Vision.X < VISION_MID - 10)
 			{
 				GetMotorVelocity_Self(5, 0, 0); //原来-1.5 0 0
 				SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
@@ -601,39 +603,35 @@ void FindBall_VandR(u8 ball)
 			}
 		}
 	}
-
+	//雷达距离合适，按照雷达数据寻找
 	if (Radar.Distance <= 1000)
 	{
-		LCD_ShowString(30 + 200, 500, 200, 16, 16, "Radar!");
-		//雷达距离合适，按照雷达数据寻找
+		LCD_ShowString(30 + 200, 500, 200, 16, 16, "Radar!");		
 		while (1)
-		{
-			
+		{	
 			while ((Radar.RX_STA & 0x8000) == 0);
-
-			//GetRadarData();
+			
 			GetVisionData();
 
 			if (!GetRadarData())
 			{
-				SetPWM(0,0,0);
-				//GetMotorVelocity_Self(0, 0, 0);
-				//SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
+				SetPWM(0,0,0);				
 				continue;
 			}		
 			else if(Radar.Distance > 800)
 			{
-				RobotArm_exit(DOWN);
-				GetMotorVelocity_Self(0, 200, 0); //原来 0 14 0
+				
+				//RobotArm_exit(DOWN);  去掉边调整边放铲，放置铲子挡住雷达
+				GetMotorVelocity_Self(0, 200, 0);
 				SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 			}
 
-			else if ((Radar.Angle < RADAR_MID - 10) && Radar.Distance > 700)
+			else if ((Radar.Angle < RADAR_MID - 10) /* && Radar.Distance > 700 */)
 			{
 				GetMotorVelocity_Self(-10, 0, 0); //原来-10 0 0
 				SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 			}
-			else if ((Radar.Angle > RADAR_MID + 10) && Radar.Distance > 700)
+			else if ((Radar.Angle > RADAR_MID + 10) /* && Radar.Distance > 700 */)
 			{
 				GetMotorVelocity_Self(10, 0, 0); //原来10 0 0
 				SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
@@ -666,15 +664,9 @@ void FindBall_VandR(u8 ball)
 			else
 			{
 				SetPWM(0, 0, 0);
-//				if(LimitSwitchUp == 0)
-//				{
-//					while(LimitSwitchDown == 0);
-					Robot_armDown();
-					GetMotorVelocity_Self(0,150, 0); //原来0 7 0
-					SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
-//				}
-//				else
-//					Robot_armDown();
+				Robot_armDown();
+				GetMotorVelocity_Self(0, 150, 0); //原来0 7 0
+				SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 				if (Radar.Distance < 350)
 					break;
 			}
@@ -709,7 +701,6 @@ void FindBasketry(void)
 			SetPWM(0, 0, 0);
 			//	continue;
 		}
-		LED0 = !LED0;
 
 		if (Radar.Distance < 1500)
 			continue;
@@ -724,19 +715,18 @@ void FindBasketry(void)
 			if ((D_theta < -30 && D_theta > -180) || (D_theta > 180 && D_theta < 330))
 			{
 				w = 100;
-			}
-			
-			
+			}			
 			SetPWM(w,w,w);
+			LCD_Show_pwm();
 		}
 		else if (Radar.Distance > 3000 && Radar.Angle < RADAR_MID - 10)
 		{ 
-			GetMotorVelocity_Self(-20, 200, 0);
+			GetMotorVelocity_Self(-20, 300, 0);
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
 		else if (Radar.Distance > 3000 && Radar.Angle > RADAR_MID + 10)
 		{ 
-			GetMotorVelocity_Self(20, 200, 0);
+			GetMotorVelocity_Self(20, 300, 0);
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
 		else if (Radar.Distance > 3000)
@@ -806,16 +796,27 @@ void FindBasketry(void)
 			GetMotorVelocity_Self(3, 0, 0); //?-à′80 0 0
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
+		else if (Radar.Angle < RADAR_MID - 1)
+		{
+			SetPWM(0,0,30);
+			LCD_Show_pwm();
+		}
+		else if (Radar.Angle > RADAR_MID + 1)
+		{
+			SetPWM(0,0,-30);
+			LCD_Show_pwm();
+		}
 		else if (Radar.Distance > DIS_RADAR + 10)
 		{
-			GetMotorVelocity_Self(0, 60, 0);
+			GetMotorVelocity_Self(0, 30, 0);
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
 		else if (Radar.Distance < DIS_RADAR - 10)
 		{
-			GetMotorVelocity_Self(0, -60, 0);
+			GetMotorVelocity_Self(0, -30, 0);
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
+		
 		else
 		{
 			SetPWM(0, 0, 0);
@@ -858,8 +859,7 @@ void GoBack_Vision(void)
 		//所得数据无效
 		if (!GetVisionData())
 		{
-			if (time == 0)
-				;
+			if (time == 0);
 
 			//尝试五次
 			else if (time++ < 10)
@@ -872,19 +872,19 @@ void GoBack_Vision(void)
 				time = 0;
 		}
 		//数据有效
-		else{
+		else
 			time = 1;
-		}
+		
 
-		//没找到框,自己回位
+		//没找到框
 		if (time == 0)
 		{
 			D_x = BasketballRobot.X - x;
-			if (D_x  >0.3)
+			if (D_x  >0.3f)
 			{
 				w = -10;
 			}
-			if (D_x < -0.3)
+			if (D_x < -0.3f)
 			{
 				w = 10;
 			}
@@ -917,17 +917,6 @@ void GoBack_Vision(void)
 			GetMotorVelocity_Self(8, 0, 0); //原来4 0 0
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
-		
-//		else if (Vision.X < vision_centre - 30)
-//		{
-//			GetMotorVelocity_Self(3, 0, 0); //原来-30 0 0
-//			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
-//		}
-//		else if (Vision.X > vision_centre + 30)
-//		{
-//			GetMotorVelocity_Self(-3, 0, 0); //原来30 0 0
-//			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
-//		}
 		else if (Vision.X <= vision_centre + 20 && Vision.X > vision_centre + 10)
 		{
 			GetMotorVelocity_Self(3, 0, 0); //原来15 0 0
@@ -947,11 +936,69 @@ void GoBack_Vision(void)
 		{
 			SetPWM(0,0,0);
 			BasketballRobot.X=0;
-			RobotGoTo(BasketballRobot.X,BasketballRobot.Y+1.8,BasketballRobot.ThetaD);
+			RobotGoTo(BasketballRobot.X,BasketballRobot.Y+1.8f,BasketballRobot.ThetaD);
 			SetPWM(0,0,0);
 			break;
 		}
 	} while (1);
+}
+
+void GoBack_Radar(void)
+{
+	//u8 i = 0;
+	float dis;
+
+	SetPWM(0, 0, 0);
+	LCD_Show_pwm();
+
+	//清空串口接收数据缓存
+	Radar.RX_STA = 0;
+
+	while (1)
+	{
+		//等待数据接收完成
+		while ((Radar.RX_STA & 0x8000) == 0);
+	
+		if (!GetRadarData())
+		{
+			SetPWM(0,0,0);
+			continue;
+		}	
+
+		LCD_ShowString(30 + 200, 460, 200, 16, 16, "Radar!");
+
+		if (Radar.Angle > RADAR_MID + 10)
+		{
+			GetMotorVelocity_Self(15,0,0);
+			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
+		}
+		else if(Radar.Angle < RADAR_MID - 10)
+		{
+			GetMotorVelocity_Self(-15,0,0);
+			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
+		}
+		if (Radar.Angle > RADAR_MID + 5)
+		{
+			GetMotorVelocity_Self(8,0,0);
+			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
+		}
+		else if(Radar.Angle < RADAR_MID - 5)
+		{
+			GetMotorVelocity_Self(-8,0,0);
+			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
+		}
+		else
+		{
+			SetPWM(0,0,0);
+			LCD_Show_pwm();
+			break;
+		}		
+	}
+	dis = Radar.Distance*1.0f/ 1000;
+	RobotGoTo(BasketballRobot.X,BasketballRobot.Y-dis, 180);
+	SetPWM(0,0,0);
+	LCD_Show_pwm();
+	LCD_ShowString(30 + 200, 460, 200, 16, 16, "       ");
 }
 
 void Findball_PD(u8 ball)
