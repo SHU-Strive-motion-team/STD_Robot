@@ -290,8 +290,8 @@ int main(void)
 				RobotGoTo(1.5, 2.5, 250);
 				while(LimitSwitchDown ==0);
 				while (ShotUp());
-				
 				RobotArm_exit(UP);
+				
 				RobotRotate(0);
 				FindBall_VandR(qiu);
 
@@ -410,7 +410,6 @@ int main(void)
 				while(LimitSwitchUp == 0);
 				Robot_armDown();
 				//while(LimitSwitchDown == 0);
-				delay_ms(2000);
 				while (ShotUp());
 				RobotArm_exit(UP);
 				RobotGoTo(4.3f, 2.5f , 290);
@@ -466,7 +465,6 @@ int main(void)
 				RobotGoTo(-5.3f, 3.3f,-160);
 				while(LimitSwitchUp==0);
 				Robot_armDown();
-				delay_ms(2000);
 				RobotArm_exit(UP);
 				while(ShotUp());
 
@@ -484,7 +482,7 @@ int main(void)
 				}
 				SetPWM(-400,0,400);
 				delay_ms(1000);
-				RobotGoTo(3.8f, 1.8f, 290);
+				RobotGoTo(4.3f, 2.5f, 290);
 				FindBall_VandR(7);
 
 				//¼ÇÂ¼²ùÇòµãAµÄÎ»ÖÃ
@@ -494,7 +492,6 @@ int main(void)
 				RobotGoTo(5.3f, 3.3f,160);
 				while(LimitSwitchUp==0);
 				Robot_armDown();
-				delay_ms(2000);
 				RobotArm_exit(UP);
 				while(ShotUp());
 //				//Ô­Â··µ»Ø
@@ -508,9 +505,9 @@ int main(void)
 				RobotGoTo(BasketballRobot.PX+0.2, BasketballRobot.PY , 270);
 				RobotGoTo(5.3f, BasketballRobot.PY,160);
 				RobotGoTo(5.3f, 3.3f,160);
+//				RobotGoTo(1.5,2.5,250);
 				while(LimitSwitchUp==0);
 				Robot_armDown();
-				delay_ms(2000);
 				RobotArm_exit(UP);
 				while(ShotUp());
 
@@ -532,12 +529,9 @@ int main(void)
 					delay_ms(1000);
 				}
 				SetPWM(-400,0,400);
-				delay_ms(1000);
-				
-				RobotGoTo(-8.5f, 4.2f,-270);
-				SetPWM(-400,0,400);
 				delay_ms(2000);
-				RobotGoTo(-4,3.6,-270);
+				
+				RobotGoTo(-8.5f, 3.6f,-270);
 
 				//À×´ïÕÒ¿ò
 				FindBasketry();
@@ -554,7 +548,7 @@ int main(void)
 //					FindBall_VandR(qiu);
 //				}
 
-				RobotGoTo(-8.5f, 4.2f, -270);
+				RobotGoTo(-8.5f, 3.6f,-270);
 //				RobotGoTo(-4,3.6,-270);
 				//À×´ïÕÒ¿ò
 				FindBasketry();
@@ -573,10 +567,7 @@ int main(void)
 				SetPWM(-400,0,400);
 				delay_ms(1000);
 				
-				RobotGoTo(8.5f, 4.2f,270);
-				SetPWM(-400,0,400);
-				delay_ms(2000);
-				RobotGoTo(4,3.6,270);
+				RobotGoTo(8.5f, 3.6f,270);
 
 				//À×´ïÕÒ¿ò
 				FindBasketry();
@@ -593,7 +584,7 @@ int main(void)
 //					FindBall_VandR(qiu);
 //				}
 
-				RobotGoTo(8.5f, 4.2f, 270);
+				RobotGoTo(8.5f, 3.6f, 270);
 //				RobotGoTo(4,3.6,270);
 				//À×´ïÕÒ¿ò
 				FindBasketry();
@@ -647,7 +638,7 @@ int main(void)
 //				}
 
 				RobotGoTo(BasketballRobot.PX, BasketballRobot.PY, 0);
-				RobotGoTo(-4.3f, 3.6f, -270);
+				RobotGoTo(-8.5f, 4.2f, -270);
 
 				//À×´ïÕÒ¿ò
 				FindBasketry();
@@ -670,14 +661,14 @@ int main(void)
 				BasketballRobot.PX = BasketballRobot.X;
 				BasketballRobot.PY = BasketballRobot.Y;
 
-//				RobotGoTo(8.5f, 4.2f, 270);
-				RobotGoTo(4.3f, 3.6f, 270);
+				RobotGoTo(8.5f, 4.2f, 270);
+//				RobotGoTo(4.3f, 3.6f, 270);
 
 				//À×´ïÕÒ¿ò
 				FindBasketry();
 
 				while(ShotUp());
-				delay_ms(2000);
+				delay_ms(1000);
 				RobotArm_exit(UP);
 				//RobotGoTo(A);
 				RobotGoTo(BasketballRobot.PX , BasketballRobot.PY , 290);
@@ -693,11 +684,10 @@ int main(void)
 //				}
 
 				RobotGoTo(BasketballRobot.PX, BasketballRobot.PY, 0);
-				RobotGoTo(4.3f, 3.6f, 270);
+				RobotGoTo(8.5f, 4.2f, 270);
 
 				//À×´ïÕÒ¿ò
 				FindBasketry();
-				delay_ms(2000);
 
 				while(ShotUp());
 				SetPWM(0,0,0);
@@ -718,21 +708,19 @@ int main(void)
 				RobotGoTo(-4.3f, 2.5f, -290);
 				FindBall_VandR(qiu);
 
-				RobotGoTo(-8.5f, 4.2f, -270);
+				RobotGoTo(-8.5f, 3.6f, -270);
 //				RobotGoTo(4.3f, 3.6f, 270);
 
 				//À×´ïÕÒ¿ò
 				FindBasketry();
-				delay_ms(2000);
 				while (ShotUp());
-
 				RobotArm_exit(UP);
 				RobotRotate(-160);
 				while(LimitSwitchUp==0);
 				FindBall_VandR(qiu);
 				
 				//À×´ïÕÒ¿ò
-				RobotGoTo(-8.5f, 4.2f, -270);
+				RobotGoTo(-8.5f, 3.6f, -270);
 				FindBasketry();
 				while(ShotUp());
 				SetPWM(0,0,0);
@@ -749,7 +737,7 @@ int main(void)
 				RobotGoTo(4.3f, 2.5f, 290);
 				FindBall_VandR(qiu);
 
-				RobotGoTo(8.5f, 4.2f, 270);
+				RobotGoTo(8.5f, 3.6f, 270);
 //				RobotGoTo(4.3f, 3.6f, 270);
 
 				//À×´ïÕÒ¿ò
@@ -758,14 +746,13 @@ int main(void)
 				while (ShotUp());
 
 				RobotArm_exit(UP);
-				RobotRotate(145);
+				RobotRotate(160);
 				while(LimitSwitchUp==0);
 				FindBall_VandR(qiu);
 				
 				//À×´ïÕÒ¿ò
-				RobotGoTo(4.3f, 3.6f, 270);
+				RobotGoTo(8.5f, 3.6f, 270);
 				FindBasketry();
-				delay_ms(2000);
 				while(ShotUp());
 				SetPWM(0,0,0);
 				break;
