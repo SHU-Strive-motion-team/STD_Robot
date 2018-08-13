@@ -29,7 +29,7 @@
 #define MOTOR_STATIC_1 4000		//TIM9 CH1 PE5
 #define MOTOR_STATIC_2 4000  		//TIM9 CH2 PE6
 
-#define RADAR_MID 268	//雷达定位中心
+#define RADAR_MID 268    //雷达定位中心
 #define VISION_MID 256	//视觉定位中心
 #define DIS_RADAR 2500	//篮筐雷达定位距离
 #define DIS_VISION 280	//篮筐视觉定位距离

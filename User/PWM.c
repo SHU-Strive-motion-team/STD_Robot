@@ -10,8 +10,8 @@
 
 void PWM_Init(void)
 {
-	TIM9_CH1_PWM_Init(4000-1,84-1);	//1M/4000=250hz PE5，铲球电机
-	TIM9_CH2_PWM_Init(4000-1,84-1);	//PE6，铲球电机
+	TIM9_CH1_PWM_Init(1000-1,84-1);	//1M/4000=250hz PE5，铲球电机
+	TIM9_CH2_PWM_Init(1000-1,84-1);	//PE6，铲球电机
 	
 	
 	//TIM5_CH2_PWM_Init(42-1,1-1);		//2MHz    HCTL2020   时钟 PA1

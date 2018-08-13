@@ -234,13 +234,13 @@ void shoveMotor(shovemotor t)
 	{
 		//CH1高电平,铲子向上，接黑线，电机反转
 		TIM_SetCompare2(TIM9, 0);
-		TIM_SetCompare1(TIM9, 3500);
+		TIM_SetCompare1(TIM9, 700);
 	}
 	else if (t == DOWN)
 	{
 		//CH2高电平,铲子向下，接红线，电机正转
 		TIM_SetCompare1(TIM9, 0);
-		TIM_SetCompare2(TIM9, 1000);
+		TIM_SetCompare2(TIM9, 400);
 	}
 }
 
@@ -433,12 +433,12 @@ static float adjustVy_PD(float D_Y)
 	if (D_Y > 0.05f)
 	{
 		sy = D_Y * 400;
-		if (BasketballRobot.Vy < 0.1f)
-			sy = 250;
-		else if (BasketballRobot.Vy < 0.3f)
-			sy = 300;
-		else if (BasketballRobot.Vy < 0.5f)
-			sy = 400;
+//		if (BasketballRobot.Vy < 0.1f)
+//			sy = 250;
+//		else if (BasketballRobot.Vy < 0.3f)
+//			sy = 300;
+//		else if (BasketballRobot.Vy < 0.5f)
+//			sy = 400;
 
 		if (D_Y < 1)
 			sy = D_Y * 400 + 100;
@@ -450,12 +450,12 @@ static float adjustVy_PD(float D_Y)
 	else if (D_Y < -0.05f)
 	{
 		sy = D_Y * 400;
-		if (BasketballRobot.Vy > -0.1f)
-			sy = -250;
-		else if (BasketballRobot.Vy > -0.3f)
-			sy = -300;
-		else if (BasketballRobot.Vy > -0.5f)
-			sy = -400;
+//		if (BasketballRobot.Vy > -0.1f)
+//			sy = -250;
+//		else if (BasketballRobot.Vy > -0.3f)
+//			sy = -300;
+//		else if (BasketballRobot.Vy > -0.5f)
+//			sy = -400;
 
 		if (D_Y > -1)
 			sy = D_Y * 400 - 100;
@@ -479,12 +479,12 @@ static float adjustVx_PD(float D_X)
 	{
 		sx = NOW_DX * 35;
 
-		if (BasketballRobot.Vx < 0.1f)
-			sx = 30;
-		else if (BasketballRobot.Vx < 0.3f)
-			sx = 50;
-		else if (BasketballRobot.Vx < 0.5f)
-			sx = 55;
+//		if (BasketballRobot.Vx < 0.1f)
+//			sx = 30;
+//		else if (BasketballRobot.Vx < 0.3f)
+//			sx = 50;
+//		else if (BasketballRobot.Vx < 0.5f)
+//			sx = 55;
 
 		if (NOW_DX < 1)
 			sx = NOW_DX * 35 + 10 * (NOW_DX - Last_DX) + 15;
@@ -497,12 +497,12 @@ static float adjustVx_PD(float D_X)
 	{
 		sx = NOW_DX * 35;
 
-		if (BasketballRobot.Vx > -0.1f)
-			sx = -30;
-		else if (BasketballRobot.Vx > -0.3f)
-			sx = -50;
-		else if (BasketballRobot.Vx > -0.5f)
-			sx = -55;
+//		if (BasketballRobot.Vx > -0.1f)
+//			sx = -30;
+//		else if (BasketballRobot.Vx > -0.3f)
+//			sx = -50;
+//		else if (BasketballRobot.Vx > -0.5f)
+//			sx = -55;
 
 		if (NOW_DX > -1)
 			sx = (NOW_DX * 35 + 10 * (NOW_DX - Last_DX)) - 15;
@@ -823,7 +823,7 @@ void RobotGoBrokenLine(float X_I,float Y_I,float Theta_I,float pointX, float poi
 		D_Y = (pointY - BasketballRobot.Y) * 2;
 
 		//走到点或超调后跳出
-		if(fabs(D_Y) > 0.1f && fabs(D_X) > 0.1f)
+		if(fabs(D_Y) < 0.1f && fabs(D_X) < 0.1f)
 			break;
 		if (D_X * flagX <= 0 && D_Y * flagY <= 0)
 			break;
@@ -1052,7 +1052,7 @@ u8 ShotUp(void)
 		CHARGE = 0;
 		delay_ms(500);
 		SHOT = 1;
-		delay_ms(500);
+		delay_ms(1000);
 		SHOT = 0;
 		
 		return 0;
