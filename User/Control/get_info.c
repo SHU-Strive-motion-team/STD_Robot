@@ -225,6 +225,8 @@ u8 GetYaw(void)
 		
 	if(USART2_RX_STA&0x8000)	
 	{
+		
+		BasketballRobot.LastTheta = BasketballRobot.ThetaD;
 		//(Re_buf [7]<<8| Re_buf [6]))/32768.0*180;
 //		BasketballRobot.theta_offset[0] =  BasketballRobot.theta_offset[1];
 //		BasketballRobot.theta_offset[1] = ((float)((USART2_RX_BUF[7] << 8) | USART2_RX_BUF[6])) / 32768 * 180;
@@ -279,6 +281,16 @@ void GetPosition(void)
 	float l1, l2, l3; //里程计减去自旋偏差后数值
 
 	float theta_inv[2][2]; //角度矩阵
+	
+	float d_theta;
+	
+	d_theta = BasketballRobot.ThetaD - BasketballRobot.LastTheta;
+	
+	if(d_theta > 300)
+		d_theta -= 360;
+	if(d_theta < -300)
+		d_theta += 360;		
+		
 
 //	if(GetYaw())
 //	{
@@ -294,7 +306,7 @@ void GetPosition(void)
 	theta_inv[1][1] = theta_inv[0][0];
 	
 	//BasketballRobot.LastTheta = BasketballRobot.ThetaR;
-
+#if 0
 	nW = (BasketballRobot.w[0] + BasketballRobot.w[1] + BasketballRobot.w[2]) / 3.0f;
 	
 	
@@ -305,7 +317,19 @@ void GetPosition(void)
 
 	nX = -l1 / 22400;
 	nY = -(-l2 + l3) / 1.7320508f / 22400;
+#else
+	nW = d_theta/182*14640;
+	
+	//除去自传偏差
+	l1 = BasketballRobot.w[0] - nW;
+	l2 = BasketballRobot.w[1] - nW;
+	//l3 = BasketballRobot.w[2] - nW;
 
+	nX = -l1 / 22400;
+	nY = (2*l2 + l1) / 1.7320508f / 22400;
+
+
+#endif
 	//nX =
 
 	BasketballRobot.X += nX * theta_inv[0][0] + nY * theta_inv[0][1];

@@ -31,7 +31,7 @@
 
 #define RADAR_MID 268    //雷达定位中心
 #define VISION_MID 256	//视觉定位中心
-#define DIS_RADAR 2500	//篮筐雷达定位距离
+#define DIS_RADAR 2300	//篮筐雷达定位距离
 #define DIS_VISION 280	//篮筐视觉定位距离
 
 #define Origin_X 0		//视觉屏幕原点x坐标，现假设

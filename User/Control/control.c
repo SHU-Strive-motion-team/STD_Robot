@@ -224,7 +224,7 @@ void GetInfraredState(void)
 void shoveMotor(shovemotor t)
 {
 	//u16 speed = 2000;
-
+#if 0
 	if (t == STOP)
 	{
 		TIM_SetCompare2(TIM9, 0);
@@ -234,14 +234,35 @@ void shoveMotor(shovemotor t)
 	{
 		//CH1高电平,铲子向上，接黑线，电机反转
 		TIM_SetCompare2(TIM9, 0);
-		TIM_SetCompare1(TIM9, 700);
+		TIM_SetCompare1(TIM9, 3000);
 	}
 	else if (t == DOWN)
 	{
 		//CH2高电平,铲子向下，接红线，电机正转
 		TIM_SetCompare1(TIM9, 0);
-		TIM_SetCompare2(TIM9, 400);
+		TIM_SetCompare2(TIM9,1000 );
 	}
+#else
+	if (t == STOP)
+	{
+		TIM_SetCompare2(TIM9, 1000);
+		IN1 = 0;
+		IN2 = 0;
+	}
+	else if (t == UP)
+	{
+		IN1 = 0;
+		IN2 = 1;
+		TIM_SetCompare2(TIM9, 150);
+	}
+	else if (t == DOWN)
+	{
+		IN1 = 1;
+		IN2 = 0;
+		TIM_SetCompare2(TIM9, 50);
+	}
+	
+#endif
 }
 
 //机械臂下降
@@ -253,9 +274,16 @@ void Robot_armDown(void)
 		return;
 	}
 	shoveMotor(DOWN);
+	delay_ms(1300);
+	shoveMotor(STOP);
+	delay_ms(100);
+	shoveMotor(DOWN);
 	while (1)
 	{
-		shoveMotor(DOWN);
+//		shoveMotor(DOWN);
+//		delay_ms(2);
+//		shoveMotor(STOP);
+//		delay_ms(1);
 		if (LimitSwitchDown == 1)
 		{
 			delay_ms(5);
@@ -838,6 +866,7 @@ void RobotGoAvoidance(void)
 {
 	//float w = 100;
 	float theta = BasketballRobot.ThetaD, D_theta = 0;
+	u8 time = 1;
 
 	SetPWM(0, 0, 0);
 	LCD_Show_pwm();
@@ -847,25 +876,36 @@ void RobotGoAvoidance(void)
 	do
 	{
 		while((Radar.RX_STA&0x8000) == 0);
-
+		
 		if (!GetRadarData())
 		{
-
-			SetPWM(0, 0, 0);
-			continue;
+			if (time == 0)
+			{
+			}
+			else if (time++ < 5)
+			{
+				SetPWM(0, 0, 0);
+				continue;
+			}
+			else if (time != 0)
+				time = 0;
 		}
-		LED0 = !LED0;
-
-		LCD_ShowString(30 + 200, 460, 200, 16, 16, "Radar:rad");
-		LCD_ShowNum(30 + 200 + 48 + 8 + 45, 460, Radar.Angle, 4, 16);
-		LCD_ShowString(30 + 200, 480, 200, 16, 16, "Radar:length");
-		LCD_ShowNum(30 + 200 + 48 + 8 + 45, 480, Radar.Distance, 4, 16);
-
-		Radar.State = 0;
+		else
+			time = 1;
 
 		//		if(Radar.Distance < 10)
 		//			continue;
 	
+		if (time == 0)
+		{
+			GetMotorVelocity_Self(0, 300, 0);
+			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
+			delay_ms(5000);
+			SetPWM(0, 0, 0);
+			break;
+		}
+		
+		
 		if (Radar.Angle < RADAR_MID - 15)
 		{
 			GetMotorVelocity_Self(-20, 0, 0);
@@ -878,7 +918,7 @@ void RobotGoAvoidance(void)
 		}
 		else if (Radar.Distance > 500)
 		{
-			GetMotorVelocity_Self(0, 100, 0);
+			GetMotorVelocity_Self(0, 200, 0);
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
 		}
 		else if (Radar.Angle < RADAR_MID - 10)
@@ -904,11 +944,14 @@ void RobotGoAvoidance(void)
 		}
 		else
 		{
+			if(BasketballRobot.Y >= 2.5f)
+				RobotGoTo(BasketballRobot.X,BasketballRobot.Y-0.5,BasketballRobot.ThetaD);
+			else
+				RobotGoTo(BasketballRobot.X,BasketballRobot.Y+0.5,BasketballRobot.ThetaD);
 			
-			RobotGoTo(BasketballRobot.X,BasketballRobot.Y+0.5,BasketballRobot.ThetaD);
 			GetMotorVelocity_Self(0, 300, 0);
 			SetPWM(BasketballRobot.Velocity[0], BasketballRobot.Velocity[1], BasketballRobot.Velocity[2]);
-			delay_ms(5000);
+			delay_ms(4000);
 			SetPWM(0, 0, 0);
 			break;
 		}

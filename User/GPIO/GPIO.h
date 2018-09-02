@@ -32,6 +32,11 @@ void ShotSwitch_Init(void);
 //限位开关端口定义	
 #define LimitSwitchDown 	PCin(1)	
 #define LimitSwitchUp   	PCin(0)
+
+//临时铲球电机驱动IO
+#define IN1 PFout(0)
+#define IN2 PFout(2)
+
 //限位开关初始化
 void LimitSwitch_init(void);
 
@@ -39,6 +44,9 @@ void LimitSwitch_init(void);
 #define INFRARED PCin(2)
 //红外开关初始化
 void InfraredSwitch_Init(void);
+
+//临时铲球电机驱动IO初始化 
+void shoveMotorIO_Init(void);
 
 void ALL_GPIO_Init(void);
 	
