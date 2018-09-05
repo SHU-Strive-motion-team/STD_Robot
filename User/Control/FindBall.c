@@ -1351,6 +1351,8 @@ void GoBack_Radar(void)
 	LCD_ShowString(30 + 200, 460, 200, 16, 16, "       ");
 }
 
+
+//PID找球，未完成，有待完成
 void Findball_PD(u8 ball)
 {
 	float w = 80;
@@ -1592,7 +1594,7 @@ void Findball_PD(u8 ball)
 	LCD_Show_pwm();
 	LCD_ShowString(30 + 200, 460, 200, 16, 16, "       ");
 }
-
+//有待完成
 static float adjustVy_findPD(float D_Y)
 {
 	float sy;
@@ -1618,6 +1620,7 @@ static float adjustVy_findPD(float D_Y)
 
 	return sy;
 }	
+//有待完成
 static float adjustVx_findPD(float D_X)
 {
 	float sx, NOW_DX;

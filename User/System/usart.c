@@ -1,6 +1,7 @@
 #include "sys.h"
 #include "usart.h"	
 
+//中断服务函数于 get_info.c中
 
 //加入以下代码,支持printf函数,而不需要选择use MicroLIB	  
 #if 1
@@ -184,6 +185,10 @@ void usart_send_char(u8 c)
 	USART_SendData(USART1,c);
 	while(USART_GetFlagStatus(USART1,USART_FLAG_TC)!=SET);
 } 
+
+
+//上传数据到上位机
+//上位机未完全建成
 void SendToPc(u8 cmd,u16 data1,u16 data2,u16 data3)
 {
 	u8 sum =0;
@@ -211,175 +216,4 @@ void SendToPc(u8 cmd,u16 data1,u16 data2,u16 data3)
 	usart_send_char(sum);
 		
 }
-
-
-
-/* u8 receive = 0;
-u8 End=0;
-u8  CheckSum_1 = 0;
-
-//串口1中断服务程序，视觉数据
-void USART1_IRQHandler(void)  
-{
-	u8 Res;
-	//USART_RX_STA=0;
-
-	if(USART_GetITStatus(USART1, USART_IT_RXNE) != RESET)  //接收中断(接收到的数据必须是0x0d 0x0a结尾)
-	{
-		Res =USART_ReceiveData(USART1);//(USART1->DR);	//读取接收到的数据
-		
-		if((USART_RX_STA&0x8000)==0)//接收未完成
-		{
-			if(Res!='z')
-			{	
-				if(End!='z')
-				{
-				USART_RX_BUF[USART_RX_STA&0X3FFF]=Res ;
-			//	USART_SendData(USART1, USART_RX_BUF[USART_RX_STA&0X3FFF]);
-				 CheckSum_1=Res+ CheckSum_1;
-				
-				USART_RX_STA++;
-				if(USART_RX_STA>(USART_REC_LEN-1))
-					USART_RX_STA=0;//接收数据错误,重新开始接收	 
-				}		
-				else if(End=='z')
-				{
-					if( CheckSum_1==Res)
-					{	
-						USART_RX_STA|=0x8000;
-						receive=1;
-				//		USART_SendData(USART1,  CheckSum_1);
-					}
-					else
-						USART_RX_STA=0;
-					
-					End = 0;
-					 CheckSum_1=0;
-				}
-			}
-			else if(Res=='z') 
-			{ 
-				End='z';
-
-				if( CheckSum_1=='z')
-					 CheckSum_1= CheckSum_1+'1';
-			}
-		} 
-	} 
-	
-} 
-
-
-#if 0
-u8 receive3 = 0;
-u8 end=0;
-u8  CheckSum_3 = 0;
-void USART3_IRQHandler(void)                	//串口3中断服务程序,雷达数据
-{
-	u8 Res;
-	//USART3_RX_STA=0;
-
-	if(USART_GetITStatus(USART3, USART_IT_RXNE) != RESET)  //接收中断(接收到的数据必须是0x0d 0x0a结尾)
-	{	
-
-		Res =USART_ReceiveData(USART3);//(USART1->DR);	//读取接收到的数据
-		
-		if((USART3_RX_STA&0x8000)==0)//接收未完成
-		{
-			if(Res!='z')
-			{	
-				if(end!='z')
-				{
-				USART3_RX_BUF[USART3_RX_STA&0X3FFF]=Res ;
-				//USART_SendData(USART3, USART3_RX_BUF[USART3_RX_STA&0X3FFF]);
-				 CheckSum_3=Res+ CheckSum_3;
-				
-				USART3_RX_STA++;
-				if(USART3_RX_STA>(USART_REC_LEN-1))
-					USART3_RX_STA=0;//接收数据错误,重新开始接收	 
-				}		
-				else if(end=='z')
-				{
-					if( CheckSum_3==Res)
-					{
-			//		USART_SendData(USART3,  CheckSum_3);
-						USART3_RX_STA|=0x8000;
-						receive3=1;
-					}
-					else
-						USART3_RX_STA=0;
-					
-					end = 0;
-				   CheckSum_3=0;
-				}
-			}
-			else if(Res=='z') 
-			{ 
-				end='z';
-
-				if( CheckSum_3=='z')
-					 CheckSum_3= CheckSum_3+'1';
-			}
-		} 
-	} 
-	
-
-} 
-#endif
-
-#if 1
-u8 receive3 = 0;
-u8 end=0;
-u8  CheckSum_3 = 0;
-void USART3_IRQHandler(void)                	//串口3中断服务程序,雷达数据
-{
-	u8 Res;
-	//USART3_RX_STA=0;
-	
-	if(USART_GetITStatus(USART3, USART_IT_RXNE) != RESET)  //接收中断(接收到的数据必须是0x0d 0x0a结尾)
-	{	
-
-		Res =USART_ReceiveData(USART3);//(USART1->DR);	//读取接收到的数据
-		
-		if((USART3_RX_STA&0x8000)==0)//接收未完成
-		{
-			if(Res!='z')
-			{	
-				if(end!='z')
-				{
-					USART3_RX_BUF[USART3_RX_STA&0X3FFF]=Res ;
-					//USART_SendData(USART3, USART3_RX_BUF[USART3_RX_STA&0X3FFF]);
-					// CheckSum_3=Res+ CheckSum_3;
-					
-					USART3_RX_STA++;
-					if(USART3_RX_STA>(USART_REC_LEN-1))
-						USART3_RX_STA=0;//接收数据错误,重新开始接收	 
-				}		
-				else if(end=='z')
-				{
-					USART3_RX_STA|=0x8000;
-					receive3=1;
-					
-					end=0;
-				}
-			}
-			else if(Res=='z') 
-			{ 
-				if( USART3_RX_STA ==7)
-					end='z';
-				else
-					end=0;
-				USART3_RX_STA=0;
-			}
-		} 
-	} 
-	
-} 
-
-#endif */
-
-
- 
-
-
 

@@ -65,6 +65,8 @@ void HardFault_Handler(void)
   /* Go to infinite loop when Hard Fault exception occurs */
   while (1)
   {
+	  
+	  delay_ms(500);
 	  printf("err");
   }
 }

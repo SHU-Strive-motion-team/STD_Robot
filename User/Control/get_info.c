@@ -186,6 +186,7 @@ void ReadEncoder(void)
 }
 
 //放入串口中断中
+//中断中调用函数会出现问题后舍弃
 void receiveIMUData(void)
 {
 	uint8_t sum=0,i=0,res;
@@ -271,11 +272,9 @@ u8 GetYaw(void)
 
 
 //坐标转换,里程计定位
+//具体计算推导去看论文
 void GetPosition(void)
 {
-	//根据速度运算球场坐标
-
-	
 	float nW, nX, nY;
 
 	float l1, l2, l3; //里程计减去自旋偏差后数值
@@ -291,7 +290,6 @@ void GetPosition(void)
 	if(d_theta < -300)
 		d_theta += 360;		
 		
-
 //	if(GetYaw())
 //	{
 	
@@ -306,7 +304,10 @@ void GetPosition(void)
 	theta_inv[1][1] = theta_inv[0][0];
 	
 	//BasketballRobot.LastTheta = BasketballRobot.ThetaR;
+	
+//正常使用三个里程计定位
 #if 0
+	
 	nW = (BasketballRobot.w[0] + BasketballRobot.w[1] + BasketballRobot.w[2]) / 3.0f;
 	
 	
@@ -315,9 +316,14 @@ void GetPosition(void)
 	l2 = BasketballRobot.w[1] - nW;
 	l3 = BasketballRobot.w[2] - nW;
 
+	//22400 通过实际测试得出 ，所得坐标单位只是大概为1m
 	nX = -l1 / 22400;
 	nY = -(-l2 + l3) / 1.7320508f / 22400;
+	
+//比赛时里程计损坏，使用两个里程计定位
 #else
+	
+	//由陀螺仪得自传偏差
 	nW = d_theta/182*14640;
 	
 	//除去自传偏差
@@ -343,33 +349,10 @@ void GetPosition(void)
 	BasketballRobot.encoderCount[1] += BasketballRobot.w[1];
 	BasketballRobot.encoderCount[2] += BasketballRobot.w[2];
 	
-//	nW = (BasketballRobot.encoderCount[0] + BasketballRobot.encoderCount[1] + BasketballRobot.encoderCount[2]) / 3.0f;
-//	l1 = BasketballRobot.encoderCount[0] - nW;
-//	l2 = BasketballRobot.encoderCount[1] - nW;
-//	l3 = BasketballRobot.encoderCount[2] - nW;
-
-//	nX = -l1 / 22400;
-//	nY = -(-l2 + l3) / 1.7320508f / 22400;
-//	
-//	LCD_ShowxNum(30,50+400+40,fabs(nX)*100,7,16,0);
-//	LCD_ShowxNum(30,50+400+80,fabs(nY)*100,7,16,0);
-	//LCD_ShowString(30,50+400,200,16,16,"std robot");
-	//BasketballRobot.LastTheta = BasketballRobot.ThetaR;
-//	BasketballRobot.ThetaD = (BasketballRobot.encoderCount[2] +BasketballRobot.encoderCount[1] +BasketballRobot.encoderCount[0])*1.0f*360/3/30500;
-//	BasketballRobot.ThetaR = BasketballRobot.ThetaD * PI / 180;
-//	while(BasketballRobot.ThetaR < 0)
-//		BasketballRobot.ThetaR  = BasketballRobot.ThetaR + PI + PI;
-//			
-//	while (BasketballRobot.The taR > 2 * PI)
-//		BasketballRobot.ThetaR= BasketballRobot.ThetaR - PI - PI;
-//			
-//	while(BasketballRobot.ThetaD < 0)
-//		BasketballRobot.ThetaD  = BasketballRobot.ThetaD + 360;
-//			
-//	while (BasketballRobot.ThetaD >360)
-//		BasketballRobot.ThetaD = BasketballRobot.ThetaD - 360;
 }
 
+//放入串口中断中
+//中断中调用函数会出现问题后舍弃
 void receiveVisionData(void)
 {
 	uint8_t sum=0,i=0,res;
@@ -416,9 +399,10 @@ void receiveVisionData(void)
 u8 GetVisionData(void)
 {	
 	u32 x,d;
+	
+//旧通讯协议
 #if 0
 	//receiveVisionData();
-
 	if (Vision.RX_STA&0x8000)
 	{
 		//坐标位置信息
@@ -475,7 +459,7 @@ u8 GetVisionData(void)
 		LCD_ShowNum(30 + 200 + 48 + 8 + 45, 440, Vision.Depth, 4, 16);
 		return 1;
 	}
-	
+//新通讯协议，具体协议见笔记本
 #else
 	if(Vision.RX_STA&0x8000)
 	{
@@ -513,6 +497,8 @@ u8 GetVisionData(void)
 #endif	
 }
 
+//放入串口中断中
+//中断中调用函数会出现问题后舍弃
 void receiveRadarData(void)
 {
 	uint8_t sum=0,i=0,res;
@@ -577,7 +563,8 @@ void receiveRadarData(void)
 //激光处理数据
 u8 GetRadarData(void)
 {
-	#if 0
+//旧 
+#if 0
 {
 	if(Radar.RX_STA&0x8000)
 	{					   
@@ -635,7 +622,8 @@ u8 GetRadarData(void)
 		return 1;
 	}	
 }
-	#else
+//新
+#else
 	u32 a,d;
 	
 	if(Radar.RX_STA&0x8000)
@@ -661,6 +649,6 @@ u8 GetRadarData(void)
 		LCD_ShowNum(30+200+48+8+45,480,Radar.Distance,4,16);
 		return 1;
 	}
-	#endif
+#endif
 }
 

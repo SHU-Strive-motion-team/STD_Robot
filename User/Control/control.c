@@ -224,6 +224,8 @@ void GetInfraredState(void)
 void shoveMotor(shovemotor t)
 {
 	//u16 speed = 2000;
+	
+//原电机驱动板
 #if 0
 	if (t == STOP)
 	{
@@ -242,6 +244,7 @@ void shoveMotor(shovemotor t)
 		TIM_SetCompare1(TIM9, 0);
 		TIM_SetCompare2(TIM9,1000 );
 	}
+//比赛时驱动板损坏，使用购买得驱动板
 #else
 	if (t == STOP)
 	{
@@ -266,6 +269,7 @@ void shoveMotor(shovemotor t)
 }
 
 //机械臂下降
+//根据新驱动板特性做过调整，原直接下降即可
 void Robot_armDown(void)
 {
 	if (LimitSwitchDown == 1)
