@@ -63,3 +63,5 @@ dkms.conf
 *.uvprojx
 *.uvprojx
 *.uvoptx
+*.__i
+*._ia
