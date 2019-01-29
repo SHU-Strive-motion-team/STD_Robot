@@ -10,7 +10,7 @@ void Control_Init(void)
 	BasketballRobot.X = 0;		//机器人在坐标系中x坐标
 	BasketballRobot.Y = 0;		//机器人在坐标系中y坐标
 	BasketballRobot.ThetaR = 0; //机器人正方向和y轴夹角
-	BasketballRobot.ThetaR = 0; //机器人正方向和y轴夹角
+	BasketballRobot.ThetaD = 0; //机器人正方向和y轴夹角
 
 	BasketballRobot.Vx = 0; //机器人在坐标系x方向速度
 	BasketballRobot.Vy = 0; //机器人在坐标系y方向速度
